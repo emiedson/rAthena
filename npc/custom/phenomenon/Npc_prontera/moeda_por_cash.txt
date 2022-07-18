@@ -1,0 +1,95 @@
+//=====================================================================================================================================
+// Criado por Kasthiel
+//=====================================================================================================================================
+prontera,147,173,6	script	Garoto do Cambio	10084,{
+
+set $name$, "^A020F0[Garoto do Cambio]^000000";
+//=====================================================================================================================================
+//			Configurar itens
+//=====================================================================================================================================
+set $@item1,35036;	//Bolsa de Gemas Estelares Doador
+set $@item2,35037;	//Bolsa de Gemas Escarlate Doador
+set $@item3,35035;	//Bolsa de Ouro Doador
+//=====================================================================================================================================
+//			Configurar valor para os itens
+//=====================================================================================================================================
+set $@cashs1,1000;	//Quantidade de Cash que 1 Bolsa de Gemas Estelares Doador vale
+set $@cashs2,500;	//Quantidade de Cash que 1 Bolsa de Gemas Escarlate Doador vale
+set $@cashs3,250;	//Quantidade de Cash que 1 Bolsa de Ouro Doador
+//=====================================================================================================================================	
+	mes $name$;
+	mes "Eu sou responsável pela troca de ^32CD32Sacolas de Cash^000000 por ^FF0000Cash^000000.";
+	mes "Atualmente existem 3 sacolas:";
+	mes "^0033CC"+getitemname($@item1)+"^000000.";
+	mes "^ff0000"+getitemname($@item2)+"^000000.";
+	mes "^FFD700"+getitemname($@item3)+"^000000.";
+	next;	
+	
+	mes $name$;
+	mes "^32CD32 VALORES POR ITEM^000000";
+	mes "1 x ^FF0000"+getitemname($@item1)+"^000000:";
+	mes "Por ^32CD32"+($@cashs1)+"^000000 cash.";
+	mes "1 x ^FF0000"+getitemname($@item2)+"^000000:";
+	mes "Por ^32CD32"+($@cashs2)+"^000000 cash.";
+	mes "1 x ^FF0000"+getitemname($@item3)+"^000000:";
+	mes "Por ^32CD32"+($@cashs3)+"^000000 cash.";
+	next;	
+	
+	mes $name$;
+	mes "Gostaria de trocar qual Sacola?";
+	next;
+	switch(select("^0033CC"+getitemname($@item1)+"^000000:^ff0000"+getitemname($@item2)+"^000000:^FFD700"+getitemname($@item3)+"^000000:^32CD32Ver saldo^000000:Cancelar")) {
+	
+case 1:
+	if(countitem($@item1) >= 1)
+{
+	mes $name$;
+	mes "Troca efetuada com sucesso!";
+	delitem $@item1,1;
+	set #CASHPOINTS,#CASHPOINTS+$@cashs1;
+	close;
+}
+	mes $name$;
+	mes "Me desculpe, mas você não tem ^FF0000"+getitemname($@item1)+"^000000.";
+	mes "Volte mais tarde!";
+	close;
+
+case 2:
+	if(countitem($@item2) >= 1)
+{
+	mes $name$;
+	mes "Troca efetuada com sucesso!";
+	delitem $@item2,1;
+	set #CASHPOINTS,#CASHPOINTS+$@cashs2;
+	close;
+}
+	mes $name$;
+	mes "Me desculpe, mas você não tem ^FF0000"+getitemname($@item2)+"^000000.";
+	mes "Volte mais tarde!";
+	close;
+
+case 3:
+	if(countitem($@item3) >= 1)
+{
+	mes $name$;
+	mes "Troca efetuada com sucesso!";
+	delitem $@item3,1;
+	set #CASHPOINTS,#CASHPOINTS+$@cashs3;
+	close;
+}
+	mes $name$;
+	mes "Me desculpe, mas você não tem ^FF0000"+getitemname($@item3)+"^000000.";
+	mes "Volte mais tarde!";
+	close;
+		
+case 4:
+	mes $name$;
+	mes "Você possui ^32CD32"+#CASHPOINTS+"^000000 Cash";
+	close;
+		
+case 5:
+	mes $name$;
+	mes "Volte quando precisar...";
+	close;
+	}
+}

@@ -1,0 +1,119 @@
+//----------------------------------------------------------------
+//- .___  ___.  __   __    __       ___       _______  __        -
+//- |   \/   | |  | |  |  |  |     /   \     |   ____||  |       -
+//- |  \  /  | |  | |  |__|  |    /  ^  \    |  |__   |  |       -
+//- |  |\/|  | |  | |   __   |   /  /_\  \   |   __|  |  |       -
+//- |  |  |  | |  | |  |  |  |  /  _____  \  |  |____ |  `----.  -
+//- |__|  |__| |__| |__|  |__| /__/     \__\ |_______||_______|  -
+//-                 www.forum.brathena.org                       -
+//----------------------------------------------------------------
+
+prontera,161,143,3	script	Arena dos Chefes	667,{
+
+//--- Nome do NPC. ----------------------------------------------------------------
+set .n$, "[^cc0000 Arena dos Chefes ^000000]";
+//--- Ponto Menu ------------------------------------------------------------------
+set .p$, "[^cc0000•^000000]";
+//--- Mapa ------------------------------------------------------------------------
+set .mp$,"bossnia_02";
+//--- Coordenada X ----------------------------------------------------------------
+set .@x, "203";
+//--- Coordenada Y ----------------------------------------------------------------
+set .@y, "203";
+//--- Nível Conta VIP -------------------------------------------------------------
+set .@vip, 0;
+//--- Nível Base Necessário para Entrar -------------------------------------------
+set .@b, 90;
+//--- Número Máximo de Pessoas que podem Acessar a Arena --------------------------
+set .@rf, 10;
+//--- Site SeuRO ------------------------------------------------------------------
+set .site$, "^cc0000serv.ignitionservers.tk^000000";
+//---------------------------------------------------------------------------------
+
+mes .n$;
+mes "Olá "+strcharinfo(0)+", eu sou a guardiã da Arena dos Chefes o que deseja?";
+next;
+switch(select(""+.p$+" Entrar na Arena ^cc0000("+getmapusers("bossnia_02")+"/"+.@rf+")^000000:"+.p$+" Informações:"+.p$+" Cancelar")){
+
+	case 1:
+		if (getgroupid() < .@vip){
+			mes .n$;
+			mes "Sinto muito "+strcharinfo(0)+", mas somente Jogadores VIP podem acessar essa arena.";
+			next;
+			mes .n$;
+			mes "Acesse nosso site : "+.site$+" e descubra como se tornar um !";
+			close;
+		}
+		if(getmapusers("bossnia_02") == .@rf){
+			mes .n$;
+			mes "Sinto muito "+strcharinfo(0)+", mas estamos com a capacidade máxima de jogadores na arena no momento.";
+			close;
+		}
+		if(BaseLevel < .@b){
+			mes .n$;
+			mes "Sinto muito, você possui o Nível de Base menor que "+.@b+". É perigoso para você continuar...";
+			close;
+		}
+		if (gettime(4) == 6){
+			mes .n$;
+			mes "Perfeito, tudo nos conformes, faça uma boa viagem !";
+			next;
+			warp .mp$,.@x,.@y;
+			close2;
+		}
+		mes .n$;
+		mes "Sinto muito "+strcharinfo(0)+", mas o acesso a Arena dos Chefes";
+		mes "é liberado somente aos Sábados...";
+		close;
+		
+	case 2:
+		mes .n$;
+		mes "A Arena dos Chefes é aberta todos os sábados.";
+		mes "Nela é permitido caçar todos os tipos de mvps que nascem";
+		mes "periodicamente.";
+		next;
+		mes .n$;
+		mes "Qualquer dúvida fale comigo novamente, estarei sempre aqui !";
+		close;
+	
+	case 3:
+		mes .n$;
+		mes "Certo, volte quando precisar de meus serviços.";
+		close;
+	}
+
+}
+//--- Mvps -----------------------------------------------------------------------
+//--- Os script abaixo ta na seguinte sequencia : --------------------------------
+//--- mapa,x,y<TAB>monster<TAB>nome do monstro<TAB>id do monstro,quantidade, -----
+//--- tempo fixo,tempo variado ---------------------------------------------------
+bossnia_02,0,0,0,0	monster	Deviling	1582,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Osiris	1038,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Freeoni	1159,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Senhor das Trevas	1272,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Thanatos	1708,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Valkíria Randgris	1751,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Tao Gunka	1583,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Belzebu	1873,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Senhor dos Mortos	1373,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Abelha rainha	1059,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Flor do Luar	1150,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Maya	1147,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Edggar	1115,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Orc Herói	1087,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Samurai Encarnado	1492,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Senhor dos Orcs	1190,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	General Tartaruga	1312,2,2400000,2400000
+bossnia_02,0,0,0,0	monster	Ghostring 	1120,2,2400000,2400000
+
+//--- Mapflags -------------------------------------------------------------------
+bossnia_02	mapflag	pvp_nightmaredrop	off
+bossnia_02	mapflag	pvp	off
+bossnia_02	mapflag	nopenalty
+bossnia_02	mapflag	nowarp
+bossnia_02	mapflag	nomemo
+bossnia_02	mapflag	noteleport
+bossnia_02	mapflag	nowarpto	
+bossnia_02	mapflag	nosave	SavePoint
+bossnia_02	mapflag	noreturn
+bossnia_02	mapflag	nobranch

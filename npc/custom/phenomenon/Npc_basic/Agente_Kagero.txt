@@ -1,0 +1,77 @@
+//===== 3ceam/BRathena Script =======================================
+//= Cronus/3ceam/BRathena Job Master Oboro e kagerou
+//=====  Versão: =====================================
+//= 1.1
+//==========================================
+// Criado por = Oscar neto
+//==========================================
+// Descrição: Job master para as Classes oboro e kagerou.                              |
+//============================================================
+prontera,148,193,5	script	Velho Kagerou	4_M_KAGE_OLD,{
+	mes "[Velho Kagerou]";
+	mes " Oi  eu sou o Master Kagerou mas todos me chamam de Velho Kagerou! ";
+	mes " Mas não se engane eu ja fui um grande querreiro e ainda continuo firme e forte!! ";
+	next;
+	mes "hmm você deve esta se perguntando  o que eu faço  hmm..";
+	mes " Vejamos hm ...";
+	next;
+	mes " hmm hmm, O Meu trabalho é um pouco parecido com o da Minha amiga job master, masss.....";
+	next;
+	mes "[Velho Kagerou]";
+	mes " hmm..";
+	next;
+	mes "[Velho Kagerou]";
+	mes " Mas eu só Posso ajudar os Meus queridos Ninjas!";
+	mes " Desculpe a pergunta mas eu já estou ficando velho e usar bons óculos não é uma opção!";
+	mes " Voce é um Ninja ?!";
+	if( select("Claro que eu sou um ninja!:não desculpa falei com você por engano...") == 2 )
+		{
+		mes "[Velho Kagerou]";
+		mes "Tudo bem... Até mais!";
+		close;
+		}
+	mes "Velho Kagerou]";
+        if(Class >= 4054 && Class <= 4085) goto L_max;
+        if(JobLevel < 70) goto L_LvError;
+        if(SkillPoint != 0) goto L_stats;
+        if(Class == Job_Ninja) goto L_Ninja;
+
+L_max:
+        mes "Desculpe, mas os meus serviços são exclusivamente para os ninjas.";
+        close;
+
+L_stats:
+        mes "Desculpe, mais você não distribuiu todos os seus Pontos de Skill.";
+        mes "Volte quando tiver utilizado todos os seus pontos de skills!";
+        close;
+
+L_LvError:
+        mes "Desculpe, mais você não tem level de job 70.";
+        mes "Volte quando o seu level de job for 70!";
+        close;
+
+L_Ninja:
+	mes "Bom dia meu Grande amigo não é todo dia que Encontro um discípulo.";
+	next;
+	mes "Estou aqui para Orientalo!";
+	next;
+	mes "Lembrando que eu não sou nenhum cirurgião não importa opção que você escolher você permanecerá com o seu sexo Original!.";
+	next;
+	mes "Por favor escolha sua classe.";
+	next;
+	switch(select("Kagerou ( Homen ):Oboro ( Mulher )")) {
+		case 1:
+			mes "[Ninja 2nd Class]";
+			mes "Velho Kagerou";
+			if (select("Sim","Não") == 2) close;
+			jobchange 4211;
+			close;
+		
+		case 2:
+			mes "[Velho Kagerou]";
+			mes "Você tem certeza?";
+			if (select("Sim","Não") == 2) close;
+			jobchange 4212;
+			close;
+	}
+}

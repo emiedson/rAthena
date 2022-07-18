@@ -1,0 +1,39 @@
+// .----------------------------------------------------------.
+// . Script:                                                                                                                                                                                      .
+// .  AjudanteMob                                                                                                                                                              .
+// .----------------------------------------------------------.
+// . Por: Caio Victor   Compátivel: eAthena SVN  versão: 1.0  .
+// .----------------------------------------------------------.
+// . Descrição:                                                                                                                                                                 .
+// .  Change de monstro morto renascer para ajudar por alguns .                                                                                                                 .
+// .  minutos.                                                .                                                                                                                 .
+// .  A porcentagem é de 5% podendo ser alterada,             .
+// .  é gerada uma variável permanente com o tempo de         .
+// .  'validade' do monstro, sendo assim sé o char já possuir .
+// .  um monstro ajudante, ele não conseguirá outro e esse    .
+// .  tempo de 'validade' é de 5 minutos + rand(120) sendo    .
+// .  assim um tempo entre 5 à 7 minutos - level do monstro,  .
+// .  ou seja, quanto mas maior o level do monstro menos      .
+// .  tempo de 'validade' ele terá                            .
+// .  Não é válido para MvP/Boss, monstros que não atacam     .                                                                                                                .
+// .  e não se movem e monstros próprios da WoE               .
+// .----------------------------------------------------------.
+-	script	AjudandeMob	-1,{
+
+	OnNPCKillEvent:
+		if(rand(0,10000) > 500) end;																//5% para conseguir
+		if(mkTimed && gettimetick(2) <= mkTimed) end;												//Checa tempo
+		set @MobMode, getmonsterinfo(killedrid,MOB_MODE);
+		if(!(@MobMode & 1)) end;																	//Mob não se move
+		if(!(@MobMode & 128)) end;																	//Mob não ataca
+		if(@MobMode & 32) end;																		//Mob MvP/Boss
+		set @WoE[0],1288|1285|1830|1949|1950|1286|1287|1899|1829;									//WoE IDs
+		for(set @n,0; @n < getarraysize(@WoE); set @n,@n+1){ if(@WoE[@n] == killedrid){ end; } }	//WoE
+		
+		set @nTime, (300+rand(0,120))-getmonsterinfo(killedrid,1);
+		summon "Ajudante "+getmonsterinfo(killedrid,0), killedrid, @nTime;
+		set mkTimed, gettimetick(2)+@nTime+rand(0,60);
+		message strcharinfo(0),"["+getmonsterinfo(killedrid,0)+"] Olá "+strcharinfo(0)+" te ajudarei por uns minutos!";
+	end;
+
+}

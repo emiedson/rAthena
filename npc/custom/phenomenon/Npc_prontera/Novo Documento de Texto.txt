@@ -1,0 +1,97 @@
+// -------------------------------------------------------------------------------
+
+//  Script Name : Headgear to Costume converter >> Costume to Headgear converter
+
+// -------------------------------------------------------------------------------
+
+// Description :
+
+// - Allows a user to convert the equipped headgear (on Top, Mid or Low) into a
+
+//   costume item. It will remove any card and refine of the Item.
+
+// - Allows a user to restore the equipped costume headgear (on Top, Mid or Low)
+
+     into its original form. It will not return any card or refine of the item.
+
+// -------------------------------------------------------------------------------
+
+quiz_00,60,27,4    script    Converter    51,{
+
+ 
+
+mes "Neste npc você poderá converte seus Equipamentos para cabeça em itens visuais.";
+
+next;
+
+mes "Por favor, selecione o que você deseja converter.";
+
+mes "Lembre-se, cartas, atributos dos  equipamentos e refinamentos serão perdidos...";
+
+next;
+
+setarray .@Position$[1],"Cima","Meio","Baixo";
+
+setarray .@Position[1],     1,    9,   10;
+
+ 
+
+set .@Menu$,"";
+
+for( set .@i, 1; .@i < 4; set .@i, .@i + 1 )
+
+{
+
+if( getequipisequiped(.@Position[.@i]) )
+
+set .@Menu$, .@Menu$ + .@Position$[.@i] + "-" + "[" + getequipname(.@Position[.@i]) + "]";
+
+ 
+
+set .@Menu$, .@Menu$ + ":";
+
+}
+
+ 
+
+set .@Part, .@Position[ select(.@Menu$) ];
+
+if( !getequipisequiped(.@Part) )
+
+{
+
+mes "Você não está utilizando nada lá...";
+
+close;
+
+}
+
+ 
+
+mes "Você deseja transforma este item " + getitemname(getequipid(.@Part)) + " em visual?";
+
+next;
+
+if( select("Sim, continuar com o processo.:Não, Desculpe-me.") == 2 )
+
+{
+
+mes "Precisa de algum tempo para pensar sobre isso, hein?";
+
+mes "Tudo bem, eu posso entender.";
+
+close;
+
+}
+
+ 
+
+costume .@Part; // Convert the Headgear
+
+mes "Processo finalizado com sucesso, faça um bom uso do seu equipamento visual ^^.";
+
+close;
+
+end;
+
+}

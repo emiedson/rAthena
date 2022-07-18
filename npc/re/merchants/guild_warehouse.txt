@@ -1,0 +1,111 @@
+//===== rAthena Script =======================================
+//= Guild Gerente de armazém
+//===== Description: =========================================
+//= [Walkthrough Conversion]
+//= Gives players access to their guild storage and log.
+//===== Changelogs: ==========================================
+//= 1.0 First Version. [Lemongrass]
+//============================================================
+
+-	script	GuildWarehouse	-1,{
+	mes "[Gerente de armazém]";
+	mes "Como você está? Somos especializados em armazéns de guildas. Este é o nosso ^0000cdhistórico^000000:";
+	mes "Por que os membros da guilda não podem compartilhar um armazenamento? Começamos com essa pergunta simples.";
+	next;
+	mes "[Gerente de armazém]";
+	mes "Você pode abrir o armazém para 1000 Zeny ou procurar o histórico de uso da guilda.";
+	mes "Como posso ajudá-lo?";
+	next;
+	if( select( "Abrir armazém da Guild:Exibir histórico de uso do armazém" ) == 1 ){
+		.@guildid = getcharid( 2 );
+
+		if( .@guildid == 0 ){
+			mes "[Gerente de armazém]";
+			mes "O armazenamento da guilda está disponível apenas para membros da guilda.";
+			close;
+		}
+
+		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
+			mes "[Gerente de armazém]";
+			mes "Parece que ainda não é possível para sua guilda usar o armazém da guilda ou você não tem permissões de acesso para o armazém.";
+			mes "Volte depois de verificar as habilidades da guilda e a permissão para acessar o armazém.";
+			close;
+		}
+
+		if( Zeny < 1000 ){
+			mes "[Gerente de armazém]";
+			mes "Receio que você não tenha dinheiro suficiente para pagar a taxa.";
+			mes "A taxa é de 1000 Zeny.";
+			close;
+		}
+
+		mes "[Gerente de armazém]";
+		mes "Vou abrir o armazenamento da guilda para você então. Tenha um tempo memorável!";
+		close2;
+
+		if( Zeny < 1000 ){
+			// Cheat prevention
+			end;
+		}
+
+		if( guildopenstorage() == GSTORAGE_OPEN ){
+			Zeny -= 1000;
+			end;
+		}else{
+			mes "[Gerente de armazém]";
+			mes "Receio que outra pessoa esteja usando o armazém agora.";
+			mes "Por favor, tente novamente depois de um tempo.";
+			close;
+		}
+	}else{
+		.@guildid = getcharid( 2 );
+
+		if( .@guildid == 0 ){
+			mes "[Gerente de armazém]";
+			mes "O armazenamento da guilda está disponível apenas para membros da guilda.";
+			close;
+		}
+
+		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
+			mes "[Gerente de armazém]";
+			mes "Parece que ainda não é possível para sua guilda usar o armazém da guilda ou você não tem permissões de acesso para o armazém.";
+			mes "Volte depois de verificar as habilidades da guilda e a permissão para acessar o armazém.";
+			close;
+		}
+
+		mes "[Gerente de armazém]";
+		mes "Vou mostrar o histórico de uso do armazém. O histórico de uso será mantido por até 3 meses.";
+		mes "Tenha um tempo memorável!";
+		close2;
+		guildopenstorage_log();
+		end;
+	}
+}
+
+alberta,114,65,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#alberta	896
+aldebaran,146,122,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#aldebaran	896
+amatsu,100,156,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#amatsu	896
+ayothaya,203,173,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#ayothaya	896
+brasilis,204,227,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#brasilis	896
+comodo,204,153,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#comodo	896
+dewata,196,193,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#dewata	896
+einbech,182,124,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#einbech	896
+einbroch,238,203,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#einbroch	896
+geffen,128,68,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#geffen	896
+gonryun,164,127,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#gonryun	896
+harboro1,288,212,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#harboro1	896
+hugel,91,158,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#hugel	896
+izlude,133,149,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#izlude	896
+lighthalzen,162,102,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#lighthalzen	896
+louyang,210,111,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#louyang	896
+malaya,238,206,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#malaya	896
+morocc,168,107,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#morocc	896
+moscovia,211,200,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#moscovia	896
+niflheim,200,184,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#niflheim	896
+payon,180,106,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#payon	896
+prontera,150,191,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#prontera	896
+rachel,123,145,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#rachel	896
+umbala,106,160,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#umbala	896
+veins,205,130,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#veins	896
+xmas,155,140,5	duplicate(GuildWarehouse)	Guild Gerente de armazém#xmas	896
+yuno,176,187,3	duplicate(GuildWarehouse)	Guild Gerente de armazém#yuno	896

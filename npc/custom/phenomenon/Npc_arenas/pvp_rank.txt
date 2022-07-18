@@ -1,0 +1,340 @@
+//|==========================================================================================|
+//|   __________     __________       __________   _____          _____   _____        _____ |
+//|  |::::::::::|   |::::::::: |     |::::::::::|  \::::\        /::::/	  \::::\      /::::/ |
+//|  |:: ____ ::|   |:: ____ ::|     |:: ____ ::|   \::::\      /::::/	   \::::\    /::::/  |
+//|  |::|    |::|   |::|    |::|     |::|    |::|    \::::\    /::::/       \::::\  /::::/   |
+//|  |::|    |::|   |::|    |::|     |::|    |::|     \::::\  /::::/         \::::\/::::/    |
+//|  |::|____|::|   |::|____|::|     |::|    |::|      \::::\/::::/           \::::::::/     |
+//|  |::::::::::|   |::::::::::\     |::|    |::| 		\::::::::/             \::::::/	     |
+//|  |::________|   |:: ____ :::\    |::|    |::|	     \::::::/	        	\::::/	     |
+//|  |::|	   	    |::|   	 \:::|   |::|____|::|	     /::::::\               |::::|	     |
+//|  |::|           |::|      |::|   |::      ::|       /::::::::\              |::::|       |
+//|  |::|           |::|      |::|   |::::::::::|      /::::/\::::\             |::::|       |
+//|  |__|	        |__|      |__|   |__________|     /____/  \____\	        |____|	     |
+//|        									   	     |
+//|==========================================================================================|
+//|   Script Criando por ragnaproxy | Cronus | Por Favor, Não Retire Os Créditos.            |
+//|==========================================================================================|
+//|==========================================================================================|
+//|   Script Editado por B0mb3r     | Cronus | Por Favor, Não Retire Os Créditos.            |
+//|==========================================================================================|
+//|   * 1.1 Editado para funcionar com o Site Premium Ragnarok         					     |
+//|==========================================================================================|
+//|Descrição: Um Sistema pvp Que e composto por 3 arena (Arena Sem Leis),(Arena Sem Ygg),    |
+//|(Arena Sem Donate).									 								     |
+//|==========================================================================================|
+
+-	script	Death PvP::mnp	810,{
+
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//			Configurações Arena Sem donate
+//=-=-=-=-=-=-=-=-=-==-=-=--=-=-=-=-=-=-=-=-=--==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+setarray .@id[0],30001,30002,30003,30004,30005,30006,30007,30008,30009,30010; // Adicione os IDs dos Donate do seu servidor voce pode adicionar até 127 donate..
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+//  	Configurações Arena Sem Ygg
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+setarray .@id2[0],607,608,610;                        // Aqui nao precisa meche ..
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+set .nome$,"[^0000FFDeath PvP^000000]";
+
+SET $@LIMIT, 10;
+
+	mes .nome$;
+	mes "Escolha sua arena?";
+	next;
+	switch(select(	"^9A32CDArena Sem Leis^000000 ["+getmapusers ("guild_vs1-1")+"] ","^9A32CDArena sem Ygg^000000 ["+getmapusers ("guild_vs2-2")+"]","^9A32CDArena sem donate^000000  ["+getmapusers ("guild_vs2-1")+"]","^CDAD00Rank Geral^000000")){
+
+case 1:
+
+	mes .nome$;
+	mes "Como o nome já diz, Na Arena sem Leis tudo e permitido, ^FF0000Donate, Fruto de Ygg e os demais itens de cura.^000000";
+	next;
+	mes .nome$;
+	mes "Deseja entra na Arena sem Leis?";
+	if(Select("Sim","Não")==2) close;
+	warp "guild_vs1-1",0,0; end;
+
+
+
+case 2:
+	mes .nome$;
+	mes "Como o nome já diz, Na Arena sem Ygg Nao e permitido o uso de, ^FF0000Fruto de Ygg e os demais itens de cura.^000000";
+	next;
+	for(set @t,0;@t < getarraysize(.@id2);set @t,@t+1){
+	if(countitem(.@id2[@t]) >= 1){
+
+	mes .nome$;
+	mes "Você não pode entrar com Ygg !";
+	close;
+	}
+	}
+	mes .nome$;
+	mes "Deseja entra na Arena sem Ygg?";
+	if(Select("Sim","Não")==2) close;
+	warp "guild_vs2-2",0,0; end;
+
+case 3:
+	mes .nome$;
+	mes "Como o nome já diz, Na Arena sem Donate nao e permitido o uso de, ^FF0000Donates.^000000";
+	next;
+	for(set @d,0;@d < getarraysize(.@id);set @d,@d+1){
+	if(countitem(.@id[@d]) >= 1){
+
+	mes .nome$;
+	mes "Você não pode entrar com Donate !";
+	close;
+	}
+	}
+	mes .nome$;
+	mes "Deseja entra na Arena sem Donate ?";
+	if(Select("Sim","Não")==2) close;
+	warp "guild_vs2-1",0,0;
+	end;
+
+
+
+case 4:
+	query_sql "SELECT char_name, matou_pvp, morreu_pvp FROM rank_death ORDER BY matou_pvp DESC LIMIT 10",@nome$,@kills,@mortes;
+
+		mes "Ranking PvP ^CD9B1D[TOP 10]^000000";
+		mes " ";
+		mes "Posição - Nome - Matou - Morreu";
+		mes " ";
+		FOR (SET .@A,0; .@A < $@LIMIT; SET .@A, .@A + 1)
+		mes (.@A+1)+"º - "+@nome$[.@A]+" - "+@kills[.@A]+" - "+@mortes[.@A];
+		close;
+
+OnInit:
+	waitingroom "",0;
+OnTimer2000:
+	setarray .@RoomDisplay$,"[Death PvP]","Sem Ygg","Sem Donate","Sem Leis";
+	delwaitingroom;
+	waitingroom .@RoomDisplay$[rand(0,3)],0;
+	initnpctimer;
+}
+end;
+}
+
+
+-	script	PvP#SomarPontoPVP	-1,{
+
+OnPCKillEvent:
+
+getmapxy @map$,@x,@y,0;
+if ( @map$ == "guild_vs1-1" || @map$ == "guild_vs2-2" || @map$ == "guild_vs2-1" ) goto Kills;
+
+end;
+
+Kills:
+set @CID,getcharid(0);
+set @kills,0;
+set @nome$,"";
+set @baselvl$,BaseLevel;
+set @Job$,jobname(Class);
+set @pontos,1;
+query_sql "SELECT `matou_pvp` FROM `rank_death` WHERE `char_id`="+@CID+"",@kills;
+query_sql "SELECT `char_name` FROM `rank_death` WHERE `char_id`="+@CID+"",@nome$;
+query_sql "SELECT `base_level` FROM `rank_death` WHERE `char_id`="+@CID+"",@baselvl$;
+query_sql "SELECT `classe` FROM `rank_death` WHERE `char_id`="+@CID+"",@Job$;
+query_sql "SELECT `pontos_pvp` FROM `rank_death` WHERE `char_id`="+@CID+"",@pontos;
+
+if (@nome$ == ""){
+query_sql "INSERT INTO `rank_death` (`char_id`,`char_name`,`matou_pvp`,`base_level`,`classe`,`pontos_pvp`) VALUES ("+@CID+",'"+strcharinfo(0)+"',1,'"+BaseLevel+"','"+jobname(Class)+"',1)",@esc$;
+dispbottom "Kills no PvP: 1";
+mapannounce @map$, "O jogador [ "+strcharinfo(0)+" ] Está agora Com  1 Kills!",0;
+end;
+}
+query_sql "UPDATE `rank_death` SET `matou_pvp` = `matou_pvp` +1 WHERE `char_id`="+@CID+"",@esc$;
+query_sql "UPDATE `rank_death` SET `pontos_pvp` = `pontos_pvp` +1 WHERE `char_id`="+@CID+"",@esc$;
+dispbottom "Pontos no Modo PvP: "+(@pontos+1);
+mapannounce @map$, "O jogador [ "+strcharinfo(0)+" ] Está agora com "+(@kills+1)+" Kills!",0;
+end;
+
+}
+
+-	script	PvP#SomarMortePVP	-1,{
+
+OnPCDieEvent:
+
+getmapxy @map$,@x,@y,0;
+if ( @map$ == "guild_vs1-1" || @map$ == "guild_vs2-2" || @map$ == "guild_vs2-1" ) goto Morte;
+
+end;
+
+Morte:
+set @CID,getcharid(0);
+set @kills,0;
+set @nome$,"";
+set @baselvl$,BaseLevel;
+set @Job$,jobname(Class);
+set @pontos,-1;
+query_sql "SELECT `matou_pvp` FROM `rank_death` WHERE `char_id`="+@CID+"",@kills;
+query_sql "SELECT `char_name` FROM `rank_death` WHERE `char_id`="+@CID+"",@nome$;
+query_sql "SELECT `base_level` FROM `rank_death` WHERE `char_id`="+@CID+"",@baselvl$;
+query_sql "SELECT `classe` FROM `rank_death` WHERE `char_id`="+@CID+"",@Job$;
+query_sql "SELECT `pontos_pvp` FROM `rank_death` WHERE `char_id`="+@CID+"",@pontos;
+if (@nome$ == ""){
+query_sql "INSERT INTO `rank_death` (`char_id`,`char_name`,`morreu_pvp`,`base_level`,`classe`,`pontos_pvp`) VALUES ("+@CID+",'"+strcharinfo(0)+"',1,'"+BaseLevel+"','"+jobname(Class)+"',-1)",@esc$;
+dispbottom "Mortes no Modo PvP: 1";
+end;
+}
+query_sql "UPDATE `rank_death` SET `morreu_pvp` = `morreu_pvp` +1 WHERE `char_id`="+@CID+"",@esc$;
+query_sql "UPDATE `rank_death` SET `pontos_pvp` = `pontos_pvp` -1 WHERE `char_id`="+@CID+"",@esc$;
+dispbottom "Mortes no PvP: "+(@mortes+1);
+end;
+
+}
+
+-	script	PvP#SomarPontoGVG	-1,{
+
+OnPCKillEvent:
+
+getmapxy @map$,@x,@y,0;
+if ( @map$ == "prtg_cas01" || @map$ == "prtg_cas02" || @map$ == "prtg_cas03" || @map$ == "prtg_cas04" || @map$ == "prtg_cas05" || @map$ == "gefg_cas01" || @map$ == "gefg_cas02" || @map$ == "gefg_cas03" || @map$ == "gefg_cas04" || @map$ == "gefg_cas05" || @map$ == "payg_cas01" || @map$ == "payg_cas02" || @map$ == "payg_cas03" || @map$ == "payg_cas04" || @map$ == "payg_cas05" || @map$ == "aldeg_cas01" || @map$ == "aldeg_cas02" || @map$ == "aldeg_cas03" || @map$ == "aldeg_cas04" || @map$ == "aldeg_cas05" || @map$ == "arug_cas01" || @map$ == "arug_cas02" || @map$ == "arug_cas03" || @map$ == "arug_cas04" || @map$ == "arug_cas05" || @map$ == "schg_cas01" || @map$ == "schg_cas02" || @map$ == "schg_cas03" || @map$ == "schg_cas04" || @map$ == "schg_cas05" ) goto Kills;
+
+end;
+
+Kills:
+set @CID,getcharid(0);
+set @kills,0;
+set @nome$,"";
+set @baselvl$,BaseLevel;
+set @Job$,jobname(Class);
+set @pontos,1;
+query_sql "SELECT `matou_gvg` FROM `rank_death` WHERE `char_id`="+@CID+"",@kills;
+query_sql "SELECT `char_name` FROM `rank_death` WHERE `char_id`="+@CID+"",@nome$;
+query_sql "SELECT `base_level` FROM `rank_death` WHERE `char_id`="+@CID+"",@baselvl$;
+query_sql "SELECT `classe` FROM `rank_death` WHERE `char_id`="+@CID+"",@Job$;
+query_sql "SELECT `pontos_gvg` FROM `rank_death` WHERE `char_id`="+@CID+"",@pontos;
+
+if (@nome$ == ""){
+query_sql "INSERT INTO `rank_death` (`char_id`,`char_name`,`matou_gvg`,`base_level`,`classe`,`pontos_gvg`) VALUES ("+@CID+",'"+strcharinfo(0)+"',1,'"+BaseLevel+"','"+jobname(Class)+"',1)",@esc$;
+dispbottom "Kills no PvP: 1";
+mapannounce @map$, "O jogador [ "+strcharinfo(0)+" ] Está agora Com  1 Kills!",0;
+end;
+}
+query_sql "UPDATE `rank_death` SET `matou_gvg` = `matou_gvg` +1 WHERE `char_id`="+@CID+"",@esc$;
+query_sql "UPDATE `rank_death` SET `pontos_gvg` = `pontos_gvg` +1 WHERE `char_id`="+@CID+"",@esc$;
+dispbottom "Pontos no Modo PvP: "+(@pontos+1);
+mapannounce @map$, "O jogador [ "+strcharinfo(0)+" ] Está agora com "+(@kills+1)+" Kills!",0;
+end;
+
+}
+
+-	script	PvP#SomarMorteGVG	-1,{
+
+OnPCDieEvent:
+
+getmapxy @map$,@x,@y,0;
+if ( @map$ == "prtg_cas01" || @map$ == "prtg_cas02" || @map$ == "prtg_cas03" || @map$ == "prtg_cas04" || @map$ == "prtg_cas05" || @map$ == "gefg_cas01" || @map$ == "gefg_cas02" || @map$ == "gefg_cas03" || @map$ == "gefg_cas04" || @map$ == "gefg_cas05" || @map$ == "payg_cas01" || @map$ == "payg_cas02" || @map$ == "payg_cas03" || @map$ == "payg_cas04" || @map$ == "payg_cas05" || @map$ == "aldeg_cas01" || @map$ == "aldeg_cas02" || @map$ == "aldeg_cas03" || @map$ == "aldeg_cas04" || @map$ == "aldeg_cas05" || @map$ == "arug_cas01" || @map$ == "arug_cas02" || @map$ == "arug_cas03" || @map$ == "arug_cas04" || @map$ == "arug_cas05" || @map$ == "schg_cas01" || @map$ == "schg_cas02" || @map$ == "schg_cas03" || @map$ == "schg_cas04" || @map$ == "schg_cas05" ) goto Kills;
+
+end;
+
+Morte:
+set @CID,getcharid(0);
+set @kills,0;
+set @nome$,"";
+set @baselvl$,BaseLevel;
+set @Job$,jobname(Class);
+set @pontos,-1;
+query_sql "SELECT `matou_gvg` FROM `rank_death` WHERE `char_id`="+@CID+"",@kills;
+query_sql "SELECT `char_name` FROM `rank_death` WHERE `char_id`="+@CID+"",@nome$;
+query_sql "SELECT `base_level` FROM `rank_death` WHERE `char_id`="+@CID+"",@baselvl$;
+query_sql "SELECT `classe` FROM `rank_death` WHERE `char_id`="+@CID+"",@Job$;
+query_sql "SELECT `pontos_gvg` FROM `rank_death` WHERE `char_id`="+@CID+"",@pontos;
+if (@nome$ == ""){
+query_sql "INSERT INTO `rank_death` (`char_id`,`char_name`,`morreu_gvg`,`base_level`,`classe`,`pontos_gvg`) VALUES ("+@CID+",'"+strcharinfo(0)+"',1,'"+BaseLevel+"','"+jobname(Class)+"',-1)",@esc$;
+dispbottom "Mortes no Modo PvP: 1";
+end;
+}
+query_sql "UPDATE `rank_death` SET `morreu_gvg` = `morreu_gvg` +1 WHERE `char_id`="+@CID+"",@esc$;
+query_sql "UPDATE `rank_death` SET `pontos_gvg` = `pontos_gvg` -1 WHERE `char_id`="+@CID+"",@esc$;
+dispbottom "Mortes no PvP: "+(@mortes+1);
+end;
+
+}
+
+-	script	PvP#SomarPontoEmp	-1,{
+
+OnAgitBreak:
+	mapannounce strnpcinfo(2),"TESTE.",bc_map|bc_woe,"0x00CCFF",FW_NORMAL,12;
+}
+
+-	script	Porteiro PvP::mmp	105,{
+
+	mes "Deseja ir para prontera ?";
+	next;
+	if(Select("Sim","Não")==2) close;
+	warp "prontera",150,150;
+
+
+close;
+
+OnInit:
+waitingroom "Saida",0;
+end;
+}
+//=-=-=-=-=-=-=-=-=-=-=Duplicate=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+guild_vs2-2,38,71,4	duplicate(mmp)	Porteiro PvP#1	105
+guild_vs1-1,89,98,4	duplicate(mmp)	Porteiro PvP#2	105
+guild_vs2-1,49,49,4	duplicate(mmp)	Porteiro PvP#3	105
+
+prontera,147,185,4	duplicate(mnp)	Death PvP#1	810
+morocc,152,97,4	duplicate(mnp)	Death PvP#2	810
+geffen,127,65,4	duplicate(mnp)	Death PvP#3	810
+alberta,26,240,4	duplicate(mnp)	Death PvP#4	810
+izlude,122,119,4	duplicate(mnp)	Death PvP#5	810
+aldebaran,147,119,4	duplicate(mnp)	Death PvP#6	810
+xmas,145,136,4	duplicate(mnp)	Death PvP#7	810
+comodo,184,158,4	duplicate(mnp)	Death PvP#8	810
+gonryun,161,126,4	duplicate(mnp)	Death PvP#9	810
+louyang,226,106,4	duplicate(mnp)	Death PvP#10	810
+hugel,87,164,4	duplicate(mnp)	Death PvP#11	810
+moscovia,209,190,5	duplicate(mnp)	Death PvP#12	810
+//=-=-=-=-=-=-=-=-=-=-=Duplicate=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+//===================Inicio dos mapflag===================
+
+//--------------------Arena Sem leis----------------------
+
+guild_vs1-1	mapflag	nowarp
+guild_vs1-1	mapflag	noteleport
+guild_vs1-1	mapflag	nowarpto
+guild_vs1-1	mapflag	nobranch
+guild_vs1-1	mapflag	nosave	SavePoint
+guild_vs1-1	mapflag	nomemo
+guild_vs1-1	mapflag	nopenalty
+guild_vs1-1	mapflag	pvp
+guild_vs1-1	mapflag	noexp
+
+//----------------------Arena sem Ygg---------------------
+guild_vs2-2	mapflag	nowarp
+guild_vs2-2	mapflag	noteleport
+guild_vs2-2	mapflag	nowarpto
+guild_vs2-2	mapflag	nobranch
+guild_vs2-2	mapflag	nosave	SavePoint
+guild_vs2-2	mapflag	nomemo
+guild_vs2-2	mapflag	nopenalty
+guild_vs2-2	mapflag	noexp
+guild_vs2-2	mapflag	restricted	6
+guild_vs2-2	mapflag	pvp
+
+//---------------------Arena sem donate-------------------
+guild_vs2-1	mapflag	nowarp
+guild_vs2-1	mapflag	noteleport
+guild_vs2-1	mapflag	nowarpto
+guild_vs2-1	mapflag	nobranch
+guild_vs2-1	mapflag	nosave	SavePoint
+guild_vs2-1	mapflag	nomemo
+guild_vs2-1	mapflag	nopenalty
+guild_vs2-1	mapflag	noexp
+guild_vs2-1	mapflag	restricted	5
+guild_vs2-1	mapflag	gvg	off
+guild_vs2-1	mapflag	pvp

@@ -1,0 +1,25 @@
+prontera,147,155,5	script	Reparador	869,{
+cutin "lhz_diguts02",2;
+soundeffect "ReparadorEQP.wav",1;
+
+if (getgmlevel() < 0) goto naovip;
+mes "[Reparador]";
+mes "Olá,Gostaria de Reparar Suas Armas Quebradas?";
+menu "Sim",Sim,"Nao",-;
+			cutin "",255;
+close;
+
+Sim:
+next;
+mes "[Reparador]";
+mes "Vamos Lá ^^";
+atcommand "@repairall";
+			cutin "",255;
+close;
+
+naovip:
+mes "Você Não e Vip, Acesse o Site: www.lalala.com.br é Informe-se Como Ser Vip!!";
+			cutin "",255;
+close;
+
+}

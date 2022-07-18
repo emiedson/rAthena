@@ -1,0 +1,603 @@
+//  ________________________________________________________ 
+// /                                                        \
+// |       _           _   _   _                            |
+// |      | |__  _ __ / \ | |_| |__   ___ _ __   __ _       |
+// |      | '_ \| '__/ _ \| __| '_ \ / _ \ '_ \ / _` |      |
+// |      | |_) | | / ___ \ |_| | | |  __/ | | | (_| |      |
+// |      |_.__/|_|/_/   \_\__|_| |_|\___|_| |_|\__,_|      |
+// |                                                        |
+// |                    brAthena Script                     |
+// |--------------------------------------------------------|
+// | Nome do Script: Evento Player                          |
+// |--------------------------------------------------------|
+// | Criado por: FiliD                                      |
+// |--------------------------------------------------------|
+// | Versões: 1.0                                           |
+// |--------------------------------------------------------|
+// | Descrição: Com este Npc os Players do serveidor        |
+// |            que fazer os eventos. Muito facil de ser    |
+// |         configurado pelo player basta ler o Tutorial   |
+// |          que tem no proprio Npc.          				|
+// |--------------------------------------------------------|
+//-- POR FAVOR NÃO TIRE OS CREDITOS
+//-- NPC criado por FiliD
+//-- NOTE No meio do NPC tem algumas callfunc mais estão fechadas
+//-- Estas callfunc sevem para vc checar se o player esta pedindo
+//-- alguns item donate vip ou ate mesmo item que seja bloqueado
+//-- caso esteja tem algumas punições como Kick e Mute.
+//-- Para saber mais olha um exemplo da callfunc no final do Npc.
+prontera,165,172,3	script	Evento Player	10299,{
+				cutin "ep171_kaya01",2;
+set .@nd$, "^FF0000[ Arty Gerente ]^B5B5B5 pRO.^000000";
+if( getgmlevel() > 20 && getgmlevel() < 90 ) {
+	mes .@nd$;
+	mes "Olá ^0000FF" +strcharinfo(0)+ "^000000.";
+	mes "Você não pode utilizar esse NPC. Ele foi feito para os Player.";
+	cutin "",255;
+	close;
+}
+if( getgmlevel() > 90 ) {
+	if( $naoTiroi == 0 ) {
+		set .@menujfakwe$, "^007700- Checar Evento.^000000";
+	}
+	if( $naoTiroi == 1 ) {
+		set .@menujfakwe$, "^007700- Checar Evento.^000000 : ^DD0000- Zerar Evento caso estaja bugado.^000000";
+	}
+	switch( select( .@menujfakwe$ ) ) {
+		case 1:
+		break;
+		case 2:
+			mes .@nd$;
+			mes "Isso não tera volta deseja Zerar?";
+			if( select( "- Sim.", "- Não." ) == 1 ) {
+				set $naoTiroi, 0;
+				set $nomePL$,"fld";
+				set $GmTerEvPla, 0;
+				set $playEventdata$,"fld";
+				set $playEventhora$,"fld";
+				set $playEventdatat$,"fld";
+				set $playEventhorat$,"fld";
+	cutin "",255;
+				close;
+			}
+		break;
+	}
+	mes .@nd$;
+	mes "Olá ^0000FF" +strcharinfo(0)+ "^000000.";
+	mes "Informações do Evento.";
+	next;
+	mes .@nd$;
+	mes "Premio: ^DD0000" +getitemname($meuitem)+ "^000000.";
+	mes "Player: ^DD0000" +$nomePL$+ "^000000.";
+	if( $playEvent == 0 ) {
+		set .@bji$, "^DD0000Evento Já foi terminado^000000"; 
+		set .@menujfak$, "^007700- Esta Bom.^000000";
+	}
+	if( $playEvent == 1 ) {
+		set .@bji$, "^007700Evento em Aberto^000000"; 
+		set .@menujfak$, "^007700- Esta Bom.^000000 : ^DD0000- TERMINAR.^000000";
+	}
+	mes "Statos: " +.@bji$+ ".";
+	next;
+	mes .@nd$;
+	mes "Data Inicio: ^007700" +$playEventdata$+ "^000000.";
+	mes "Hora Inicio: ^007700" +$playEventhora$+ "^000000.";
+	mes "Data Termino: ^0000BB" +$playEventdatat$+ "^000000.";
+	mes "Hora Termino: ^0000BB" +$playEventhorat$+ "^000000.";
+	next;
+	mes .@nd$;
+	mes "Os Itens são:";
+	mes "- ^0000FF" +$etqnt01+ " ^000000" +getitemname($etnome01)+ ".";
+	mes "- ^0000FF" +$etqnt02+ " ^000000" +getitemname($etnome02)+ ".";
+	mes "- ^0000FF" +$etqnt03+ " ^000000" +getitemname($etnome03)+ ".";
+	next;
+	mes .@nd$;
+	mes "O evento esta bom ou deseja TERMINA-LO";
+	next;
+	if( select( .@menujfak$ ) == 1 ) {
+		mes .@nd$;
+		mes "Ok. Não vou fazer nada.";
+	cutin "",255;
+		close;
+	}
+	mes .@nd$;
+	mes "Voce escolheu terminar o evento do palyer ^DD0000"+ $nomePL$+ "^000000.";
+	next;
+	mes .@nd$;
+	mes "Caso ele esteja On avise-o para vim retirar o item.";
+	set $playEvent, 0;
+	set $GmTerEvPla, 1;
+	close2;
+	announce "[ Evento Player ] O Evento feito pelo player [ " +$nomePL$+ " ], foi CANCELADO PELO GM.",bc_all;
+	sleep2 10000;
+	announce "Evento Player: [ " +$nomePL$+ " ], se estiver ON venha pegar seu item.",bc_all;
+	sleep2 10000;
+	announce "Evento Player: [ " +$nomePL$+ " ], você tem 24 horas para retirar os itens, caso não retire nesse prazo perderá os mesmos.",bc_all;
+	end;
+}
+if( #castigo == 3 ) {
+	mes .@nd$;
+	mes "^DD0000Sua conta foi Bloqueada^000000.";
+	mes "Você não pode usar o NPC.";
+	cutin "",255;
+	close;
+}
+//-- Retirar premio --
+if( $playEvent == 0 && $nomePL$ == strcharinfo(0) && $naoTiroi == 1 ) {
+	if( $GmTerEvPla == 1 ) {
+		mes .@nd$;
+		mes "O seu Evento foi cancelado por um GM. Caso tenha feito um evento invalido repense no que fez e que não se repita.";
+		next;
+		mes .@nd$;
+		mes "Você receberá seu item novamente.";
+		close2;
+		getitem $meuitem, 1;
+		set $naoTiroi, 0;
+		set $nomePL$,"fld";
+		set $GmTerEvPla, 0;
+		set $playEventdata$,"fld";
+		set $playEventhora$,"fld";
+		set $playEventdatat$,"fld";
+		set $playEventhorat$,"fld";
+		end;		
+	}
+	mes .@nd$;
+	mes "Que bom que você voltou, estava a sua espera.";
+	mes "O seu Evento já terminado tenho que lhe entregar os itens.";
+	next;
+	mes .@nd$;
+	mes "Você havia pedido os seguintes item:";
+	mes "- ^0000FF" +$etqnt01+ " ^000000" +getitemname($etnome01)+ ".";
+	mes "- ^0000FF" +$etqnt02+ " ^000000" +getitemname($etnome02)+ ".";
+	mes "- ^0000FF" +$etqnt03+ " ^000000" +getitemname($etnome03)+ ".";
+	next;
+	mes .@nd$;
+	mes "Quer retirar os itens agora. Se sim cheque se não esta acima do peso.";
+	mes "Caso esteja acima do peso os itens cairam no chão, e a STAFF não se Responsabilizará pela perda dos itens.";
+	next;
+	if( select( "- Não vo ver meu peso.", "- Sim vou retirar os itens.") == 1 ) {
+		mes .@nd$;
+		mes "Ok volte logo.";
+	cutin "",255;
+		close;	
+	}
+	mes .@nd$;
+	mes "Ok.";
+	mes "Seus itens serão entregues.";
+	set $nomePL$,"";
+	set $naoTiroi, 0;
+	next;
+	mes .@nd$;
+	mes "Ok.";
+	mes "Ai está o primeiro.";
+	getitem $etnome01,$etqnt01;
+	next;
+	mes .@nd$;
+	mes "Ai está o segundo.";
+	getitem $etnome02,$etqnt02;
+	next;
+	mes .@nd$;
+	mes "Ai está o terceiro.";
+	getitem $etnome03,$etqnt03;
+	cutin "",255;
+	close;
+}
+while( 1 ) {
+	switch( $playEvent ) {
+		case 1:
+			if( countitem($etnome01) < $etqnt01 || countitem($etnome02) < $etqnt02 || countitem($etnome03) < $etqnt03 ) {
+				mes .@nd$;
+				mes "Olá ^0000FF" +strcharinfo(0)+ "^000000.";
+				next;
+				mes .@nd$;
+				mes "Premio: ^DD0000" +getitemname($meuitem)+ "^000000.";
+				mes "Dono do Evento: ^DD0000" +$nomePL$+ "^000000.";
+				next;
+				mes .@nd$;
+				mes "Os Itens para fazer-lo:";
+				mes "- ^0000FF" +$etqnt01+ " ^000000" +getitemname($etnome01)+ ".";
+				mes "- ^0000FF" +$etqnt02+ " ^000000" +getitemname($etnome02)+ ".";
+				mes "- ^0000FF" +$etqnt03+ " ^000000" +getitemname($etnome03)+ ".";
+	cutin "",255;
+				close;
+			}
+			mes .@nd$;
+			mes "Você está com todos os item receba seu Prêmio.";
+			delitem $etnome01,$etqnt01;
+			delitem $etnome02,$etqnt02;
+			delitem $etnome03,$etqnt03;
+			set $playEvent,0;
+			announce "O player [ " +strcharinfo(0)+ " ] Terminou o Evento feito pelo player [ " +$nomePL$+ " ], e ganhou " +getitemname($meuitem)+ " como premio.",bc_all;
+			close2;
+			getitem $meuitem, 1;
+			set $playEventdatat$,gettimestr("%d-%m-%Y",15);
+			set $playEventhorat$,gettimestr("%H:%M:%S",15);
+			end;
+		break;		
+		case 0:
+			if( $playEvent == 0 && $naoTiroi == 1 ) {
+				mes .@nd$;
+				mes "No momeno estou a espera do player > ^DD0000" +$nomePL$+ "^000000.";
+				mes "Vim retirar seu item. Volte depois ou avise ele para que venha retirar o item.";
+	cutin "",255;
+				close;
+			}
+			mes .@nd$;
+			mes "Olá ^0000FF" +strcharinfo(0)+ "^000000.";
+			mes "Deseja fazer um evento?.";
+			next;
+			switch( select( "^007700- Como Faço Evento.^000000", "^0000BB- Fazer um evento.^000000", "- Nada não." ) ) {
+				case 1:
+					opEvPlaTuto:
+					mes .@nd$;
+					mes "Vamos la. Preste muita a atenção!!!";
+					next;
+					mes .@nd$;
+					mes "^007700Primeiro:^000000";
+					mes "- Você terá que estar com o item que deseja colocar no Evento Player.";
+					mes "Exemplo:";
+					mes "- Quero colocar uma ^DD0000Máscara de Fugitivo^000000, então tenho que ter ela em meu Inventário,( caso não saiba o que é um Inventário é o 'Alt e')";
+					mes "Estando com o item no Inventário venha falar com este NPC.";
+					next;
+					mes .@nd$;
+					mes "^007700Segundo:^000000";
+					mes "- Você precisa saber os ID dos item que irá colocar.";
+					mes "Exemplos.";
+					mes "Meu premio:";
+					mes "- Máscara de Fugitivo ID=^DD00005361^000000.";
+					mes "Itens que desejo pedir.";
+					mes "- Maçâ ID=^DD0000512^000000.";
+					mes "- Uvas ID=^DD0000514^000000.";
+					mes "- Limão ID=^DD0000568^000000.";
+					mes "^007700Com essas informações você praticamente ja tem seu Evento pronto.^000000";
+					next;
+					mes .@nd$;
+					mes "^007700Terceiro:^000000";
+					mes "- Primeiramente você terá que informar o item que será o premio, e ele tem que estar em seu Inventário.";
+					mes "- Segundo se o item tiver carta elas serão perdidas pois o NPC estrega um item normal na sua forma pura e sem refinamento.";
+					mes "- Terceiro ^DD0000NÂO^000000 esteja usando um item que va colocar no Evento Player, pois o NPC pode retirar o seu item ao invez do que está no Inventário.";
+					next;
+					mes .@nd$;
+					mes "^007700Quato:^000000";
+					mes "Depois de informar o item Premio, você terá que dizer quais itens você quer ganhar e a quantidade de cada um deles.";
+					next;
+					mes .@nd$;
+					mes "- A seqüência de digitação será a seguinte.";
+					mes "1° Você digita o ID do Item.";
+					mes "2° Você digita a Quantidade que você quer do item.";
+					mes "Isso seguirá para os 3 itens.";
+					next;
+					mes .@nd$;
+					mes "Pronto digitando tudo certinho você terá seu Evento.";
+					next;
+					mes .@nd$;
+					mes "Para retirar os itens que você pediu no Evento é simple.";
+					mes "Após um player terminar o evento você vem até o NPC com o mesmo Char( Bonéco ) que foi feito o evento.";
+					next;
+					mes .@nd$;
+					mes "Bom acho que é isso.";
+					mes "Seguindo corretamente o tuto você terá seu Evento funfando. Boa sorte!!!";
+					next;
+				break;
+				case 2:
+					if( #castigo == 3) {
+						mes .@nd$;
+						mes "Você não poderá usar este npc porque está Bloqueado.";
+	cutin "",255;
+						close;
+					}
+					mes .@nd$;
+					mes "Olá " +strcharinfo(0)+ "!";
+					mes "Suponho que você já tenha lido o tutorial ^007700'Como Faço Evento'^000000 caso não, va le.";
+					next;
+					mes .@nd$;
+					mes "Vamos montar seu Evento?";
+					next;
+					switch( select( "^007700- Ler o tutorial.^000000", "^0000BB- Fazer um evento.^000000" ) ) {
+						case 1:
+							mes .@nd$;
+							mes "Ok leia com antenção!";
+							next;
+							goto opEvPlaTuto;
+						break;
+						case 2:
+							fe_evento:
+							mes .@nd$;
+							mes "Então qual o Premio que você vai dar no seu Evento.";
+							next;
+							input @itemid;
+							//-- checagem --
+							set @Edone, callfunc("chDoneFld");
+							if( @Edone == 1 ) {
+								mes .fal$;
+								mes "Bonito em ^00C000" +strcharinfo(0)+ "^000000.";
+								mes "Não é permitido colocar itens de Doação, Vips ou Eventos no NPC.";
+								mes "Desse jeito o Server acaba falindo é isso que você quer!!!";
+								set #castigo, #castigo+1;
+								if( #castigo == 1 ) {
+									close2;
+									atcommand "@kick "+getcharid(0);
+									end;
+								}
+								if( #castigo == 2 ) {
+									close2;
+									atcommand "@mute 15 "+strcharinfo(0);
+									dispbottom "Se continuar levará mais 1440 minutos de mute. E não poderá usar mais o NPC.";
+									end;
+								}
+								if( #castigo == 3 ) {
+									close2;
+									dispbottom "Bom foi avisado, você não poderá usar mais esse NPC.";
+									end;
+								}
+							}
+							if( @itemid < 501 ) {
+								mes .@nd$;
+								mes "Este item não pode ser usado, digite novamente.";
+								next;
+								goto fe_evento;
+							}
+							if( countitem(@itemid) < 1 ) {
+								mes .@nd$;
+								mes "Você não tem o Item, digite novamente.";
+								next;
+								goto fe_evento;
+							}
+							mes .@nd$;
+							mes "Seu item é ^ff0000" +getitemname(@itemid)+ "^000000.";
+							mes "Quer mudar ou é esse mesmo?";
+							next;
+							if( select( "^DD0000- MUDAR.^000000", "^007700- Esse mesmo.^000000" ) == 1 ) {
+								mes .@nd$;
+								mes "Ok! Vamos mudar.";
+								next;
+								goto fe_evento;
+							}
+							set $meuitem,@itemid;
+							mes .@nd$;
+							mes "Premio será: ^ff0000" +getitemname($meuitem)+ "^000000.";
+							next;
+							//-- 1 --
+							vout01:
+							mes .@nd$;
+							mes "Agora vamos configurar os itens que você quer?";
+							mes "Digite a ID do 1° Item.";
+							next;
+							input @itemid;
+							//-- checagem --
+							set @Edone, callfunc("chDoneFld");
+							if( @Edone == 1 ) {
+								mes .fal$;
+								mes "Bonito em ^00C000" +strcharinfo(0)+ "^000000.";
+								mes "Não é permitido colocar itens de Doação ou Vips no NPC.";
+								mes "Desse jeito o Server acaba falindo é isso que você quer!!!";
+								set #castigo, #castigo+1;
+								if( #castigo == 1 ) {
+									close2;
+									atcommand "@kick "+getcharid(0);
+									end;
+								}
+								if( #castigo == 2 ) {
+									close2;
+									atcommand "@mute 15 "+strcharinfo(0);
+									dispbottom "Se continuar levará mais 1440 minutos de mute. E não poderá usar mais o NPC.";
+									end;
+								}
+								if( #castigo == 3 ) {
+									close2;
+									dispbottom "Bom foi avisado, você não poderá usar mais esse NPC.";
+									end;
+								}
+							}
+							if( @itemid < 501 ) {
+								mes .@nd$;
+								mes "Este item não pode ser usado, digite novamente.";
+								next;
+								goto vout01;
+							}
+							mes .@nd$;
+							mes "Ok, " +getitemname(@itemid)+ ".";
+							set $etnome01,@itemid;
+							next;
+							mes .@nd$;
+							mes "Quantidade de ^DD0000" +getitemname(@itemid)+ "^000000 que você deseja colocar?";
+							next;
+							vout0101:
+							input .@etUm;
+							if( .@etUm == 0 ) {
+								mes .@nd$;
+								mes "Você não pode deixar ^0000FF0^000000, digite novamente.";
+								next;
+								goto vout0101;
+							}
+							if( .@etUm > 100 ) {
+								mes .@nd$;
+								mes "Você não pode colocar mais que ^0000FF100^000000 unidade, digite novamente.";
+								next;
+								goto vout0101;
+							}
+							set $etqnt01,.@etUm;
+							mes .@nd$;
+							mes "Ok, ^0000FF" +$etqnt01+ " ^007700" +getitemname($etnome01)+ "^000000.";
+							mes "^DD0000LEMBRANDO QUE O GM PODE CANCELAR O EVENTO CASO ACHE IMPOSSIVEL DE PEGAR TODOS OS ITENS.^000000";
+							next;
+							//-- 2 --
+							vout02:
+							mes .@nd$;
+							mes "Digite a ID do 2° Item.";
+							next;
+							input @itemid;
+							//-- checagem --
+							set @Edone, callfunc("chDoneFld");
+							if( @Edone == 1 ) {
+								mes .fal$;
+								mes "Bonito em ^00C000" +strcharinfo(0)+ "^000000.";
+								mes "Não é permitido colocar itens de Doação ou Vips no NPC.";
+								mes "Desse jeito o Server acaba falindo é isso que você quer!!!";
+								set #castigo, #castigo+1;
+								if( #castigo == 1 ) {
+									close2;
+									atcommand "@kick "+getcharid(0);
+									end;
+								}
+								if( #castigo == 2 ) {
+									close2;
+									atcommand "@mute 15 "+strcharinfo(0);
+									dispbottom "Se continuar levará mais 1440 minutos de mute. E não poderá usar mais o NPC.";
+									end;
+								}
+								if( #castigo == 3 ) {
+									close2;
+									dispbottom "Bom foi avisado, você não poderá usar mais esse NPC.";
+									end;
+								}
+							}
+							if( @itemid < 501 ) {
+								mes .@nd$;
+								mes "Este item não pode ser usado, digite novamente.";
+								next;
+								goto vout02;
+							}
+							mes .@nd$;
+							mes "Ok, " +getitemname(@itemid)+ ".";
+							set $etnome02,@itemid;
+							next;
+							mes .@nd$;
+							mes "Quantidade de ^DD0000" +getitemname(@itemid)+ "^000000 que você deseja colocar?";
+							next;
+							vout0201:
+							input .@etDois;
+							if( .@etDois == 0 ) {
+								mes .@nd$;
+								mes "Você não pode deixar ^0000FF0^000000, digite novamente.";
+								next;
+								goto vout0201;
+							}
+							if( .@etDois > 100 ) {
+								mes .@nd$;
+								mes "Você não pode colocar mais que ^0000FF100^000000 unidade, digite novamente.";
+								next;
+								goto vout0201;
+							}
+							set $etqnt02,.@etDois;
+							mes .@nd$;
+							mes "Ok, ^0000FF" +$etqnt02+ " ^007700" +getitemname($etnome02)+ "^000000.";
+							mes "^DD0000LEMBRANDO QUE O GM PODE CANCELAR O EVENTO CASO ACHE IMPOSSIVEL DE PEGAR TUDOS OS ITENS.^000000";
+							next;
+							//-- 3 --
+							vout03:
+							mes .@nd$;
+							mes "Digite a ID do 3° Item.";
+							next;
+							input @itemid;
+							//-- checagem --
+							set @Edone, callfunc("chDoneFld");
+							if( @Edone == 1 ) {
+								mes .fal$;
+								mes "Bonito em ^00C000" +strcharinfo(0)+ "^000000.";
+								mes "Não é permitido colocar itens de Doação ou Vips no NPC.";
+								mes "Desse jeito o Server acaba falindo é isso que você quer!!!";
+								set #castigo, #castigo+1;
+								if( #castigo == 1 ) {
+									close2;
+									atcommand "@kick "+getcharid(0);
+									end;
+								}
+								if( #castigo == 2 ) {
+									close2;
+									atcommand "@mute 15 "+strcharinfo(0);
+									dispbottom "Se continuar colocando item Donate ou Vip não poderá usar mais o NPC.";
+									end;
+								}
+								if( #castigo == 3 ) {
+									close2;
+									dispbottom "Bom foi avisado, você não poderá usar mais esse NPC.";
+									end;
+								}
+							}
+							if( @itemid < 501 ) {
+								mes .@nd$;
+								mes "Este item não pode ser usado, digite novamente.";
+								next;
+								goto vout03;
+							}
+							mes .@nd$;
+							mes "Ok, " +getitemname(@itemid)+ ".";
+							set $etnome03,@itemid;
+							next;
+							mes .@nd$;
+							mes "Quantidade de ^DD0000" +getitemname(@itemid)+ "^000000 que você deseja colocar?";
+							next;
+							vout0301:
+							input .@etTreis;
+							if( .@etTreis == 0 ) {
+								mes .@nd$;
+								mes "Você não pode deixar ^0000FF0^000000, digite novamente.";
+								next;
+								goto vout0301;
+							}
+							if( .@etTreis > 100 ) {
+								mes .@nd$;
+								mes "Você não pode colocar mais que ^0000FF100^000000 unidade, digite novamente.";
+								next;
+								goto vout0301;
+							}
+							set $etqnt03,.@etTreis;
+							mes .@nd$;
+							mes "Ok, ^0000FF" +$etqnt03+ " ^007700" +getitemname($etnome03)+ "^000000.";
+							mes "^DD0000LEMBRANDO QUE O GM PODE CANCELAR O EVENTO CASO ACHE IMPOSSIVEL DE PEGAR TUDOS OS ITENS.^000000";
+							next;
+							mes .@nd$;
+							mes "Parabéns seu Evento está pronto.";
+							mes "Seu premio é ^ff0000" +getitemname($meuitem)+ "^000000.";
+							mes "- 1° item " +$etqnt01+ " ^ff0000" +getitemname($etnome01)+ "^000000.";
+							mes "- 2° item " +$etqnt02+ " ^ff0000 "+getitemname($etnome02)+ "^000000.";
+							mes "- 3° item " +$etqnt03+ " ^ff0000" +getitemname($etnome03)+ "^000000.";
+							next;
+							if( select( "^DD0000- DESISTIR.^000000", "^007700- Finalizar o evento." ) == 1) {
+								mes .@nd$;
+								mes "Que pena!";
+								mes "O Evento não será feito.";
+	cutin "",255;
+								close;
+							}
+							mes .@nd$;
+							mes "Ok! Finalizando Evento.";
+							delitem $meuitem, 1;
+							set $playEventdata$,gettimestr("%d-%m-%Y",15);
+							set $playEventhora$,gettimestr("%H:%M:%S",15);
+							set $playEvent, 1;
+							set $nomePL$, strcharinfo(0);
+							set $naoTiroi, 1;
+							close2;
+							announce "Olá pessoal eu [ " +$nomePL$+ " ] fiz um Evento. E o premio é : " +getitemname($meuitem)+ " venham fazer. O primeiro que chegar com os itens ganha.",bc_all;
+							end;
+						break;
+					}
+				break;
+				case 3:
+					mes .@nd$;
+					mes "Ok, volte aqui sempre que precisar dos meus serviços.";
+	cutin "",255;
+					close;
+				break;
+			}
+		break;
+	}
+}
+}
+
+//-- FUNÇÃO PARA CHECAR SE O ID DIGITADO É DONATES --
+//-- Aqui vc acrescenta os itens que não podem ser colocados no Eventos
+//-- Tanto co premio quantos aos itens pedidos.
+//-- Para acrescentar novos itens é simples adicione( || @item == Id_do_Item )
+function	script	chDoneFld	{
+	if( @itemid == 512 || @itemid == 513 || @itemid == 514 ) {
+		next;
+		mes "^0000FF[ Administrador ]^B5B5B5 Por FiliD^000000";
+		mes "Esse item não pode ser colocado ou Usado neste NPC. Pois ele é um item Donativo. Só pode ser adquirido fazendo uma doação.";
+		next;
+		return 1;
+	}
+	return 0;
+}

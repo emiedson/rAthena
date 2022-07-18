@@ -1,0 +1,95 @@
+prontera,140,199,5	script	Gerente de R.D	4_M_3RDPRIN1,{
+	// ----------------- NPC Settings -----------------
+	// --- SET THESE BEFORE LOADING THE SCRIPT! ---
+	
+	// Server Name
+	set .serverName$,"PhenomenonRO";
+	
+	// NPC Name to display during chat.
+	// Default: "[Redentor das recompensas dos doadores]"
+	set .npcName$,"[Redentor das recompensas]";
+	
+	// DO NOT CHANGE THIS!
+	// Default: "cp_redeemlog"
+	set .redeemTable$,"cp_redeemlog";
+	
+	// Display Credits to FluxCP Creators?
+	// Help promote our product if its useful.
+	// 0 = Disable. 1 = Enable.
+	// Default: 1
+	set .showCredits,1;
+	
+	// Max number of unique items to redeem at a time.
+	// DO NOT RAISE THIS VALUE ABOVE 128 WITHOUT
+	// MAKING THE NECESSARY SCRIPT ENGINE MODS
+	// FOR SCRIPT ARRAY SIZING! DANGEROUS!
+	// Default: 128
+	set .numRedemptionsSimul,128; 
+	// --------------- End NPC Settings ---------------
+
+	// ----------------- Begin Script -----------------
+	mes .npcName$;
+	mes "Bem Olá " + (Sex ? "bom Senhor!" : "jovem senhora!");
+	mes "Como posso ajudá-lo neste belo dia?";
+	next;
+	prompt("^0000FFDesejo resgatar itens:^0000FFInformações!:^FF0000Estou apenas examinando a área.");
+	mes .npcName$;
+	switch(@menu) {
+		case 1:
+			query_sql "SELECT `id`, `nameid`, `quantity` FROM `" + escape_sql(.redeemTable$) + "` WHERE `account_id` = " + getcharid(3) + " AND `redeemed` = 0 LIMIT " + .numRedemptionsSimul,.@id,.@nameid,.@quantity;
+			if (getarraysize(.@id) > 0) {
+				mes "Itens com resgate pendente: " + getarraysize(.@id);
+				for (set .@i,0; .@i < getarraysize(.@id); set .@i,.@i+1)
+					if (checkweight(.@nameid[.@i],.@quantity[.@i]) == 0) {
+						mes "Sinto muito, mas você está carregando muito para aceitar " + (.@i ? "mais um pouco " : " ") + "suas recompensas neste momento.";
+						mes "Volte com menos itens.";
+					} else {
+						query_sql "UPDATE `" + escape_sql(.redeemTable$) + "` SET `char_id` = " + getcharid(0) + ", `redeemed` = 1, `redemption_date` = NOW() WHERE `id` = " + .@id[.@i];
+						getitem .@nameid[.@i],.@quantity[.@i];
+						mes .@quantity[.@i] + "x " + getitemname(.@nameid[.@i]);
+					}
+				if (.@i == getarraysize(.@id)) {
+					mes "Obrigado pelo seu patrocínio " + (Sex ? "tudo bem senhor." : "senhora.");
+					mes "Por favor, aproveite a sua estadia no " + .serverName$ + "!";
+				}
+				if (.showCredits)
+					callfunc "F_FluxCredits";
+			} else {
+				mes "Meus registros indicam que não há recompensas aguardando resgate.";
+				mes "Minhas mais profundas desculpas pelo mal-entendido.";
+			}
+		break;
+		case 2:
+			mes "Estou aqui para permitir o resgate de recompensas por doações no " + .serverName$ + ".";
+			mes "Doações podem ser feitas ao servidor através do nosso site na área de Doações.";
+			mes "Na área de Vantagens você encontra itens para utilizar o credito que recebeu pela doação.";
+			mes "Podendo resgatar esses itens com esse que vos fala.";
+		break;
+		default:
+			mes "Muito bem então.";
+			mes "Bom dia para você.";
+		break;
+	}
+	close;
+	// ------------------ End Script ------------------ 
+       
+       
+    OnInit:
+    waitingroom "Recompensas dos doadores",0;
+    end;
+}
+
+// ------------ Credits to FluxCP Creators ------------
+// - Please do not modify or delete this function or  -
+// - its contents. To disable the credits from being  -
+// - shown, set .showCredits to 0 in the NPC Settings -
+// - at the top of this file.                         -
+// ----------------------------------------------------
+
+function	script	F_FluxCredits	{
+	mes "-----------------------------------";
+	mes "Powered by Flux Control Panel.";
+	mes "Copyright © 2008-2012 Matthew Harris and Nikunj Mehta.";
+	mes "http://fluxcp.googlecode.com/";
+	return;
+}

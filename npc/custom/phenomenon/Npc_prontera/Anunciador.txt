@@ -1,0 +1,528 @@
+//  ________________________________________________________
+// /                                                        \
+// |       _           _   _   _                            |
+// |      | |__  _ __ / \ | |_| |__   ___ _ __   __ _       |
+// |      | '_ \| '__/ _ \| __| '_ \ / _ \ '_ \ / _` |      |
+// |      | |_) | | / ___ \ |_| | | |  __/ | | | (_| |      |
+// |      |_.__/|_|/_/   \_\__|_| |_|\___|_| |_|\__,_|      |
+// |                                                        |
+// |                     brAthena Script                    |
+// |--------------------------------------------------------|
+// | Nome do Script: Sebastian Anunciador 2.0                  |
+// |--------------------------------------------------------|
+// | Criado por: Neko                                       |
+// |--------------------------------------------------------|
+// | Versão eA/brA: 1.0                                     |
+// |--------------------------------------------------------|
+// | Descrição: NPC de Anúncio                              |
+// | - Muitas vezes os NPCs de torpedo são mal utilizados no|
+// | servidor, dessa forma o Sebastian Anunciador fará as funções|
+// | de anúncio de Comércio, Grupo e Clã existindo um delay |
+// | no reenvio de mensagens. Este delay difere de jogadores|
+// | VIP para Normais.                                      |
+// | - O NPC por enquanto só inclui classes 1-1/2-1/2-2.    |
+// |--------------------------------------------------------|
+// | Changelog:               	                            |
+// | 1.0 Script Criado [Neko]			            |
+// |--------------------------------------------------------|
+// | - Anotações:                                           |
+// | *Baseado no original Sebastian Anunciador.                |
+// | *Próxima versão contará com classes transclasses também|
+// | *Não encontrei o autor do script no qual me baseei, quem|
+// | souber favor informar que na próxima versão adicionarei|
+// | os devidos créditos.                                   |
+// |--------------------------------------------------------|
+// | - Qualquer problema com este NPC favor reportar a mim. |
+// | Alterem à gosto, MANTENDO OS CRÉDITOS. ^^              |
+// \________________________________________________________/
+
+prontera,167,170,3	script	Sebastian Anunciador	10182,{
+				cutin "ep16_tes01",2;
+soundeffect "Yes_my_lord.wav",1;
+
+// ========================================================
+// Configurações ******************************************
+// ========================================================
+// Nível do Jogador VIP (Padrão 10)
+   set .viplvl, 5;
+// Delay de Re-envio Jogador Não-Vip (Padrão 600/10Minutos)
+   set @delaynvip, 600;
+// Delay de Re-envio Jogador Vip (Padrão 300/5Minutos)
+   set @delayvip, 175;
+// Nome do NPC (Padrão Sebastian Anunciador)
+   set .nome$, "^880055[ Sebastian Michaelis ]^000000";
+// ========================================================
+
+	if( getgmlevel() < .viplvl ){
+		set @anPvip$, "não é";
+	}
+	else{
+		set @anPvip$, "é";
+	}
+	
+if(#espera >= gettimetick(2)){
+	if( getgmlevel() < .viplvl){
+		mes .nome$;
+		mes "Você não pode enviar mensagens";
+		mes "constantemente. Você só deverá";
+		mes "enviar uma mensagem a cada "+@delaynvip/60+"";
+		mes "minutos.";
+                        			cutin "",255;
+		close;
+	}
+	else{
+		mes .nome$;
+		mes "Você não pode enviar mensagens";
+		mes "constantemente. Você só deverá";
+		mes "enviar uma mensagem a cada "+@delayvip/60+"";
+		mes "minutos.";
+                        			cutin "",255;
+		close;
+	}
+}
+
+mes .nome$;
+mes "Escolha o serviço:";
+switch(select("- Grupo.","- Clã.","- Comércio.","- Sair.")){
+	case 1:
+	next;
+	menu "Preciso de grupo.",L_QG,"Recruto pra grupo.",L_RG,"Cancelar.",L_Exit;
+	L_QG:
+		announce "O jogador "+strcharinfo(0)+" procura um grupo. Classe: "+jobname(Class)+". Nível: "+BaseLevel+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+		if( getgmlevel() < .viplvl){
+			set #espera, gettimetick(2) + @delaynvip;
+		}
+		else{
+			set #espera, gettimetick(2) + @delayvip;
+		}
+                        			cutin "",255;
+		close;
+	L_RG:
+		if(getcharid(1) == 0){
+			mes .nome$;
+			mes "Você precisa estar em um";
+			mes "grupo para poder usar esta";
+			mes "função do anunciador.";
+                        			cutin "",255;
+			close;
+		}
+		else{
+			next;
+			mes .nome$;
+			mes "Qual classe você está recrutando?";
+			menu "Classes 1-1",L_11,"Classes 2-1",L_21,"Classes 2-2",L_22,"Super Aprendiz",L_SA1,"Cancelar.",L_Exit;
+			L_11:
+				next;
+				menu "Arqueiro.",L_Arc,"Mercador.",L_Merca,"Mago.",L_Mago,"Espadachim.",L_Espa,"Noviço.",L_Nov,"Gatuno.",L_Gat,"Cancelar",L_Exit;
+	
+				L_Arc:	
+					set @Classe$,"Arqueiro";
+					callfunc("anuncio_recparty");
+					end;
+
+				L_Merca: 
+					set @Classe$,"Mercador";
+					callfunc("anuncio_recparty");
+					end;
+					
+				L_Mago: 
+					set @Classe$,"Mago";
+					callfunc("anuncio_recparty");
+					end;
+					
+				L_Espa: 
+					set @Classe$,"Espadachim";
+					callfunc("anuncio_recparty");
+					end;
+				L_Nov:  
+					announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando Noviço para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+					if( getgmlevel() < .viplvl){
+						set #espera, gettimetick(2) + @delaynvip;
+					}
+					else{
+						set #espera, gettimetick(2) + @delayvip;
+					}
+                        			cutin "",255;
+					close;
+					end;
+				L_Gat:  
+					set @Classe$,"Gatuno";
+					callfunc("anuncio_recparty");
+					end;
+				L_SA:
+                        			cutin "",255;
+					close;
+			L_21:
+				next;
+				menu "Caçador.",L_Caca,"Ferreiro.",L_Fer,"Bruxo.",L_Bru,"Cavaleiro.",L_Cav,"Sacerdote.",L_Sac,"Mercenário.",L_Mer,"Cancelar.",L_Exit;
+				
+				L_Caca:	
+					announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando Caçador para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+					if( getgmlevel() < .viplvl){
+						set #espera, gettimetick(2) + @delaynvip;
+					}
+					else{
+						set #espera, gettimetick(2) + @delayvip;
+					}
+                        			cutin "",255;
+					close;
+					end;
+				L_Fer:  
+					set @Classe$,"Ferreiro";
+					callfunc("anuncio_recparty");
+					end;
+				L_Bru:  
+					set @Classe$,"Bruxo";
+					callfunc("anuncio_recparty");
+					end;
+				L_Cav:  
+					set @Classe$,"Cavaleiro";
+					callfunc("anuncio_recparty");
+					end;
+	
+				L_Sac:  
+					set @Classe$,"Sacerdote";
+					callfunc("anuncio_recparty");
+					end;
+
+				L_Mer: 
+					announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando Mercenário para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+					if( getgmlevel() < .viplvl){
+						set #espera, gettimetick(2) + @delaynvip;
+					}
+					else{
+						set #espera, gettimetick(2) + @delayvip;
+					}
+                        			cutin "",255;
+					close;
+					end;
+			L_22:
+			next;
+			menu "Bardo",L_Bar,"Odalisca",L_Oda,"Alquimista",L_Alq,"Sábio",L_Sage,"Templário",L_Tem,"Monge",L_Mon,"Arruaceiro",L_Arru,"Cancelar",L_Exit;
+				L_Bar:	
+					set @Classe$,"Bardo";
+					callfunc("anuncio_recparty");
+					end;
+				L_Oda:	
+					set @Classe$,"Odalisca";
+					callfunc("anuncio_recparty");
+					end;
+				L_Alq:	
+					set @Classe$,"Alquimista";
+					callfunc("anuncio_recparty");
+					end;
+				L_Sage:	
+					announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando Sábio para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+					if( getgmlevel() < .viplvl){
+						set #espera, gettimetick(2) + @delaynvip;
+					}
+					else{
+						set #espera, gettimetick(2) + @delayvip;
+					}
+                        			cutin "",255;
+					close;
+					end;
+				L_Tem:	
+					announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando Templário para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+					if( getgmlevel() < .viplvl){
+						set #espera, gettimetick(2) + @delaynvip;
+					}
+					else{
+						set #espera, gettimetick(2) + @delayvip;
+					}
+                        			cutin "",255;
+					close;
+					end;
+				L_Mon:	
+					set @Classe$,"Monge";
+					callfunc("anuncio_recparty");
+					end;
+				L_Arru:	
+					set @Classe$,"Arruaceiro";
+					callfunc("anuncio_recparty");
+					end;
+				L_SA1:
+					set @Classe$,"Super Aprendiz";
+					callfunc("anuncio_recparty");
+					end;
+		}
+		case 2:
+		next;
+		menu "Preciso de clã.",L_QC,"Recruto para clã.",L_RC,"Cancelar.",L_Exit;
+		L_QC:
+			announce "O jogador "+strcharinfo(0)+" procura um clã. Classe: "+jobname(Class)+". Nível: "+BaseLevel+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+			if( getgmlevel() < .viplvl){
+				set #espera, gettimetick(2) + @delaynvip;
+			}
+			else{
+				set #espera, gettimetick(2) + @delayvip;
+			}
+                        			cutin "",255;
+			close;
+			end;
+		L_RC:	
+			if(getcharid(2) == 0){
+				mes .nome$;
+				mes "Você precisa estar em um";
+				mes "clã para poder usar esta";
+				mes "função do anunciador.";
+                        			cutin "",255;
+				close;
+			}
+			else{
+				next;
+				mes .nome$;
+				mes "Digite um nível mínimo para";
+				mes "o recrutamento.";
+				input @nivelmin;
+				if(@nivelmin > 99){
+					next;
+					mes .nome$;
+					mes "Este nível não existe.";
+                        			cutin "",255;
+					close;
+				}
+				else{
+					next;
+					mes .nome$;
+					mes "Qual classe você está recrutando?";
+					menu "Classes 1-1",L_11c,"Classes 2-1",L_21c,"Classes 2-2",L_22c,"Super Aprendiz",L_SA2,"Cancelar.",L_Exit;
+					
+					L_11c:
+						next;
+						menu "Arqueiro.",L_Arcc,"Mercador.",L_Mercac,"Mago.",L_Magoc,"Espadachim.",L_Espac,"Noviço.",L_Novc,"Gatuno.",L_Gatc,"Cancelar",L_Exit;
+						
+						L_Arcc:
+							set @Classe$,"Arqueiro";
+							callfunc("anuncio_recguild");
+							end;
+						L_Mercac:
+							set @Classe$,"Mercador";
+							callfunc("anuncio_recguild");
+							end;
+						L_Magoc:
+							set @Classe$,"Mago";
+							callfunc("anuncio_recguild");
+							end;
+						L_Espac:
+							set @Classe$,"Espadachim";
+							callfunc("anuncio_recguild");
+							end;
+						L_Novc:  
+							announce "O jogador "+strcharinfo(0)+" está recrutando Noviço de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+							if( getgmlevel() < .viplvl){
+								set #espera, gettimetick(2) + @delaynvip;
+							}
+							else{
+								set #espera, gettimetick(2) + @delayvip;
+							}
+                        			cutin "",255;
+							close;
+							end;
+						L_Gatc:
+							set @Classe$,"Gatuno";
+							callfunc("anuncio_recguild");
+							end;
+					
+						L_SA2:
+							set @Classe$,"Super Aprendiz";
+							callfunc("anuncio_recguild");
+							end;
+					L_21c:
+						next;
+						menu "Caçador.",L_Cacac,"Ferreiro.",L_Ferc,"Bruxo.",L_Bruc,"Cavaleiro.",L_Cavc,"Sacerdote.",L_Sacc,"Mercenário.",L_Mercc,"Cancelar.",L_Exit;
+						
+						L_Cacac:	
+							announce "O jogador "+strcharinfo(0)+" está recrutando Caçador de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+							if( getgmlevel() < .viplvl){
+								set #espera, gettimetick(2) + @delaynvip;
+							}
+							else{
+								set #espera, gettimetick(2) + @delayvip;
+							}
+                        			cutin "",255;
+							close;
+							end;
+						L_Ferc:
+							set @Classe$,"Ferreiro";
+							callfunc("anuncio_recguild");
+							end;
+						L_Bruc:
+							set @Classe$,"Bruxo";
+							callfunc("anuncio_recguild");
+							end;
+						L_Cavc:
+							set @Classe$,"Cavaleiro";
+							callfunc("anuncio_recguild");
+							end;
+
+						L_Sacc:
+							set @Classe$,"Sacerdote";
+							callfunc("anuncio_recguild");
+							end;
+
+						L_Mercc: 
+							announce "O jogador "+strcharinfo(0)+" está recrutando Mercenário de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+							if( getgmlevel() < .viplvl){
+								set #espera, gettimetick(2) + @delaynvip;
+							}
+							else{
+								set #espera, gettimetick(2) + @delayvip;
+							}
+                        			cutin "",255;
+							close;
+							end;
+					L_22c:
+						next;
+						menu "Bardo",L_Barc,"Odalisca",L_Odac,"Alquimista",L_Alqc,"Sábio",L_Sagec,"Templário",L_Temc,"Monge",L_Monc,"Arruaceiro",L_Arruc,"Cancelar",L_Exit;
+		
+						L_Barc:
+							set @Classe$,"Bardo";
+							callfunc("anuncio_recguild");
+							end;
+						L_Odac:
+							set @Classe$,"Odalisca";
+							callfunc("anuncio_recguild");
+							end;
+						L_Alqc:
+							set @Classe$,"Alquimista";
+							callfunc("anuncio_recguild");
+							end;
+						L_Sagec:	
+							announce "O jogador "+strcharinfo(0)+" está recrutando Sábio de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+							if( getgmlevel() < .viplvl){
+								set #espera, gettimetick(2) + @delaynvip;
+							}
+							else{
+								set #espera, gettimetick(2) + @delayvip;
+							}
+                        			cutin "",255;
+							close;
+							end;
+						L_Temc:	
+							announce "O jogador "+strcharinfo(0)+" está recrutando Templário de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+							if( getgmlevel() < .viplvl){
+								set #espera, gettimetick(2) + @delaynvip;
+							}
+							else{
+								set #espera, gettimetick(2) + @delayvip;
+							}
+                        			cutin "",255;
+							close;
+							end;
+						L_Monc:
+							set @Classe$,"Monge";
+							callfunc("anuncio_recguild");
+							end;
+						L_Arruc:
+							set @Classe$,"Arruaceiro";
+							callfunc("anuncio_recguild");
+							end;
+			L_Exit:
+				next;
+				mes .nome$;
+				mes "Volte quando precisar dos meus";
+				mes "serviços. Estarei por aqui.";
+                        			cutin "",255;
+				close;
+		}
+	}
+
+	case 3:
+		next;
+		mes .nome$;
+		mes "Digite o ID do item. Caso você";
+		mes "deseje cancelar, digite 0.";
+		input @itemid;
+		if(@itemid == 0){
+			next;
+			mes .nome$;
+			mes "Anúncio cancelado.";
+                        			cutin "",255;
+			close;
+		}
+		else{
+			if(getitemname(@itemid) == "null"){
+				next;
+				mes .nome$;
+				mes "ID Inválido.";
+                        			cutin "",255;
+				close;
+			}
+			else{
+				set @anItmName$, getitemname(@itemid);
+				close2;
+				announce "Precisa-se de "+@anItmName$+", tratar com o jogador "+strcharinfo(0)+".",bc_all,0xFF6666;
+				if( getgmlevel() < .viplvl){
+					set #espera, gettimetick(2) + @delaynvip;
+				}
+				else{
+					set #espera, gettimetick(2) + @delayvip;
+				}
+				end;
+			}
+		}
+	case 4:
+		next;
+		mes .nome$;
+		mes "Volte quando precisar dos meus";
+		mes "serviços. Estarei por aqui.";
+                        			cutin "",255;
+		close;
+	}
+}
+
+function	script	anuncio_recparty	{
+
+	announce "O jogador "+strcharinfo(0)+" de nível "+BaseLevel+" está recrutando "+@Classe$+" para o grupo "+strcharinfo(1)+". "+strcharinfo(0)+" "+@anPvip$+" Vip.",bc_all,0xFF6666;
+	if( getgmlevel() < .viplvl){
+		set #espera, gettimetick(2) + @delaynvip;
+	}
+	else{
+		set #espera, gettimetick(2) + @delayvip;
+	}
+                        			cutin "",255;
+	close;
+}
+function	script	anuncio_recguild	{
+
+	announce "O jogador "+strcharinfo(0)+" está recrutando "+@Classe$+" de nível "+@nivelmin+" ou maior para o clã "+strcharinfo(2)+".",bc_all,0xFF6666;
+	if( getgmlevel() < .viplvl){
+		set #espera, gettimetick(2) + @delaynvip;
+	}
+	else{
+		set #espera, gettimetick(2) + @delayvip;
+	}
+                        			cutin "",255;
+	close;
+}
+
+
+function	script	time	{
+	set .@Time_Left, getarg(0) - gettimetick(2);
+	set .@Dias, .@Time_Left / 86400;
+	set .@Time_Left, .@Time_Left - (.@Dias * 86400);
+	set .@Horas, .@Time_Left / 3600;
+	set .@Time_Left, .@Time_Left - (.@Horas * 3600);
+	set .@Minutos, .@Time_Left / 60;
+	set .@Time_Left, .@Time_Left - (.@Minutos * 60);
+	set .@Time$, "";
+	if( .@Dias > 1 )
+		set .@Time$, .@Time$ + .@Dias + " dias, ";
+	else if( .@Dias > 0 )
+		set .@Time$, .@Time$ + .@Dias + " dia, ";
+	if( .@Horas > 1 )
+		set .@Time$, .@Time$ + .@Horas + " horas, ";
+	else if( .@Horas > 0 )
+		set .@Time$, .@Time$ + .@Horas + " hora, ";
+	if( .@Minutos > 1 )
+		set .@Time$, .@Time$ + .@Minutos + " minutos, ";
+	else if( .@Minutos > 0 )
+		set .@Time$, .@Time$ + .@Minutos + " minuto, ";
+	if( .@Time_Left > 1 || .@Time_Left == 0 )
+		set .@Time$, .@Time$ + .@Time_Left + " segundos.";
+	else if( .@Time_Left == 1 )
+		set .@Time$, .@Time$ + .@Time_Left + " segundo.";
+	
+	return .@Time$;
+}

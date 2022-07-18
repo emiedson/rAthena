@@ -1,0 +1,78 @@
+//===== 3ceam/BRathena Script =======================================
+//= Cronus/3ceam/BRathena Job Master Oboro e kagerou e Rebelion
+//=====  Versão: =====================================
+//= 1.1
+//==========================================
+// Criado por = Oscar neto
+// Modificado por = ribamar costa
+//==========================================
+// Descrição: Job master para as Classes Agente Rebelion.                              |
+//============================================================
+prontera,150,193,5	script	Agente Rebelion	4_M_GUNSLINGER,{
+	mes "[Agente Rebelion]";
+	mes " Oi  eu sou o Agente Rebelion eu estou aqui para procurando novos recrutas! ";
+	mes " precisamos de novo querreiro nos dias de hoje!! ";
+	next;
+	mes "precisamos de novos herois para mante a paz em runa midgard..";
+	mes " Vejamos hm ...";
+	next;
+	mes " hmm hmm, O Meu trabalho é um pouco parecido como os justiceiros.....";
+	next;
+	mes "[Agente Rebelion]";
+	mes " hmm..";
+	next;
+	mes "[Agente Rebelion]";
+	mes " Mas eu só Posso ajudar os Meus queridos justiceiros!";
+	mes " Desculpe a pergunta mas eu já estou ficando velho e usar bons óculos não é uma opção!";
+	mes " Voce é um Justiceiro ?!";
+	if( select("Claro que eu sou um justiceiros!:não desculpa falei com você por engano...") == 2 )
+		{
+		mes "[Agente Rebelion]";
+		mes "Tudo bem... Até mais!";
+		close;
+		}
+	mes "Agente Rebelion]";
+        if(Class >= 4054 && Class <= 4085) goto L_max;
+        if(JobLevel < 70) goto L_LvError;
+        if(SkillPoint != 0) goto L_stats;
+        if(Class == Job_Gunslinger) goto L_Gunslinger;
+
+L_max:
+        mes "Desculpe, mas os meus serviços são exclusivamente para os justiceiros.";
+        close;
+
+L_stats:
+        mes "Desculpe, mais você não distribuiu todos os seus Pontos de Skill.";
+        mes "Volte quando tiver utilizado todos os seus pontos de skills!";
+        close;
+
+L_LvError:
+        mes "Desculpe, mais você não tem level de job 70.";
+        mes "Volte quando o seu level de job for 70!";
+        close;
+
+L_Gunslinger:
+	mes "Bom dia meu Grande amigo não é todo dia que Encontro um recrutas.";
+	next;
+	mes "Estou aqui para Orientalo!";
+	next;
+	mes "Lembrando que eu não sou nenhum cirurgião não importa opção que você escolher você permanecerá com o seu sexo Original!.";
+	next;
+	mes "Por favor escolha sua classe.";
+	next;
+	switch(select("Rebelion ( Homen ):Rebelion ( Mulher )")) {
+		case 1:
+			mes "[Gunslinger 2nd Class]";
+			mes "Agente Rebelion";
+			if (select("Sim","Não") == 2) close;
+			jobchange 4215;
+			close;
+		
+		case 2:
+			mes "[Agente Rebelion]";
+			mes "Você tem certeza?";
+			if (select("Sim","Não") == 2) close;
+			jobchange 4215;
+			close;
+	}
+}

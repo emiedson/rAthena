@@ -1,0 +1,57 @@
+prontera,144,198,5	script	Gerente de Doação	89,{
+ 
+    mes "[Gerente das Doações]";	
+    mes "Deseja converter seu crédito de doação em Cash Points?";
+    mes "Resumindo irei transformar seus Créditos de doador em Cash Points!";
+	mes "Para que vc possa utilizá los como bem entender no nosso servidor.";
+    mes "^FF0000Taxa de câmbio^000000:";
+    mes "^0000FF1.000^000000 Créditos = ^00FF001.000^000000 Cash Point";
+    next;
+    set @dCreds,query_sql("SELECT `balance` FROM cp_credits WHERE `account_id` = "+getcharid(3)+";",.@dCreds);
+    mes "Por favor, selecione o serviço que você deseja:";
+    next;
+    menu "^00FF00Troca meus Créditos",dpExc,"^0000FFPontos de verificação/Créditos",checkPoints,"^FF0000Sair",LeEnd;
+   
+    dpExc:
+        mes "Cash Point disponível para troca por crédito de doação : ^0000FF" + .@dCreds + "^000000";
+        next;
+        mes "Quantos ^FF0000 Cash Point ^000000 você quer?";
+        input @ExchangeECd;
+        if (.@dCreds < @ExchangeECd) goto ENeedDcredits;
+        mes "Isso será ^0000FF" + @ExchangeECd + "^000000 Créditos de Doação!";
+        menu "Sim eu tenho certeza.",LEyesd,"Eu vou decidir depois ...^000000",LEno;
+        LEyesd:
+        set .@dCBal,.@dCreds-@ExchangeECd;
+        query_sql("UPDATE `cp_credits` SET `balance` = "+.@dCBal+" WHERE account_id = "+getcharid(3)+";");
+        set #CASHPOINTS,#CASHPOINTS+@ExchangeECd;
+        next;
+        goto Edis2;
+        close;     
+    LEno:
+        mes "Te agradece ^0000FF" + strcharinfo(0) + "^000000!";
+        mes "E pronto, venha novamente!";
+        close;
+       
+    Edis2:
+        mes "Seu Crédito de Doação = ^0000FF" + .@dCBal + "^000000!";
+        mes "Seu Cash Point = ^0000FF" + #CASHPOINTS + "^000000! ";
+        close;
+       
+    ENeedDcredits:
+        mes "Desculpe, você não possui Créditos de Doação suficientes.";
+        close;
+       
+    checkPoints:
+        mes "Seu Crédito de Doação = ^0000FF" + .@dCreds + "^000000!";
+        mes "Seu Cash Point = ^0000FF" + #CASHPOINTS + "^000000! ";
+        close;
+ 
+    LeEnd:
+        close; 
+       
+       
+    OnInit:
+    waitingroom "Resgatar Doação",0;
+    end;
+ 
+}

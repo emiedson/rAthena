@@ -1,0 +1,284 @@
+//===== rAthena Script ========================================
+//= Estilista Doram With Skin Colors Script
+//===== By: ===================================================
+//= KamiShi> adapitado pro PhenomenonRO por JokerSama
+//===== Current Version: ======================================
+//= 2.0
+//===== Compatible With: ======================================
+//= *Athena SVN
+//===== Description: ==========================================
+//= Estilista Doram Apenas Estilo de cabelo e Cor de cabelo
+//= Supports Kamishi's Palettes (White Skin & Brown Skin).
+//= Save slots (1,2,3) paletteSaveSlot1, paletteSaveSlot2, paletteSaveSlot3.
+
+function	script	resetSavedSets	{
+        set paletteClothesSlot1,$RacePals[race_id*4+2];
+        set paletteHairSlot1,$RacePals[race_id*4];
+        set paletteClothesSlot2,$RacePals[race_id*4+2];
+        set paletteHairSlot2,$RacePals[race_id*4];
+        set paletteClothesSlot3,$RacePals[race_id*4+2];
+        set paletteHairSlot3,$RacePals[race_id*4];
+        return;
+}
+
+
+lasagna,179,162,5	script	Estilista Mari	10242,{
+			cutin "kafra_do01",2;
+        callsub RaceDye,$RacePals[race_id*4],$RacePals[race_id*4+1],$RacePals[race_id*4+2],$RacePals[race_id*4+3];
+        
+        
+RaceDye:
+		if( Upper != 0 && Upper != 4215 ){
+				cutin "kafra_do01",2;
+				soundeffect "EstilistaDoram.wav",1;
+//---------------------	Sistema Vip ou não vip			
+	if (getgmlevel() < 0) goto naovip;
+	mes "[^FF8000Mari^000000]";
+    mes "Olá você não pode utilizar este serviço, apenas Dorans";
+menu "Informações",Sim,"Não",Nao;
+close;
+Sim:
+next;
+	cutin "kafra_do01",2;
+mes "[^FF8000Mari^000000]";
+mes "Minhas habilidades de estilista foram aprimoradas na minha terra natal, com ajuda da minha mestre.";
+mes "Ela não me permite ajudá los, por rixas do passado.";
+menu "Me perdoe!",Sair;
+close;
+//-------- Sair
+Sair:
+	cutin "",255;
+close;
+//-------- Nao
+Nao:
+			cutin "",255;
+close;
+//-------- Nao Vip
+naovip:
+mes "Você Não e Vip, Acesse o Site: www.lalala.com.br é Informe-se Como Ser Vip!!";
+			cutin "",255;	
+//--------------------
+close;
+    }
+    mes "[^FF8000Mari^000000]";
+	mes "Vejo que está usando um estilo bem interessante...";
+	mes "Número do penteado: ^0000ff"+getlook(1)+"^000000.";
+	mes "Número da cor de cabelo: ^0000ff"+getlook(6)+"^000000.";
+	mes "Número da cor de roupa: ^0000ff"+getlook(7)+"^000000.";
+        next;
+        mes "[^FF8000Mari^000000]";
+        mes "O que você gostaria de mudar?";
+        next;
+        switch(select("cor do cabelo:estilo de cabelo:estilos salvas"))
+        {
+//                case 1:
+//                       mes "[^FF8000Mari^000000]";
+//                       mes "Escolha um estilo para começar a partir de entre ^0000FF"+getarg(2)+" e "+getarg(3)+"^000000.";
+//                        chose1:
+//                        input (.@style, getarg(2), getarg(3));
+//                        if(.@style < getarg(2) || .@style >= getarg(3))
+//                        {
+//                                mes "Estilo escolhido está fora da faixa.";
+//                                goto chose1;
+//                        }
+ //                       
+ //                       browse1:
+  //                      setlook 7, .@style;
+ //                       dispbottom "Este é o número do estilo "+.@style+".";
+  //                      switch(select("próximo:anterior:Ficar desse jeito!:[salvar estilo]")){
+ //                               
+  ///                              case 1:
+  //                                      set .@style, .@style+1;
+ //                                       if (.@style >= getarg(3)) set .@style, getarg(2);
+//                                        goto browse1;
+//
+//                                case 2:
+//                                        set .@style, .@style-1;
+//                                        if (.@style <= getarg(2)) set .@style, getarg(3)-1;
+//                                        goto browse1;
+//                                
+//                                case 3:
+//                                        next;
+//                                        mes "[^FF8000Mari^000000]";
+//                                        mes "Perfeito! Estou feliz que você encontrou um estilo que você se encaixa!";
+//													cutin "",255;
+//                                        close;
+//                                
+//                                case 4:
+//                                        switch(select("Set 1:Set 2:Set 3")){
+//                                                
+//                                                case 1:
+//                                                        set paletteClothesSlot1, .@style;
+//                                                        break;
+//                                                        
+ //                                               case 2:
+//                                                        set paletteClothesSlot2, .@style;
+//                                                        break;
+//                                                        
+//                                                case 3:
+//                                                        set paletteClothesSlot3, .@style;
+//                                                        break;
+//
+//                                        }
+//                                        mes "Seu estilo foi salvo!";
+//                                        goto browse1;
+//                                        
+//                        }
+//                       			cutin "",255;
+//                        close;
+
+                case 1:
+                        mes "[^FF8000Mari^000000]";
+                        mes "Escolha um estilo para começar a partir de entre ^0000FF"+getarg(0)+" e "+getarg(1)+"^000000.";
+                        chose2:
+                        input (.@style, getarg(0), getarg(1));
+                        if(.@style < getarg(0) || .@style >= getarg(1))
+                        {
+                                mes "Estilo escolhido está fora da faixa.";
+                                goto chose2;
+                        }
+                        
+                        browse2:
+                        setlook 6,.@style;
+                        dispbottom "Este é o número do estilo "+.@style+".";
+                        
+                        switch(select("próximo:anterior:Ficar desse jeito!:[salvar cor]")){
+                                
+                                case 1:
+                                        set .@style, .@style+1;
+                                        if (.@style >= getarg(1)) set .@style, getarg(0);
+                                        goto browse2;
+                                        
+                                case 2:
+                                        set .@style, .@style-1;
+                                        if (.@style <= getarg(0)) set .@style, getarg(1)-1;
+                                        goto browse2;
+                                
+                                case 3:
+                                        next;
+                                        mes "[^FF8000Mari^000000]";
+                                        mes "Perfeito! Estou feliz que você encontrou um estilo que você se encaixa!";
+													cutin "",255;
+                                        close;
+                                        
+                                case 4:
+                                        switch(select("Set 1:Set 2:Set 3")){
+                                                
+                                                case 1:
+                                                        set paletteHairSlot1, .@style;
+                                                        break;
+                                                        
+                                                case 2:
+                                                        set paletteHairSlot2, .@style;
+                                                        break;
+                                                        
+                                                case 3:
+                                                        set paletteHairSlot3, .@style;
+                                                        break;
+
+                                        }
+                                        mes "Seu estilo foi salvo!";
+                                        goto browse2;
+                        }
+                        			cutin "",255;
+                        close;
+
+                case 2:
+                        mes "[^FF8000Mari^000000]";
+                        mes "Escolha um estilo para começar a partir de entre ^0000FF0 e 6^000000.";
+                        set .@maxH, 6;
+                        chose3:
+                        input .@style;
+                        if(.@style < 0 || .@style > .@maxH)
+                        {
+                                mes "Estilo escolhido está fora da faixa.";
+                                goto chose3;
+                        }
+                        
+                        browse3:
+                        setlook 1,.@style;
+                        dispbottom "Este é o número do estilo "+.@style+".";
+                        
+                        switch(select("próximo:anterior:Ficar desse jeito!")){
+                                
+                                case 1:
+                                        set .@style, .@style+1;
+                                        if (.@style > .@maxH) set .@style, 0;
+                                        goto browse3;
+                                        
+                                case 2:
+                                        set .@style, .@style-1;
+                                        if (.@style <= 0) set .@style, .@maxH;
+                                        goto browse3;
+                                
+                                case 3:
+                                        next;
+                                        mes "[^FF8000Mari^000000]";
+                                        mes "Perfeito! Estou feliz que você encontrou um estilo que você se encaixa!";
+													cutin "",255;
+                                        close;
+                        }
+                        			cutin "",255;
+                        close;
+                        
+                case 3:
+                        mes "[^FF8000Mari^000000]";
+                        mes "Aqui estão os estilos que você salvou:";
+                        mes "Which one do you want to wear ?";
+                        mes "Slot 1 : "+paletteClothesSlot1+", "+paletteHairSlot1+"";
+                        mes "Slot 2 : "+paletteClothesSlot2+", "+paletteHairSlot2+"";
+                        mes "Slot 3 : "+paletteClothesSlot3+", "+paletteHairSlot3+"";
+                        next;
+                        switch(select("Set 1:Set 2:Set 3")){
+                                case 1:
+                                        setlook 7, paletteClothesSlot1;
+                                        setlook 6, paletteHairSlot1;
+                                        break;
+                                        
+                                case 2:
+                                        setlook 7, paletteClothesSlot2;
+                                        setlook 6, paletteHairSlot2;
+                                        break;
+                                        
+                                case 3:
+                                        setlook 7, paletteClothesSlot3;
+                                        setlook 6, paletteHairSlot3;
+                                        break;
+
+                        }
+                        mes "[^FF8000Mari^000000]";
+                        mes "Aqui está o conjunto que você gosta! Até logo!";
+									cutin "",255;
+                        close;
+                        
+//                case 4:
+//                        mes "[^FF8000Mari^000000]";
+ //                       mes "Por favor, escolha sua cor da pele:";
+ //                       next;
+ //                       switch(select("branca:morena")){
+//                                case 1:
+//                                        set race_id, 0;
+//                                        break;
+//                                        
+//                                
+//                                case 2:
+//                                        set race_id, 1;
+//                                       break;
+//                        }
+//                        
+//                        setlook 7, $RacePals[race_id*4];
+//                        setlook 6, $RacePals[race_id*4+2];
+//                        break;
+//        }
+//					cutin "",255;
+//close;
+
+
+// Defines offsets for skin colors.
+OnInit:
+        setarray $RacePals[0], 1,35,1,35;                       // Human Skin
+        setarray $RacePals[1*4], 1,35,1,135;       // Brown Skin
+        end;
+
+}
+}

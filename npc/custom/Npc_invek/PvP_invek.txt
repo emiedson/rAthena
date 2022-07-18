@@ -1,0 +1,222 @@
+// =========================================================== //
+//             _      _____ _   _ _   _ ______                 //
+//            | |    |_   _| \ | | \ | |  ____|                // 
+//            | |      | | |  \| |  \| | |__                   //
+//            | |      | | | . ` | . ` |  __|                  //
+//            | |____ _| |_| |\  | |\  | |____                 //
+//            |______|_____|_| \_|_| \_|______|                //
+//              www.forum.cronus-emulator.com                  //
+//                                                             //
+// ===================== Licença ============================= //
+//     Esta script está protegida por uma licença Creative     //
+//          Commons Atribuido ao Uso-Não-Comercial             //
+//                      Compartilhado                          //
+// =========================================================== //
+// Nome:	             PvP Master                            //
+// =========================================================== //
+// Autor:	Linne                                              //
+// =========================================================== //
+// Versão:	1.0                                                //
+// =========================================================== //
+// Descrição:	Script que eu fiz para um membro do forum.     //
+// =========================================================== //
+// Data:    23/07/2016                                         //
+// =========================================================== //
+// Comentários Adicionais:	Favor manter os créditos pois      //
+//                          da trabalho para fazer.            //
+// =========================================================== //
+// Change Log:	1.0 - Script criado.            [Linne]        //
+// =========================================================== //
+-	script	r_kill	-1,{
+
+OnPCKillEvent:
+			set @max,10;
+			set @ind,0;
+			if(killedrid == getcharid(3)) end;
+			set firstkiller,firstkiller + 1;
+			set pvp_points,pvp_points + 1;
+			dispbottom "PvP Points : "+pvp_points;
+			if ( ( pvp_points > $pvp_rkills[0] ) & ( $PvP_Lider$ != strcharinfo(0) ) ) {set $PvP_Lider$,strcharinfo(0);
+			announce ""+strcharinfo(0)+" | Matou "+pvp_points+" Player's e Agora é o novo Lider Do PvP!",bc_all,0xFF7F50;
+		}
+			set sik,sik + 1;
+			if ( sik == 100 ) { set sik2,sik2 + 100; set sik,0; }
+			if ( pvp_points == 10 ) announce ""+strcharinfo(0)+" | Matou 10 Players! e a Matança Continua",bc_all,0xFF7F50;
+			if ( pvp_points == 25 ) announce ""+strcharinfo(0)+" | Matou 25 Players! e a Matança Continua",bc_all,0xFF7F50;
+			if ( pvp_points == 50 ) announce ""+strcharinfo(0)+" | Matou 50 Players! e a Matança Continua",bc_all,0xFF7F50;
+			if ( pvp_points == 75 ) announce ""+strcharinfo(0)+" | Matou 75 Players! e a Matança Continua",bc_all,0xFF7F50;
+			if ( pvp_points == sik2 ) announce ""+strcharinfo(0)+" | Matou "+pvp_points+" Players! e a Matança Continua ",bc_all,0xFF7F50;
+			set @ind,0;
+			set @name$,strcharinfo(0);
+start:
+			if ( pvp_points > $pvp_rkills[@ind] ) {
+			if ( @name$ == $pvp_rname$[@ind] ){
+			set $pvp_rkills[@ind],$pvp_rkills[@ind] + 1;
+			end;
+			}
+			set @ind2,@ind;
+			set @ind3,@ind + 1;
+			goto update; }
+			if ( @ind == @max ) end;
+			set @ind,@ind + 1;
+			goto start;
+
+update:
+			if ( $pvp_rname$[@ind] != @name$ ) announce ""+strcharinfo(0)+" | Subiu Para "+(@ind+1)+"ª Posição No Ranking ! (pvp_points: "+pvp_points+")",bc_all,0x00FF00;
+			set @aux$,$pvp_rname$[@ind2];
+			set @aux,$pvp_rkills[@ind2];
+			set $pvp_rname$[@ind2],$pvp_rname$[@ind3];
+			set $pvp_rkills[@ind2],$pvp_rkills[@ind3];
+			set $pvp_rname$[@ind3],@aux$;
+			set $pvp_rkills[@ind3],@aux;
+			set $pvp_rname$[@ind],@name$;
+			set $pvp_rkills[@ind],pvp_points;
+			end;
+}
+// == Inicio da Script ==================================================
+invek,100,175,6	script	PvP Master	4_M_DEWZATICHIEF,{
+//=======================================================================
+set @nome$,"[^FF0000 PvP Master ^000000]";    // Nome do NPC.
+//=======================================================================
+set $pvp$[0],"guild_vs5";      // Arena PvP 01
+set $pvp2$[0],"guild_vs2";     // Arena PvP 02
+//=======================================================================
+set $gvg$[0],"guild_vs3";    // Arena GvG 01
+set $baby$[0],"guild_vs1";   // Arena Baby 01
+//=======================================================================
+if ( $test == 0 ) {
+set $test,1;
+setarray $pvp_rname$[0],"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-",
+"-","-","-","-","-","-","-","-","-","-","-","-","-","-","-";
+setarray $pvp_rkills[0],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0;}
+set $max1,10;
+set $max2,20;
+//=======================================================================
+	mes @nome$;
+	mes "Olá "+strcharinfo(0)+".";
+	mes "O que vai ser hoje ?";
+	next;
+	switch(select("- Arena PvP 01 [^0000FF"+getmapusers($pvp$[$pvp])+"^000000]",
+	              "- Arena PvP 02 [^0000FF"+getmapusers($pvp2$[$pvp2])+"^000000]",
+				  "- Arena GvG [^0000FF"+getmapusers($gvg$[$gvg])+"^000000]",
+				  "- Arena Baby [^0000FF"+getmapusers($baby$[$baby])+"^000000]",
+				  "- Visualizar Rankings",
+				  "- Cancelar"))   
+	{
+				  
+	case 1:	
+		mes @nome$;
+		mes "Ok, irei te teleportar para lá agora...";
+		next;
+		percentheal 100,100;
+		announce "[Arenas PvP] : "+strcharinfo(0)+" acabou de entrar no PvP 01 !",bc_all;
+		warp $pvp$,0,0;	
+		close;
+			
+	case 2:	
+		mes @nome$;
+		mes "Ok, irei te teleportar para lá agora...";
+		next;
+		percentheal 100,100;
+		announce "[Arenas PvP] : "+strcharinfo(0)+" acabou de entrar no PvP 02 !",bc_all;
+		warp $pvp2$,0,0;
+		close;
+			
+	case 3:
+		if(!getcharid(2)) {
+		mes @nome$;
+		mes "Você deve estar em uma Guild antes de entrar na Arena GvG."; 
+		close;
+		}
+			mes @nome$;
+			mes "Ok, irei te teleportar para lá agora...";
+			next;
+			percentheal 100,100;
+			announce "[Arenas PvP] : Um membro da Guild ["+strcharinfo(2)+"] acabou de entrar na Arena GvG !",bc_all;
+			warp $gvg$,0,0;
+			close;
+				
+	case 4:
+		if (Class > 4001 && Class < 4022){ 
+		mes @nome$;
+		mes "Desculpe mas somente Classes Baby podem entrar nesta Arena PvP.";
+		close; 
+		}
+			mes @nome$;
+			mes "Ok, irei te teleportar para lá agora...";
+			next;
+			percentheal 100,100;
+			announce "[Arenas PvP] : "+strcharinfo(0)+" acabou de entrar na Arena PvP Baby !",bc_all;
+			warp $baby$,0,0;
+			close;
+			
+	case 5:
+		mes @nome$;
+		mes "O Que deseja ver ?";
+		next;
+		switch(select("Ranking PvP","Meus Pontos PvP","Cancelar")) {
+			
+			case 1:
+				set @ind,0;
+				mes @nome$;
+				mes "^00008B TOP 10 PvP ^000000";
+				mes " ";
+				loop:
+				mes "=========================";
+				mes "^FF0000"+(@ind+1)+"ª Posição ^000000|^AB82FF "+$pvp_rname$[@ind]+" ^000000|^FF0000 Matou ^000000|^AB82FF "+$pvp_rkills[@ind]+" ^000000|";
+				set @ind,@ind + 1;
+				if ( @ind != $max1 ) goto loop;
+				close;
+				
+			case 2:
+				mes @nome$;
+				mes "^00008B O char ^AB82FF"+strcharinfo(0)+"^000000 ^00008Bmatou ^FF0000"+pvp_points+"^000000 ^00008Bplayer(s) em toda sua história.^00008B";
+				close;
+					
+			case 3:
+				mes @nome$;
+				mes "Certo, volte quando precisar de meus serviços.";
+				close;
+					
+			}
+				
+	case 6:
+		mes @nome$;
+		mes "Certo, volte quando precisar de meus serviços.";
+		close;
+	end;
+}
+}
+
+//============== MAP FLAG ===============
+// PvP 01
+guild_vs5	mapflag	nowarpto
+guild_vs5	mapflag	nopenalty
+guild_vs5	mapflag	nosave	SavePoint
+guild_vs5	mapflag	nobranch
+//guild_vs5	mapflag	pvp	on
+guild_vs5	mapflag	noteleport
+
+// PvP 02
+guild_vs2	mapflag	nowarpto
+guild_vs2	mapflag	nopenalty
+guild_vs2	mapflag	nosave	SavePoint
+guild_vs2	mapflag	nobranch
+//guild_vs5	mapflag	pvp	on
+guild_vs2	mapflag	noteleport
+
+// GvG 01
+guild_vs3	mapflag	nowarpto
+guild_vs3	mapflag	nopenalty
+guild_vs3	mapflag	nosave	SavePoint
+guild_vs3	mapflag	nobranch
+guild_vs3	mapflag	gvg
+guild_vs3	mapflag	noteleport
+
+// Baby 01
+guild_vs1	mapflag	nowarpto
+guild_vs1	mapflag	nopenalty
+guild_vs1	mapflag	nosave	SavePoint
+guild_vs1	mapflag	nobranch
+//guild_vs5	mapflag	pvp	on
+guild_vs1	mapflag	noteleport

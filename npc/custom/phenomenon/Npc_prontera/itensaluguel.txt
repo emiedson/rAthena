@@ -1,0 +1,650 @@
+prontera,205,161,5	script	Aluguel de itens	804,{
+	mes "[ ^0065DFSr. Brasar^000000 ]";
+mes strcharinfo(0)+", posso trocar seus Tickets de aluguel por itens de aluguel ou expandir o tempo do item de aluguel";
+mes "Contudo, só posso fazê-lo durante 1 dia por Tickets de aluguel, com um limite de 10 Tickets de aluguel que seria 10 dias";
+next;
+mes "Em primeiro lugar, selecione por quantos dias você deseja expandir seu item, se desejar expandir, se não selecionar a última opção.";
+mes "Observe que os Tickets de aluguel serão excluídos na seleção; portanto, escolha com sabedoria; observe também que, para expandir a duração de um item, você precisará do item com você";
+next;
+menu "1 dia",L_1,"2 dias",L_2,"3 dias",L_3,"4 dias",L_4,"5 dias",L_5,"6 dias",L_6,"7 dias",L_7,"8 dias",L_8,"9 dias",L_9,"10 dias",L_10,"Alugue um item pela primeira vez",L_rent,"cancel",L_cancel;
+next;
+L_1:
+if(countitem(7711)<1)goto no_item;
+delitem 7711,1;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S1,"Meginghard",L_M1,"Asprika",L_A1,"Brisingamen",L_B1,"Mjolnir",L_Mj1;
+next;
+L_S1:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,86400;
+next;
+close;
+L_M1:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,86400;
+next;
+close;
+L_A1:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,86400;
+next;
+close;
+L_B1:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,86400;
+next;
+close;
+L_Mj1:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,86400;
+next;
+close;
+L_2:
+if(countitem(7711)<2)goto no_item;
+delitem 7711,2;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S2,"Meginghard",L_M2,"Asprika",L_A2,"Brisingamen",L_B2,"Mjolnir",L_Mj2;
+next;
+L_S2:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,172800;
+next;
+close;
+L_M2:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,172800;
+next;
+close;
+L_A2:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,172800;
+next;
+close;
+L_B2:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,172800;
+next;
+close;
+L_Mj2:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,172800;
+next;
+close;
+L_3:
+if(countitem(7711)<3)goto no_item;
+delitem 7711,3;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S3,"Meginghard",L_M3,"Asprika",L_A3,"Brisingamen",L_B3,"Mjolnir",L_Mj3;
+L_S3:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,259200;
+next;
+close;
+L_M3:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,259200;
+next;
+close;
+L_A3:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,259200;
+next;
+close;
+L_B3:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,259200;
+next;
+close;
+L_Mj3:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,259200;
+next;
+close;
+L_4:
+if(countitem(7711)<4)goto no_item;
+delitem 7711,4;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S4,"Meginghard",L_M4,"Asprika",L_A4,"Brisingamen",L_B4,"Mjolnir",L_Mj4;
+next;
+L_S4:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,345600;
+next;
+close;
+L_M4:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,345600;
+next;
+close;
+L_A4:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,345600;
+next;
+close;
+L_B4:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,345600;
+next;
+close;
+L_Mj4:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,345600;
+next;
+close;
+L_5:
+if(countitem(7711)<5)goto no_item;
+delitem 7711,5;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S5,"Meginghard",L_M5,"Asprika",L_A5,"Brisingamen",L_B5,"Mjolnir",L_Mj5;
+next;
+L_S5:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,432000;
+next;
+close;
+L_M5:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,432000;
+next;
+close;
+L_A5:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,432000;
+next;
+close;
+L_B5:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,432000;
+next;
+close;
+L_Mj5:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,432000;
+next;
+close;
+L_6:
+if(countitem(7711)<6)goto no_item;
+delitem 7711,6;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S6,"Meginghard",L_M6,"Asprika",L_A6,"Brisingamen",L_B6,"Mjolnir",L_Mj6;
+next;
+L_S6:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,518400;
+next;
+close;
+L_M6:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,518400;
+next;
+close;
+L_A6:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,518400;
+next;
+close;
+L_B6:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,518400;
+next;
+close;
+L_Mj6:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,518400;
+next;
+close;
+L_7:
+if(countitem(7711)<7)goto no_item;
+delitem 7711,7;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S7,"Meginghard",L_M7,"Asprika",L_A7,"Brisingamen",L_B7,"Mjolnir",L_Mj7;
+next;
+L_S7:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,604800;
+next;
+close;
+L_M7:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,604800;
+next;
+close;
+L_A7:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,604800;
+next;
+close;
+L_B7:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,604800;
+next;
+close;
+L_Mj7:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,604800;
+next;
+close;
+L_8:
+if(countitem(7711)<8)goto no_item;
+delitem 7711,8;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S8,"Meginghard",L_M8,"Asprika",L_A8,"Brisingamen",L_B8,"Mjolnir",L_Mj8;
+next;
+L_S8:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,691200;
+next;
+close;
+L_M8:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,691200;
+next;
+close;
+L_A8:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,691200;
+next;
+close;
+L_B8:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,691200;
+next;
+close;
+L_Mj8:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,691200;
+next;
+close;
+L_9:
+if(countitem(7711)<9)goto no_item;
+delitem 7711,9;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S9,"Meginghard",L_M9,"Asprika",L_A9,"Brisingamen",L_B9,"Mjolnir",L_Mj9;
+next;
+L_S9:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,777600;
+next;
+close;
+L_M9:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,777600;
+next;
+close;
+L_A9:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,777600;
+next;
+close;
+L_B9:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,777600;
+next;
+close;
+L_Mj9:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,777600;
+next;
+close;
+L_10:
+if(countitem(7711)<10)goto no_item;
+delitem 7711,10;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_S0,"Meginghard",L_M0,"Asprika",L_A0,"Brisingamen",L_B0,"Mjolnir",L_Mj0;
+next;
+L_S0:
+if(countitem(2410)<1)goto no_equip;
+delitem 2410,1;
+rentitem 2410,864000;
+next;
+close;
+L_M0:
+if(countitem(2629)<1)goto no_equip;
+delitem 2629,1;
+rentitem 2629,864000;
+next;
+close;
+L_A0:
+if(countitem(2541)<1)goto no_equip;
+delitem 2541,1;
+rentitem 2541,864000;
+next;
+close;
+L_B0:
+if(countitem(2630)<1)goto no_equip;
+delitem 2630,1;
+rentitem 2630,864000;
+next;
+close;
+L_Mj0:
+if(countitem(1530)<1)goto no_equip;
+delitem 1530,1;
+rentitem 1530,864000;
+next;
+close;
+
+no_item:
+mes "Huh está tentando me enganar?";
+mes "você não tem Tickets de aluguel suficientes.";
+mes "Desculpe, não posso reembolsar nenhum Tickets de aluguel.";
+close;
+
+no_equip:
+mes "Desculpe, mas parece que você nem tem o equipamento correto";
+mes "Primeiro pegue e depois podemos conversar";
+close;
+
+L_cancel:
+mes "Tudo bem, não se preocupe, venha a mim a qualquer momento";
+close;
+
+L_rent:
+mes "Tudo bem, selecione um item para alugar pela primeira vez e quantos dias";
+mes "Observe que, na seleção, o Tickets de aluguel será excluído; portanto, escolha com sabedoria";
+mes "Lembre-se, para cada dia você precisará de um Tickets de aluguel";
+menu "1 Dia",L_n1,"2 Dias",L_n2,"3 Dias",L_n3,"4 Dias",L_n4,"5 Dias",L_n5,"6 Dias",L_n6,"7 Dias",L_n7,"8 Dias",L_n8,"9 Dias",L_n9,"10 Dias",L_n10,"Cancel",L_cancel;
+next;
+L_n1:
+if(countitem(7711)<1)goto no_item;
+delitem 7711,1;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs1,"Meginghard",L_nMm1,"Asprika",L_nAa1,"Brisingamen",L_nBb1,"Mjolnir",L_nMmj1;
+next;
+L_nSs1:
+rentitem 2410,86400;
+next;
+close;
+L_nMm1:
+rentitem 2629,86400;
+next;
+close;
+L_nAa1:
+rentitem 2541,86400;
+next;
+close;
+L_nBb1:
+rentitem 2630,86400;
+next;
+close;
+L_nMmj1:
+rentitem 1530,86400;
+next;
+L_n2:
+if(countitem(7711)<2)goto no_item;
+delitem 7711,2;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs2,"Meginghard",L_nMm2,"Asprika",L_nAa2,"Brisingamen",L_nBb2,"Mjolnir",L_nMmj2;
+next;
+L_nSs2:
+rentitem 2410,172800;
+next;
+close;
+L_nMm2:
+rentitem 2629,172800;
+next;
+close;
+L_nAa2:
+rentitem 2541,172800;
+next;
+close;
+L_nBb2:
+rentitem 2630,172800;
+next;
+close;
+L_nMmj2:
+rentitem 1530,172800;
+next;
+close;
+L_n3:
+if(countitem(7711)<3)goto no_item;
+delitem 7711,3;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs3,"Meginghard",L_nMm3,"Asprika",L_nAa3,"Brisingamen",L_nBb3,"Mjolnir",L_nMmj3;
+L_nSs3:
+rentitem 2410,259200;
+next;
+close;
+L_nMm3:
+rentitem 2629,259200;
+next;
+close;
+L_nAa3:
+rentitem 2541,259200;
+next;
+close;
+L_nBb3:
+rentitem 2630,259200;
+next;
+close;
+L_nMmj3:
+rentitem 1530,259200;
+next;
+close;
+L_n4:
+if(countitem(7711)<4)goto no_item;
+delitem 7711,4;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs4,"Meginghard",L_nMm4,"Asprika",L_nAa4,"Brisingamen",L_nBb4,"Mjolnir",L_nMmj4;
+next;
+L_nSs4:
+rentitem 2410,345600;
+next;
+close;
+L_nMm4:
+rentitem 2629,345600;
+next;
+close;
+L_nAa4:
+rentitem 2541,345600;
+next;
+close;
+L_nBb4:
+rentitem 2630,345600;
+next;
+close;
+L_nMmj4:
+rentitem 1530,345600;
+next;
+close;
+L_n5:
+if(countitem(7711)<5)goto no_item;
+delitem 7711,5;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs5,"Meginghard",L_nMm5,"Asprika",L_nAa5,"Brisingamen",L_nBb5,"Mjolnir",L_nMmj5;
+next;
+L_nSs5:
+rentitem 2410,432000;
+next;
+close;
+L_nMm5:
+rentitem 2629,432000;
+next;
+close;
+L_nAa5:
+rentitem 2541,432000;
+next;
+close;
+L_nBb5:
+rentitem 2630,432000;
+next;
+close;
+L_nMmj5:
+rentitem 1530,432000;
+next;
+close;
+L_n6:
+if(countitem(7711)<6)goto no_item;
+delitem 7711,6;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs6,"Meginghard",L_nMm6,"Asprika",L_nAa6,"Brisingamen",L_nBb6,"Mjolnir",L_nMmj6;
+next;
+L_nSs6:
+rentitem 2410,518400;
+next;
+close;
+L_nMm6:
+rentitem 2629,518400;
+next;
+close;
+L_nAa6:
+rentitem 2541,518400;
+next;
+close;
+L_nBb6:
+rentitem 2630,518400;
+next;
+close;
+L_nMmj6:
+rentitem 1530,518400;
+next;
+close;
+L_n7:
+if(countitem(7711)<7)goto no_item;
+delitem 7711,7;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs7,"Meginghard",L_nMm7,"Asprika",L_nAa7,"Brisingamen",L_nBb7,"Mjolnir",L_nMmj7;
+next;
+L_nSs7:
+rentitem 2410,604800;
+next;
+close;
+L_nMm7:
+rentitem 2629,604800;
+next;
+close;
+L_nAa7:
+rentitem 2541,604800;
+next;
+close;
+L_nBb7:
+rentitem 2630,604800;
+next;
+close;
+L_nMmj7:
+rentitem 1530,604800;
+next;
+close;
+L_n8:
+if(countitem(7711)<8)goto no_item;
+delitem 7711,8;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs8,"Meginghard",L_nMm8,"Asprika",L_nAa8,"Brisingamen",L_nBb8,"Mjolnir",L_nMmj8;
+next;
+L_nSs8:
+rentitem 2410,691200;
+next;
+close;
+L_nMm8:
+rentitem 2629,691200;
+next;
+close;
+L_nAa8:
+rentitem 2541,691200;
+next;
+close;
+L_nBb8:
+rentitem 2630,691200;
+next;
+close;
+L_nMmj8:
+rentitem 1530,691200;
+next;
+close;
+L_n9:
+if(countitem(7711)<9)goto no_item;
+delitem 7711,9;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs9,"Meginghard",L_nMm9,"Asprika",L_nAa9,"Brisingamen",L_nBb9,"Mjolnir",L_nMmj9;
+next;
+L_nSs9:
+rentitem 2410,777600;
+next;
+close;
+L_nMm9:
+rentitem 2629,777600;
+next;
+close;
+L_nAa9:
+rentitem 2541,777600;
+next;
+close;
+L_nBb9:
+rentitem 2630,777600;
+next;
+close;
+L_nMmj9:
+rentitem 1530,777600;
+next;
+close;
+L_n10:
+if(countitem(7711)<10)goto no_item;
+delitem 7711,10;
+mes "Tudo bem, agora selecione um item";
+menu "Sleipnir",L_nSs0,"Meginghard",L_nMm0,"Asprika",L_nAa0,"Brisingamen",L_nBb0,"Mjolnir",L_nMmj0;
+next;
+L_nSs0:
+rentitem 2410,864000;
+next;
+close;
+L_nMm0:
+rentitem 2629,864000;
+next;
+close;
+L_nAa0:
+rentitem 2541,864000;
+next;
+close;
+L_nBb0:
+rentitem 2630,864000;
+next;
+close;
+L_nMmj0:
+rentitem 1530,864000;
+next;
+close;
+}

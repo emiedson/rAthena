@@ -1,0 +1,1190 @@
+prontera,190,208,3	script	Sala de Staff	4_M_OLDSCHOLAR,{
+cutin "verus_aures",2;
+set @gmlvl,99; //Level Máximo de GM que pode acessar o menu GM e entrar na Base dos GM's
+set @ADMlvl,99;	//Level de Administradores
+
+set @gm,getgmlevel();
+if(@gm>80) goto vale0;
+mes "[Guardiao da Staff]";
+mes "A Base dos GMs só pode ser acessada por GMs.";
+mes "A Base foi construida para os GMs descansarem e se reunirem";
+mes "Desculpe, só GMs com level igual ou acima de 60 podem entrar";
+cutin "",255;
+close;
+
+vale0:
+mes "[Guardiao da Staff]";
+mes "Olá ^5566FF"+strcharinfo(0)+"^000000. Você deseja entrar na Base?";
+next;
+mes "[Guardiao da Staff]";
+mes "Não tem nenhum perigo, a Base foi construida para os GMs descansarem e se reunirem";
+next;
+mes "[Guardiao da Staff]";
+mes "Há muitas coisas na Base, Muitos tesouros, muitos esconderijos.";
+next;
+mes "[Guardiao da Staff]";
+mes "Você quer entrar agora?";
+next;
+menu "Sim",sim,"Não",cancelar;
+
+sim:
+mes "[Guardiao da Staff]";
+mes "Tenha uma boa visita, ^5566FF"+strcharinfo(0)+"^000000!";
+next;
+warp "lhz_in01",276,258;
+cutin "",255;
+close;
+
+cancelar:
+mes "[Guardiao da Staff]";
+mes "Tudo bem, ^5566FF"+strcharinfo(0)+"^000000, fale comigo quando quiser ir á base.";
+cutin "",255;
+close;
+}
+
+
+//Função para que o Player sai do local onde está
+function	script	Xo	{
+OnTouch:
+set @gm,getgmlevel();
+if(@gm>99) goto ok;;
+	mes "[Calaveiro]";
+	mes "Area não autorizada a Player's";
+	mes "saia imediatamente";
+	next;
+	warp "prontera",150,163;
+	close;
+
+ok:
+close;
+}
+
+lhz_in01	mapflag	noteleport
+lhz_in01	mapflag	nowarp
+lhz_in01	mapflag	nowarpto
+lhz_in01	mapflag	nosave	SavePoint
+lhz_in01	mapflag	nomemo
+lhz_in01	mapflag	nobranch
+lhz_in01	mapflag	noexp
+lhz_in01	mapflag	noloot
+
+lhz_in01,263,260,6	script	Governante	4_M_NFMAN,{
+set @gm,getgmlevel();
+if(@gm>80) goto vale2;
+	mes "[Super Warper]";
+	mes "SUMA DAQUI!!";
+	warp "prontera",150,163;
+	close;
+
+vale2:
+mes "[Governante]";
+mes "Olá "+strcharinfo(0)+" precisa de alguma ajuda?";
+next;
+menu "Heal",LHeal,"Teleporte",LWarp,"Nada",E;
+
+LHeal:
+specialeffect 8;
+percentheal 100,100;
+mes "espero ter ajudado";
+close;
+
+LWarp:
+mes "[Governante]";
+mes "Sou o Governante da Base dos GMs, estou aqui para auxiliar os GMs com os eventos";
+mes "Posso teleportar para qualquer mapa de Rune Midgard";
+mes "Por favor Selecione o tipo de mapa que deseja ir";
+next;
+menu "Fields",F,"Cavernas",D,"Cidades",L_T,"Nenhum",E;
+
+F:
+mes "[Governante]";
+mes "Por Favor escolha seu destino:";
+menu "Prontera Field",PrtF,"Payon Field",PayF,"Morroc Field",mocF,"Geffen Field",gefF,"Mjolnir Field",mjoF,"Comodo Field",cmdF,"Juno Field",yunoF,"Amatsu Field",amaF,"Gonryun Field",gonF,"Niflheim Field",nifF,"Umbala Field",umF,"Next...",FF;
+FF:
+menu "Lutie Field",LutF,"Yggdrasil Field",YggF,"Guild Map",GUILDY,"LouYang Field",LYYY1;
+LYYY1:
+warp "lou_fild01",208,214;
+PrtF:
+menu "Prt Field 0",Prt0,"Prt Field 1",Prt1,"Prt Field 2",Prt2,"Prt Field 3",Prt3,"Prt Field 4",Prt4,"Prt Field 5",Prt5,"Prt Field 6",Prt6,"Prt Field 7",Prt7,"Prt Field 8",Prt8,"Prt Field 9",Prt9,"Prt Field 10",Prt10,"Prt Field 11",Prt11;
+Prt0:
+warp "prt_fild00",208,228;
+close;
+Prt1:
+warp "prt_fild01",306,281;
+close;
+Prt2:
+warp "prt_fild02",336,343;
+close;
+Prt3:
+warp "prt_fild03",126,123;
+close;
+Prt4:
+warp "prt_fild04",230,330;
+close;
+Prt5:
+warp "prt_fild05",280,220;
+close;
+Prt6:
+warp "prt_fild06",130,210;
+close;
+Prt7:
+warp "prt_fild07",240,90;
+close;
+Prt8:
+warp "prt_fild08",105,275;
+close;
+Prt9:
+warp "prt_fild09",105,115;
+close;
+Prt10:
+warp "prt_fild10",100,110;
+close;
+Prt11:
+warp "prt_fild11",104,230;
+close;
+
+mocF:
+menu "Moc Field 1",moc1,"Moc Field 2",moc2,"Moc Field 3",moc3,"Moc Field 4",moc4,"Moc Field 5",moc5,"Moc Field 6",moc6,"Moc Field 7",moc7,"Moc Field 8",moc8,"Moc Field 9",moc9,"Moc Field 10",moc10,"Moc Field 11",moc11,"Next...",mocF2;
+mocF2:
+menu "Moc Field 12",moc12,"Moc Field 13",moc13,"Moc Field 14",moc14,"Moc Field 15",moc15,"Moc Field 16",moc16,"Moc Field 17",moc17,"Moc Field18",moc18;
+moc1:
+warp "moc_fild01",198,195;
+close;
+moc2:
+warp "moc_fild02",94,101;
+close;
+moc3:
+warp "moc_fild03",171,258;
+close;
+moc4:
+warp "moc_fild04t",148,333;
+close;
+moc5:
+warp "moc_fild05",205,274;
+close;
+moc6:
+warp "moc_fild06",134,302;
+close;
+moc7:
+warp "moc_fild07",180,346;
+close;
+moc8:
+warp "moc_fild08",140,178;
+close;
+moc9:
+warp "moc_fild09",214,128;
+close;
+moc10:
+warp "moc_fild10",208,107;
+close;
+moc11:
+warp "moc_fild11",198,214;
+close;
+moc12:
+warp "moc_fild12",161,259;
+close;
+moc13:
+warp "moc_fild13",160,285;
+close;
+moc14:
+warp "moc_fild14",124,93;
+close;
+moc15:
+warp "moc_fild15",200,175;
+moc16:
+warp "moc_fild16",205,234;
+moc17:
+warp "moc_fild17",107,145;
+close;
+moc18:
+warp "moc_fild18",138,233;
+close;
+
+PayF:
+menu "Pay Field 1",pay1,"Pay Field 2",pay2,"Pay Field 3",pay3,"Pay Field 4",pay4,"Pay Field 5",pay5,"Pay Field 6",pay6,"Pay Field 7",pay7,"Pay Field 8",pay8,"Pay Field 9",pay9,"Pay Field 10",pay10,"Pay Field 11",pay11;
+pay1:
+warp "pay_fild01",108,119;
+close;
+pay2:
+warp "pay_fild02",88,129;
+close;
+pay3:
+warp "pay_fild03",350,46;
+close;
+pay4:
+warp "pay_fild04",159,343;
+close;
+pay5:
+warp "pay_fild05",100,104;
+close;
+pay6:
+warp "pay_fild06",279,120;
+close;
+pay7:
+warp "pay_fild07",115,382;
+close;
+pay8:
+warp "pay_fild08",100,100;
+close;
+pay9:
+warp "pay_fild09",100,100;
+close;
+pay10:
+warp "pay_fild10",217,223;
+close;
+pay11:
+warp "pay_fild11",118,276;
+close;
+
+gefF:
+menu "Gef Field 0",gef0,"Gef Field 1",gef1,"Gef Field 2",gef2,"Gef Field 3",gef3,"Gef Field 4",gef4,"Gef Field 5",gef5,"Gef Field 6",gef6,"Gef Field 7",gef7,"Gef Field 8",gef8,"Gef Field 9",gef9,"Gef Field 10",gef10,"Next...",geff2;
+geff2:
+menu "Gef Field 11",gef11,"Gef Field 12",gef12,"Gef Field 14",gef14;
+gef0:
+warp "gef_fild00",71,126;
+close;
+gef1:
+warp "gef_fild01",67,85;
+close;
+gef2:
+warp "gef_fild02",216,211;
+close;
+gef3:
+warp "gef_fild03",297,74;
+close;
+gef4:
+warp "gef_fild04",181,225;
+close;
+gef5:
+warp "gef_fild05",100,100;
+close;
+gef6:
+warp "gef_fild06",55,190;
+gef7:
+warp "gef_fild07",50,158;
+gef8:
+warp "gef_fild08",105,105;
+close;
+gef9:
+warp "gef_fild09",100,100;
+close;
+gef10:
+warp "gef_fild10",100,100;
+close;
+gef11:
+warp "gef_fild11",274,245;
+close;
+gef12:
+warp "gef_fild12",100,100;
+close;
+gef14:
+warp "gef_fild14",363,220;
+close;
+mjoF:
+menu "Mjolnir Field 1",mjolnir1,"Mjolnir Field 2",mjolnir2,"Mjolnir Field 3",mjolnir3,"Mjolnir Field 4",mjolnir4,"Mjolnir Field 5",mjolnir5,"Mjolnir Field 6",mjolnir6,"Mjolnir Field 7",mjolnir7,"Mjolnir Field 8",mjolnir8,"Mjolnir Field 9",mjolnir9,"Mjolnir Field 10",mjolnir10,"Mjolnir Field 11",mjolnir11,"Mjolnir Field 12",mjolnir12;
+mjolnir1:
+warp "mjolnir_01",135,156;
+close;
+mjolnir2:
+warp "mjolnir_02",100,100;
+close;
+mjolnir3:
+warp "mjolnir_03",100,100;
+close;
+mjolnir4:
+warp "mjolnir_04",304,127;
+close;
+mjolnir5:
+warp "mjolnir_05",149,270;
+close;
+mjolnir6:
+warp "mjolnir_06",304,345;
+close;
+mjolnir7:
+warp "mjolnir_07",100,100;
+close;
+mjolnir8:
+warp "mjolnir_08",100,100;
+close;
+mjolnir9:
+warp "mjolnir_09",101,112;
+close;
+mjolnir10:
+warp "mjolnir_10",100,100;
+close;
+mjolnir11:
+warp "mjolnir_11",100,100;
+close;
+mjolnir12:
+warp "mjolnir_12",100,100;
+close;
+cmdF:
+menu "Cmd Field 1",cmd1,"Cmd Field 2",cmd2,"Cmd Field 3",cmd3,"Cmd Field 4",cmd4,"Cmd Field 5",cmd5,"Cmd Field 6",cmd6,"Cmd Field 7",cmd7,"Cmd Field 8",cmd8,"Cmd Field 9",cmd9;
+cmd1:
+warp "cmd_fild01",100,100;
+close;
+cmd2:
+warp "cmd_fild02",100,100;
+close;
+cmd3:
+warp "cmd_fild03",100,100;
+close;
+cmd4:
+warp "cmd_fild04",100,100;
+close;
+cmd5:
+warp "cmd_fild05",231,189;
+close;
+cmd6:
+warp "cmd_fild06",100,100;
+close;
+cmd7:
+warp "cmd_fild07",135,342;
+close;
+cmd8:
+warp "cmd_fild08",100,100;
+close;
+cmd9:
+warp "cmd_fild09",201,355;
+close;
+yunoF:
+menu "Juno Field 1",yuno1,"Juno Field 2",yuno2,"Juno Field 3",yuno3,"Juno Field 4",yuno4;
+yuno1:
+warp "yuno_fild01",207,43;
+close;
+yuno2:
+warp "yuno_fild02",100,100;
+close;
+yuno3:
+warp "yuno_fild03",100,100;
+close;
+yuno4:
+warp "yuno_fild04",150,154;
+close;
+amaF:
+menu "Amatsu Field 1",ama1;
+ama1:
+warp "ama_fild01",57,69;
+close;
+
+gonF:
+menu "Gonryun Field 1",gon1;
+gon1:
+warp "gon_fild01",100,100;
+close;
+nifF:
+menu "Niflheim Field 1",nif1,"Niflheim Field 2",nif2;
+nif1:
+warp "nif_fild01",181,320;
+close;
+nif2:
+warp "nif_fild02",61,329;
+close;
+umF:
+menu "Umbala Field 1",um1,"Umbala Field 2",um2,"Umbala Field 3",um3,"Umbala Field 4",um4;
+um1:
+warp "um_fild01",100,100;
+close;
+um2:
+warp "um_fild02",215,312;
+close;
+um3:
+warp "um_fild03",100,100;
+close;
+um4:
+warp "um_fild04",270,177;
+close;
+LutF:
+menu "Lutie Field 1",xmas1;
+xmas1:
+warp "xmas_fild01",100,100;
+close;
+YggF:
+menu "Yggdrasil Field 1",yggdrasil1;
+yggdrasil1:
+warp "yggdrasil01",40,63;
+GUILDY:
+menu "Payon Castle Map",PCM111,"Geffen Castle Map",GCM111,"Aldeberan Castle Map",ACM111,"Prontera Castle Map",PCM222;
+PCM111:
+warp "pay_gld",114,171;
+close;
+GCM111:
+warp "gef_fild13",164,247;
+close;
+ACM111:
+warp "alde_gld",72,232;
+close;
+PCM222:
+warp "prt_gld",166,103;
+close;
+
+L_T:
+mes "[Governante]";
+mes "Por favor escolha o seu destino:";
+next;
+menu "Prontera",prontera,"Geffen",geffen,"Payon",payon,"Morroc",morroc,"Alberta",alberta,"Adebaran",aldebaran,"Izlude",izlude,"Lutie",lutie,"Juno",yuno,"Comodo",comodo,"Amatsu",amatsu,"Next...",TT;
+
+TT:
+menu "Gonryun",gonryun,"Umbala",umbala,"Niflheim",niflheim,"Jawaii",HawaiiBaby,"Lou Yang",Chink111,"Ayothaya",Ayothaya;
+Ayothaya:
+warp "ayothaya",153,71;
+close;
+HawaiiBaby:
+warp "jawaii",117,205;
+close;
+Chink111:
+warp "louyang",218,106;
+close;
+prontera:
+warp "prontera",156,184;
+close;
+geffen:
+warp "geffen",120,68;
+close;
+payon:
+warp "payon",96,114;
+close;
+morroc:
+warp "morocc",157,94;
+close;
+alberta:
+warp "alberta",116,56;
+close;
+aldebaran:
+warp "aldebaran",141,118;
+close;
+izlude:
+warp "izlude",127,116;
+close;
+lutie:
+warp "xmas",147,117;
+close;
+yuno:
+warp "yuno",280,216;
+close;
+comodo:
+warp "comodo",191,150;
+close;
+amatsu:
+warp "amatsu",200,86;
+close;
+gonryun:
+warp "gonryun",159,124;
+close;
+umbala:
+warp "umbala",125,136;
+close;
+niflheim:
+warp "niflheim",195,185;
+close;
+
+D:
+mes "[Governante]";
+mes "Por favor escolha seu destino:";
+next;
+menu "Clock Tower",CTD,"Amatsu Dungeon",AmaD,"Ant Hell",AntD,"Beach Dungeon",BeachD,"Geffen Dungeon",GefD,"Glastheim",GHD,"Guild Dungeon",GGD,"Gonryun Dungeon",GonD,"Sphinx",SphinxD,"Byalan Dungeon",ByaD,"Magma Dungeon",MagD,"Next...",DD;
+DD:
+menu "Coal Mine",CoalD,"Pyramid",PyramidD,"Orc Dungeon",OrcD,"Payon Dungeon",PayD,"Hidden Temple",HidD,"Sewers",SewD,"Sunken Ship",SSD,"Turtle Dungeon",TurtleD,"Umbala Dungeon",UmbD,"Toy Factory",TFD,"Lou Yang",LLYY12;
+LLYY12:
+menu "LouYang Dun 1",LY1110,"LouYang Dun 2",LY2220,"LouYang Dun 3",LY3330;
+
+LY1110:
+warp "lou_dun01",113,54;
+close;
+LY2220:
+warp "lou_dun02",88,110;
+close;
+LY3330:
+warp "lou_dun03",166,135;
+close;
+CTD:
+menu "Clock Tower 1",CT1,"Clock Tower 2",CT2,"Clock Tower 3",CT3,"Clock Tower 4",CT4,"Clock Tower Dungeon 1",CTD1,"Clock Tower Dungeon 2",CTD2,"Clock Tower Dungeon 3",CTD3,"Clock Tower Dungeon 4",CTD4;
+
+CT1:
+warp "c_tower1",100,100;
+close;
+CT2:
+warp "c_tower2",152,94;
+close;
+CT3:
+warp "c_tower3",100,100;
+close;
+CT4:
+warp "c_tower4",99,100;
+close;
+CTD1:
+warp "alde_dun01",87,242;
+close;
+CTD2:
+warp "alde_dun02",143,228;
+close;
+CTD3:
+warp "alde_dun03",100,100;
+close;
+CTD4:
+warp "alde_dun04",100,100;
+close;
+AmaD:
+menu "Amatsu Dungeon 1",AmaD1,"Amatsu Dungeon 2",AmaD2,"Amatsu Dungeon 3",AmaD3;
+AmaD1:
+warp "ama_dun01",100,100;
+close;
+AmaD2:
+warp "ama_dun02",57,91;
+close;
+AmaD3:
+warp "ama_dun03",100,100;
+close;
+AntD:
+menu "Anthell 1",Ant1,"Anthell 2",Ant2;
+Ant1:
+warp "anthell01",100,100;
+close;
+Ant2:
+warp "anthell02",49,41;
+close;
+BeachD:
+menu "Beach Dungeon 1",BD1,"Beach Dungeon 2",BD2,"Beach Dungeon 3",BD3;
+BD1:
+warp "beach_dun",100,100;
+close;
+BD2:
+warp "beach_dun2",31,84;
+close;
+BD3:
+warp "beach_dun3",117,43;
+close;
+GefD:
+menu "Geffen Dungeon 1",Gef000,"Geffen Dungeon 2",Gef111,"Geffen Dungeon 3",Gef222,"Geffen Dungeon 4",Gef333;
+Gef000:
+warp "gef_dun00",100,100;
+close;
+Gef111:
+warp "gef_dun01",238,71;
+close;
+Gef222:
+warp "gef_dun02",109,128;
+close;
+Gef333:
+warp "gef_dun03",195,202;
+close;
+GHD:
+menu "GlastHeim Castle",GHCas,"GlastHeim Church",GHChu,"GlastHeim Dungeon",GHDun,"GlastHeim Interior",GHInt,"GlastHeim Chivalry",GHChi,"GlastHeim Prison",GHPri,"GlastHeim Serwers",GHSew,"GlastHeim Staircase",GHSte,"GlastHeim",GHeim;
+GHCas:
+menu "GlastHeim Castle 1",GHCas1,"GlastHeim Castle 2",GHCas2;
+GHCas1:
+warp "gl_cas01",198,103;
+close;
+GHCas2:
+warp "gl_cas02",100,100;
+close;
+GHChu:
+menu "GlastHeim St. Abbey",GHSTA,"GlastHeim Churchyard",GHCY;
+GHSTA:
+warp "gl_church",157,68;
+close;
+GHCY:
+warp "gl_chyard",147,149;
+close;
+GHDun:
+menu "GlastHeim Dungeon 1",GHDun1,"GlastHeim Dungeon 2",GHDun2;
+GHDun1:
+warp "gl_dun01",135,267;
+close;
+GHDun2:
+warp "gl_dun02",224,274;
+close;
+GHInt:
+warp "gl_in01",123,124;
+close;
+GHChi:
+menu "GlastHeim Chivalry 1",GHCH1,"GlastHeim Chivalry 2",GHCH2;
+GHCH1:
+warp "gl_knt01",150,15;
+close;
+GHCH2:
+warp "gl_knt02",100,100;
+close;
+GHPri:
+menu "GlastHeim Prison 1",GHP1,"GlastHeim Prison 2",GHP2;
+GHP1:
+warp "gl_prison",100,108;
+close;
+GHP2:
+warp "gl_prison1",127,116;
+close;
+GHSew:
+menu "GlastHeim Sewers 1",GHS1,"GlastHeim Sewers 2",GHS2,"GlastHeim Sewers 3",GHS3,"GlastHeim Sewers 4",GHS4;
+GHS1:
+warp "gl_sew01",214,108;
+close;
+GHS2:
+warp "gl_sew02",100,100;
+close;
+GHS3:
+warp "gl_sew03",100,100;
+close;
+GHS4:
+warp "gl_sew04",100,100;
+close;
+GHSte:
+warp "gl_step",98,100;
+close;
+GHeim:
+warp "glast_01",200,131;
+close;
+GGD:
+menu "Guild Dungeon 1",GDGD1,"Guild Dungeon 2",GDGD2,"Guild Dungeon 3",GDGD3,"Guild Dungeon 4",GDGD4;
+GDGD1:
+warp "gld_dun01",100,100;
+close;
+GDGD2:
+warp "gld_dun02",100,100;
+close;
+GDGD3:
+warp "gld_dun03",100,100;
+close;
+GDGD4:
+warp "gld_dun04",150,238;
+close;
+GonD:
+menu "Gonryun Dungeon 1",GonD1,"Gonryun Dungeon 2",GonD2,"Gonryun Dungeon 3",GonD3;
+GonD1:
+warp "gon_dun01",100,100;
+close;
+GonD2:
+warp "gon_dun02",244,106;
+close;
+GonD3:
+warp "gon_dun03",100,100;
+close;
+SphinxD:
+menu "Sphinx 1",SPX1,"Sphinx 2",SPX2,"Sphinx 3",SPX3,"Sphinx 4",SPX4,"Sphinx 5",SPX5;
+SPX1:
+warp "in_sphinx1",100,100;
+close;
+SPX2:
+warp "in_sphinx2",100,010;
+close;
+SPX3:
+warp "in_sphinx3",100,100;
+close;
+SPX4:
+warp "in_sphinx4",181,155;
+close;
+SPX5:
+warp "in_sphinx5",100,100;
+close;
+ByaD:
+menu "Byalan Dungeon 1",BYD1,"Byalan Dungeon 2",BYD2,"Byalan Dungeon 3",BYD3,"Byalan Dungeon 4",BYD4,"Byalan Dungeon 5",BYD5;
+BYD1:
+warp "iz_dun00",100,100;
+close;
+BYD2:
+warp "iz_dun01",100,100;
+close;
+BYD3:
+warp "iz_dun02",100,100;
+close;
+BYD4:
+warp "iz_dun03",64,74;
+close;
+BYD5:
+warp "iz_dun04",100,100;
+close;
+MagD:
+menu "Magma Dungeon 1",MAGD1,"Magma Dungeon 2",MAGD2;
+MAGD1:
+warp "mag_dun01",231,63;
+close;
+MAGD2:
+warp "mag_dun02",101,202;
+close;
+CoalD:
+menu "Coal Mine 1",COMI1,"Coal Mine 2",COMI2,"Coal Mine 3",COMI3;
+COMI1:
+warp "mjo_dun01",114,67;
+close;
+COMI2:
+warp "mjo_dun02",100,100;
+close;
+COMI3:
+warp "mjo_dun03",171,74;
+close;
+PyramidD:
+menu "Pyramid 1",PRY1,"Pyramid 2",PRY2,"Pyramid 3",PRY3,"Pyramid 4",PRY4,"Pyramid Basement 1",PRYB1,"Pyramid Basement 2",PRYB2;
+PRY1:
+warp "moc_pryd01",100,100;
+close;
+PRY2:
+warp "moc_pryd02",102,13;
+close;
+PRY3:
+warp "moc_pryd03",74,105;
+close;
+PRY4:
+warp "moc_pryd04",176,116;
+close;
+PRYB1:
+warp "moc_pryd05",166,145;
+close;
+PRYB2:
+warp "moc_pryd06",31,197;
+close;
+OrcD:
+menu "Orc Dungeon 1",ORCD1,"Orc Dungeon 2",ORCD2;
+ORCD1:
+warp "orcsdun01",52,105;
+close;
+ORCD2:
+warp "orcsdun02",100,100;
+close;
+PayD:
+menu "Payon Dungeon 1",PAYD1,"Payon Dungeon 2",PAYD2,"Payon Dungeon 3",PAYD3,"Payon Dungeon 4",PAYD4,"Payon Dungeon 5",PAYD5;
+PAYD1:
+warp "pay_dun00",50,60;
+close;
+PAYD2:
+warp "pay_dun01",134,186;
+close;
+PAYD3:
+warp "pay_dun02",104,79;
+close;
+PAYD4:
+warp "pay_dun03",90,35;
+close;
+PAYD5:
+warp "pay_dun04",84,119;
+close;
+HidD:
+menu "Hidden Temple 1",HIDT1,"Hidden Temple 2",HIDT2,"Hidden Temple 3",HIDT3;
+HIDT1:
+warp "prt_maze01",100,100;
+close;
+HIDT2:
+warp "prt_maze02",104,68;
+close;
+HIDT3:
+warp "prt_maze03",100,100;
+close;
+SewD:
+menu "Sewers 1",SEW11,"Sewers 2",SEW22,"Sewers 3",SEW33,"Sewers 4",SEW44;
+SEW11:
+warp "prt_sewb1",285,197;
+close;
+SEW22:
+warp "prt_sewb2",100,100;
+close;
+SEW33:
+warp "prt_sewb3",63,157;
+close;
+SEW44:
+warp "prt_sewb4",157,135;
+close;
+SSD:
+menu "Sunken Ship 1",SUNSHI1,"Sunken Ship 2",SUNSHI2;
+SUNSHI1:
+warp "treasure01",164,116;
+close;
+SUNSHI2:
+warp "treasure02",100,100;
+close;
+TurtleD:
+menu "Turtle Dungeon 1",TURTD1,"Turtle Dungeon 2",TURTD2,"Turtle Dungeon 3",TURTD3,"Turtle Dungeon 4",TURTD4,"Turtle Dungeon 5",TURTD5;
+TURTD1:
+warp "tur_dun01",100,100;
+close;
+TURTD2:
+warp "tur_dun02",115,224;
+close;
+TURTD3:
+warp "tur_dun03",100,100;
+close;
+TURTD4:
+warp "tur_dun04",36,167;
+close;
+TURTD5:
+warp "tur_dun05",80,33;
+close;
+UmbD:
+menu "Umbala Dungeon 1",UMBAD1,"Umbala Dungeon 2",UMBAD2;
+UMBAD1:
+warp "um_dun01",139,82;
+close;
+UMBAD2:
+warp "um_dun02",100,100;
+close;
+TFD:
+menu "Lutie Toy Factory 1",LUTOYFAC1,"Lutie Toy Factory 2",LUTOYFAC2;
+LUTOYFAC1:
+warp "xmas_dun01",67,124;
+close;
+LUTOYFAC2:
+warp "xmas_dun02",174,102;
+close;
+
+E:
+mes "[Governante]";
+mes "Quando quiser alguma ajuda fale comigo novamente";
+close;
+}
+
+
+lhz_in01,263,263,4	script	Suporte	4_M_01,{
+	set @gm,getgmlevel();
+	if(@gm>80) goto ok;
+	mes "[Suporte]";
+	mes "SUMA DAQUI";
+	warp "prontera",150,163;
+	close;
+
+ok:
+mes "[Suporte]";
+mes "Olá, gostaria de ir para sala de suporte a player's?";
+next;
+menu "Sim",sim,"Não",nao;
+
+sim:
+mes "ok!!";
+mes "Vamos lá";
+next;
+warp "sec_in01",174,32;
+close;
+
+nao:
+mes "[Suporte]";
+mes "Tudo bem";
+mes "Volte quando precisar dos meus serviços";
+mes "Seu desejo é uma ordem :P";
+next;
+close;
+}
+
+lhz_in01,263,258,6	script	Supreme Kafra	4_F_KAFRA9,{
+	cutin "kafra_09",2;
+	callfunc "F_Kafra",0,4,1;
+
+	M_Save:
+		savepoint "lhz_in01",273,258;
+		callfunc "F_KafEnd",0,1;
+}
+//Saia Player
+-	script	Xo	0,{
+
+callfunc "Xo";
+}
+
+lhz_in01,263,258,0	duplicate(Xo)	Xo#01	-1,10,10
+lhz_in01,280,260,0	duplicate(Xo)	Xo#02	-1,10,10
+lhz_in01,265,264,0	duplicate(Xo)	Xo#03	-1,10,10
+lhz_in01,263,260,0	duplicate(Xo)	Xo#04	-1,10,10
+lhz_in01,276,258,0	duplicate(Xo)	Xo#05	-1,10,10
+
+//Função para que o Player sai do local oned está
+lhz_in01,0,0,0	script	Guarda da Staff	-1,{
+OnTouch:
+set @gm,getgmlevel();
+if(@gm>80) goto ok;;
+	mes "[Guarda]";
+	mes "Area não autorizada a Player's";
+	mes "saia imediatamente";
+	next;
+	warp "prontera",150,163;
+	close;
+
+ok:
+close;
+}
+
+
+lhz_in01,276,263,5	script	Ban-ip	4_M_TATIO,{
+if(getgroupid()<99){
+mes "Só  ^FF0000ADM's^000000 tem acesso a esse NPC!!";
+close;
+end;
+}
+mes "Olá ^339966"+strcharinfo(0)+"^000000 gostaria de banir alguém??";
+switch(select("Sim:Não")){
+	case 1:
+	next;
+	mes "Digite o nome do personagem que você quer banir:";
+	input .@char$;
+	query_sql("select `account_id` from `char` where `name`='"+.@char$+"' limit 1",.@acc);
+	query_sql ("select last_ip from login where account_id='"+.@acc+"'",.@ip$);
+	next;
+		if(!.@acc){
+		mes "^FF0000Personagem ^000000^0000FF"+.@char$+" ^000000 ^FF0000NÃO EXISTE!!^000000";
+		close;
+		end;
+		}		
+	mes "Agora digite o motivo por você estar banindo ele:";
+	input .@motivo$;
+	next;
+	mes "Você quer banir ele permante ou por algum tempo??";
+		switch(select("Temporariamente:Permanentemente")){
+		case 1:
+		next;
+		mes "Vou te perguntar o tempo, na seguinte ordem:";
+		mes "Ano(s),Mes(es),Dia(s),Hora(s)";
+		next;
+		mes "Caso seja apenas por algumas horas, por exemplo";
+		mes "basta você colocar ^FF00000 (zero)^000000 nos que não sejam horas!!";
+		next;
+		mes "Digite a quantidade de ^0000FFAnos^000000 :";
+		input .@anos;
+		next;
+		mes "Digite a quantidade de ^C0C0C0Meses^000000 :";
+		input .@meses;
+		next;
+		mes "Digite a quantidade de ^0000FFDias^000000 :";
+		input .@dias;
+		next;
+		mes "Digite a quantidade de ^C0C0C0Horas^000000 :";
+		input .@horas;
+		next;
+		set .@total,.@anos*8766+.@meses*730+.@dias*24+.@horas;
+		mes "Então pra confirmar você vai banir o ^339966"+.@char$+"^000000 por:";
+		mes "";
+		mes "^FF0000"+.@ano+"^000000 Ano(s),";
+		mes "^FF0000"+.@meses+"^000000Mes(es), ";
+		mes "^FF0000"+.@dias+"^000000Dia(s), ";
+		mes "^FF0000"+.@horas+"^000000Hora(s)";
+		mes "^FF0000Razão: ^000000"+.@motivo$;
+		next;
+		mes "Tem certeza??";
+			switch(select("Isso mesmo:Cancelar")){
+			case 1:
+			atcommand "@ban "+.@total+"h "+.@char$;
+			query_sql("insert into `banip` (account_id,ip,motivo,permanente) values ('"+.@acc+"',  '"+.@ip$+"', '"+.@motivo$+"', '0')");
+			next;
+			mes "Pronto deu tudo certo!!";
+			close;
+			end;
+			
+			case 2:
+			close;
+			end;
+			}
+		
+		case 2:
+		next;
+		mes "Tem certeza de banir o ^339966"+.@char$+"^000000^FF0000 pra sempre^000000??";
+			switch(select("Banir:Cancelar")){
+			case 1:
+			atcommand "@block "+.@char$;
+			query_sql ("insert into `banip` (account_id,ip,motivo,permanente) values ('"+.@acc+"',  '"+.@ip$+"', '"+.@motivo$+"', '1')");
+			next;
+			mes "Ok, ele foi banido pro ^FF0000resto da vida^000000!!";
+			close;
+			end;
+			}
+		}
+	case 2:
+	close;
+	end;
+	}
+}
+
+-	script	checkban	-1,{
+OnPCLoginEvent:
+set .@contrasenha$,"RAGNAWORLD2015"; //CONFIGURE AQUI A SENHA CONTRA BANIMENTOS PARA ADM'S
+query_sql ("select last_ip from login where account_id='"+getcharid(3)+"'",.@ip$);
+query_sql ("select ip from banip where ip='"+.@ip$+"' ORDER BY id DESC LIMIT 1 ",.@ip2$);
+
+	if (.@ip$==.@ip2$){
+	query_sql("select account_id from banip where ip='"+.@ip$+"' ORDER BY id DESC LIMIT 1 ",.@accban);
+	query_sql("select unban_time from login where account_id='"+.@accban+"'",.@restante);
+	query_sql ("select permanente from banip where account_id='"+.@accban+"' ORDER BY id DESC LIMIT 1 ",.@perm);
+	query_sql("select motivo from banip where account_id='"+.@accban+"' ORDER BY id DESC LIMIT 1 ",.@motivo$);
+		if(.@perm==1){
+			//AQUI EU FIZ UM SISTEMA CONTA ADM, PRA VC PODER TESTAR SEM SER BANIDO DA SUA CONTA ADM
+			if(getgroupid()==99){
+			mes "Você é um ADM, mas está na lista negra para ser banido 4EVER, digite a ^FF0000senha contra ban^000000 e prove sua liberdade:";
+			input .@senha$;
+				if(.@senha$== .@contrasenha$){
+					next;
+					mes "Parabéns, provou Administrar saporra aqui!!";
+					close;
+					end;
+					}
+					next;
+					mes "SENHA ERRADA, SINTO MUITO!!";
+					close2;
+					}	
+		query_sql("insert into `banip` (account_id,ip,motivo,permanente) values ('"+getcharid(3)+"',  '"+.@ip$+"', '"+.@motivo$+"', '1')");
+		atcommand "@block "+strcharinfo(0);
+		end;
+		}		
+		if(.@restante>0 && .@perm==0){
+			//AQUI EU FIZ UM SISTEMA CONTA ADM, PRA VC PODER TESTAR SEM SER BANIDO DA SUA CONTA ADM
+			if(getgroupid()==99){
+			mes "Você é um ADM, mas está na lista negra para ser banido temporariamente, digite a ^FF0000senha contra ban^000000 e prove sua liberdade:";
+			input .@senha$;
+				if(.@senha$== .@contrasenha$){
+					next;
+					mes "Parabéns, provou Administrar saporra aqui!!";
+					close;
+					end;
+					}
+					next;
+					mes "SENHA ERRADA, SINTO MUITO!!";
+					close2;
+					}						
+		query_sql ("insert into `banip` (account_id,ip,motivo,permanente) values ('"+getcharid(3)+"',  '"+.@ip$+"', '"+.@motivo$+"', '0')");
+		set .@tempo,.@restante - gettimetick(2);
+		atcommand "@ban "+.@tempo+"s "+strcharinfo(0);
+		end;
+		}
+	end;
+	}
+end;
+}
+//-----------------------TABELA SQL BAN POR IP-----------------
+//DROP TABLE IF EXISTS `banip`;
+//CREATE TABLE `banip` (
+//`id` int(11) unsigned NOT NULL auto_increment,
+//`account_id` int(11) unsigned NOT NULL default '0',
+//`ip` varchar(100) NOT NULL default '',
+//`motivo` varchar(150) NOT NULL default 'NAO DECLARADO',
+//`permanente` int(11) unsigned NOT NULL default '0',
+//PRIMARY KEY (`id`)
+//)ENGINE=MyISAM;
+//----------------------------------------------------------------
+
+
+
+lhz_in01,276,257,4	script	Sistema Cash	4_F_BERRYTEA,{
+
+set @npc$,"[^FF7F24Sistema Cash^000000]"; // Nome do npc
+set @lvl,99; // Level para administrar o npc
+
+if (getgmlevel() < @lvl){ mes @npc$; mes "Desculpe mais apenas administradores pode falar comigo."; close; }
+
+mes @npc$;
+mes "Olá "+strcharinfo(0)+" o que deseja administrar no sistema cash?";
+switch(select("- Adicionar Cash:- Remover Cash:- Ver Cash")){
+
+case 1:
+	next;
+	mes @npc$;
+	mes "Digite o login da conta que deseja adicionar o CashPoints.";
+	input .@cash$;
+
+		query_sql "SELECT `account_id` FROM `login` WHERE `userid`='"+.@cash$+"'",.@cont;
+		if(.@cont == 0)
+		{
+		next;
+		mes @npc$;
+		mes "Desculpe mais você não digitou o login da conta corretamente.";
+		close;
+	}
+	
+	next;
+	mes @npc$;
+	mes "Agora digite a quantidade de CashPoints que deseja adicionar a conta "+.@cash$+".";
+	input .@valor;
+			if(.@valor == 0)
+			{
+			next;
+			mes @npc$;
+			mes "Desculpe mas você digitou uma quantidade invalida.";
+			close;
+			}
+	next;
+	mes @npc$;
+	mes "Tem certeza que deseja adicionar ^00BFFF"+.@valor+"^000000 CashPoitns na conta ^00BFFF"+.@cash$+"^000000?";
+	if (select("- Sim:- Não") == 2) close;
+	
+	next;
+		mes @npc$;
+		mes "Os CashPoints da conta "+@cash$+" foram adicionados com sucesso.";
+		query_sql "UPDATE `login` SET `cash` = `cash` +"+.@valor+" WHERE `userid`='"+.@cash$+"'";
+		close;
+
+case 2:
+	next;
+	mes @npc$;
+	mes "Digite o login da conta que deseja remover CashPoints.";
+	input .@cash$;
+
+		query_sql "SELECT `account_id` FROM `login` WHERE `userid`='"+.@cash$+"'",.@cont;
+		if(.@cont == 0)
+		{
+		next;
+		mes @npc$;
+		mes "Desculpe mais você não digitou o login da conta corretamente.";
+		close;
+	}
+	
+	next;
+	mes @npc$;
+	mes "Agora digite a quantidade de CashPoints que deseja remover da conta "+.@cash$+".";
+	input .@valor;
+			if(.@valor == 0)
+			{
+			next;
+			mes @npc$;
+			mes "Desculpe mas você digitou uma quantidade invalida.";
+			close;
+			}
+	next;
+	mes @npc$;
+	mes "Tem certeza que deseja remover ^00BFFF"+.@valor+"^000000 CashPoitns da conta ^00BFFF"+.@cash$+"^000000?";
+	if (select("- Sim:- Não") == 2) close;
+	
+		next;
+		mes @npc$;
+		mes "Os CashPoints da conta "+@cash$+" foram removidos com sucesso.";
+		query_sql "SELECT `account_id` FROM `login` WHERE `userid`='"+.@cash$+"'",.@id;
+		query_sql "UPDATE `global_reg_value` SET `value` = `value`-"+.@valor+" WHERE `account_id`='"+.@id+"'";
+		close;
+
+case 3:
+	next;
+	mes @npc$;
+	mes "Digite o login da conta que deseja ver a quantidade de CashPoints.";
+	input .@cash$;
+
+		query_sql "SELECT `account_id` FROM `login` WHERE `userid`='"+.@cash$+"'",.@cont;
+		if(.@cont == 0)
+		{
+		next;
+		mes @npc$;
+		mes "Desculpe mais você não digitou o login da conta corretamente.";
+		close;
+	}
+	
+		next;
+		query_sql "SELECT `account_id` FROM `login` WHERE `userid`='"+.@cash$+"'",.@id;
+		query_sql "SELECT `value` FROM `global_reg_value` WHERE `account_id`='"+.@id+"'",.@saldo;
+		mes @npc$;
+		mes "A conta "+@cash$+" possui ^00BFFF"+.@saldo+"^000000 CashPoints. ";
+		close;
+	}
+}
+
+-	script	Sistema Cash#02	-1,{
+
+OnPCLoginEvent:
+
+query_sql "SELECT `cash` FROM `login` WHERE `account_id` = '"+getcharid(3)+"'", .@cash;
+if(.@cash == 0){ end; }
+
+dispbottom "Olá "+strcharinfo(0)+" você acaba de ganhar  "+.@cash+" CashPoins.";
+set #CASHPOINTS,#CASHPOINTS+.@cash;
+query_sql "UPDATE `login` SET `cash` = `cash` =0 WHERE `account_id`='"+getcharid(3)+"'";
+end;
+}
+
+-	script	Sistema Cash#03	-1,{
+
+OnPCLoginEvent:
+
+if (getgmlevel() >= 20){ end; }
+if(#CASHPOINTS == 0){ end; }
+dispbottom "Olá "+strcharinfo(0)+" você possui "+#CASHPOINTS+" CashPoints.";
+end;
+}
+//-------------------TABELA SQL SISTEMA DE CASH------------------------
+//ALTER TABLE `login` ADD `cash` INT( 11 ) NOT NULL DEFAULT '0';
+//---------------------------------------------------------------------

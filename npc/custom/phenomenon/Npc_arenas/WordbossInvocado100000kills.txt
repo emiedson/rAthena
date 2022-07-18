@@ -1,0 +1,24 @@
+-	script	WorldBoss	-1,{
+
+OnClock2056: 		// Hora de Inicio > 8:10PM
+	.@map$ = .townMap$[rand ( getarraysize ( .townMap$ ) - 1 )];
+	.@mins = .sleep / 60000;
+	announce "[Evento World Boss] Um World Boss aparecerá em " + .@mins + " minutos", bc_all, 0xFF0000;
+	sleep .sleep;
+	areamonster .@map$, 0, 0, 250, 250, "--ja--", .wBossId, 1, strnpcinfo(3) + "::OnWBossDied";
+	announce "[Evento World Boss] Um World Boss apareceu em " + .@map$ + " para causar estragos !!", bc_all, 0xFF0000;
+	end;
+	
+OnWBossDied:
+	announce "[Evento World Boss] " + strcharinfo(0) + " matou o World Boss! Parabéns!", bc_all, 0xFF0000;
+	getitem .rewardId, .rewardCount;
+	end;
+	
+OnInit:
+	setarray .townMap$[0],"niflheim"; //Cidades
+	.wBossId = 1001;		// MoB ID
+	.rewardId = 512;		// Premio ID
+	.rewardCount = 50;		// Quantidade de premio
+	.sleep = 60000; 		// 60000ms = 1min < Não mexa se não souber
+	end;
+}

@@ -1,0 +1,30 @@
+prontera,162,167,3	script	Sala VIP	51,{
+mes "[Sala VIP]";
+mes "Olá "+strcharinfo(0)+" o que deseja fazer?";
+next;
+if(select("Entrar na sala:Sair") == 2){
+close;
+}
+       if(countitem(7758) < 1){
+
+        mes "[Sala VIP]";
+mes "Sinto muito mas você não pode entrar na sala VIP.";
+close; 
+}
+       mes "[Sala VIP]";
+       mes "Tudo bem, irei te teletransportar";
+close2;
+       warp "prontera",150,150;
+end;
+}
+
+
+-	script	checagem	-1,{
+OnPCLoginEvent:
+if(countitem(7758) > 0){
+if(getgmlevel > 0){
+end;
+}
+delitem idaqui,1;
+end;
+}

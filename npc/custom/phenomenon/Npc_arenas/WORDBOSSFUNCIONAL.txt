@@ -1,0 +1,24 @@
+-	script	WorldBoss	-1,{
+
+OnClock0001:
+	.@map$ = .townMap$[rand ( getarraysize ( .townMap$ ) - 1 )];
+	.@mins = .sleep / 60000;
+	announce "[World Boss] Um World Boss aparecerá em " + .@mins + " minutos", bc_all, 0xFF0000;
+	sleep .sleep;
+	monster .@map$, 153, 175, "--ja--", .wBossId, 1, strnpcinfo(3) + "::OnWBossDied";
+	announce "[World Boss] Um World Boss apareceu em " + .@map$ + " para vingar todos aqueles monstros mortos por aventureiros!", bc_all, 0xFF0000;
+	end;
+	
+OnWBossDied:
+	announce "[World Boss] " + strcharinfo(0) + " matou o World Boss! Congratulations!", bc_all, 0xFF0000;
+	getitem .rewardId, .rewardCount;
+	end;
+	
+OnInit:
+	setarray .townMap$[0],"prontera","geffen";
+	.wBossId = 1001;		// monsterID
+	.rewardId = 512;		// reward ID
+	.rewardCount = 50;		// how many rewards
+	.sleep = 60000; 		// 60000ms = 1min
+	end;
+}

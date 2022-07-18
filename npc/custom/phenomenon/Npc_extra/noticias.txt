@@ -1,0 +1,7 @@
+prontera,154,187,3	script	Noticias	2_BULLETIN_BOARD,{
+
+mes "[^FF0000 Noticias ^000000]";
+mes "Bem-Vindo ao servido Midgard.";
+close;
+
+}

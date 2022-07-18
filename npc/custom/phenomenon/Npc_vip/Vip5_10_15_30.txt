@@ -1,0 +1,88 @@
+// 30 dias
+function	script	F_TicketAddVip	{
+	Query_SQL "SELECT `days` FROM `viptable` WHERE `vipacc_id` = '"+GetCharID(3)+"'", .@checkDays;
+	if (.@checkDays > 0) {
+		Set .@setDays, (.@checkDays + 30);
+		Query_SQL "UPDATE `viptable` SET `days`='"+.@setDays+"' WHERE `vipacc_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `group_id` FROM `login` WHERE  `account_id`='"+GetCharID(3)+"'", .@userLevel;
+		If (.@userLevel < 1) 
+			Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+	}
+	Else {
+		Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `userid` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userID$;
+		Query_SQL "SELECT `email` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userEmail$;
+		Query_SQL "INSERT INTO `viptable` (`vipacc_id`,`vip_id`,`days`,`email`) VALUES ('"+GetCharID(3)+"','"+.@userID$+"','30','"+.@accEmail$+"')";
+	}
+	AtCommand "@reloadpcdb";
+	dispbottom "Você recebeu 30 dias de VIP, parabéns!";
+	specialeffect2 338;
+	End;
+Return;
+}
+// 15 dias
+function	script	F_TicketAddVip15	{
+	Query_SQL "SELECT `days` FROM `viptable` WHERE `vipacc_id` = '"+GetCharID(3)+"'", .@checkDays;
+	if (.@checkDays > 0) {
+		Set .@setDays, (.@checkDays + 15);
+		Query_SQL "UPDATE `viptable` SET `days`='"+.@setDays+"' WHERE `vipacc_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `group_id` FROM `login` WHERE  `account_id`='"+GetCharID(3)+"'", .@userLevel;
+		If (.@userLevel < 1) 
+			Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+	}
+	Else {
+		Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `userid` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userID$;
+		Query_SQL "SELECT `email` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userEmail$;
+		Query_SQL "INSERT INTO `viptable` (`vipacc_id`,`vip_id`,`days`,`email`) VALUES ('"+GetCharID(3)+"','"+.@userID$+"','15','"+.@accEmail$+"')";
+	}
+	AtCommand "@reloadpcdb";
+	dispbottom "Você recebeu 15 dias de VIP, parabéns!";
+	specialeffect2 338;
+	End;
+Return;
+}
+// 7 dias
+function	script	F_TicketAddVip10	{
+	Query_SQL "SELECT `days` FROM `viptable` WHERE `vipacc_id` = '"+GetCharID(3)+"'", .@checkDays;
+	if (.@checkDays > 0) {
+		Set .@setDays, (.@checkDays + 7);
+		Query_SQL "UPDATE `viptable` SET `days`='"+.@setDays+"' WHERE `vipacc_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `group_id` FROM `login` WHERE  `account_id`='"+GetCharID(3)+"'", .@userLevel;
+		If (.@userLevel < 1) 
+			Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+	}
+	Else {
+		Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `userid` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userID$;
+		Query_SQL "SELECT `email` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userEmail$;
+		Query_SQL "INSERT INTO `viptable` (`vipacc_id`,`vip_id`,`days`,`email`) VALUES ('"+GetCharID(3)+"','"+.@userID$+"','7','"+.@accEmail$+"')";
+	}
+	AtCommand "@reloadpcdb";
+	dispbottom "Você recebeu 7 dias de VIP, parabéns!";
+	specialeffect2 338;
+	End;
+Return;
+}
+// 1 dia
+function	script	F_TicketAddVip1	{
+	Query_SQL "SELECT `days` FROM `viptable` WHERE `vipacc_id` = '"+GetCharID(3)+"'", .@checkDays;
+	if (.@checkDays > 0) {
+		Set .@setDays, (.@checkDays + 1);
+		Query_SQL "UPDATE `viptable` SET `days`='"+.@setDays+"' WHERE `vipacc_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `group_id` FROM `login` WHERE  `account_id`='"+GetCharID(3)+"'", .@userLevel;
+		If (.@userLevel < 1) 
+			Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+	}
+	Else {
+		Query_SQL "UPDATE `login` SET `group_id`='5' WHERE `account_id`='"+GetCharID(3)+"'";
+		Query_SQL "SELECT `userid` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userID$;
+		Query_SQL "SELECT `email` FROM `login` WHERE `account_id`='"+GetCharID(3)+"'", .@userEmail$;
+		Query_SQL "INSERT INTO `viptable` (`vipacc_id`,`vip_id`,`days`,`email`) VALUES ('"+GetCharID(3)+"','"+.@userID$+"','1','"+.@accEmail$+"')";
+	}
+	AtCommand "@reloadpcdb";
+	dispbottom "Você recebeu 1 dia VIP, parabéns!";
+	specialeffect2 338;
+	End;
+Return;
+}

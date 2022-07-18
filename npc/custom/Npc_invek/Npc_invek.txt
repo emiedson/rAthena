@@ -1,0 +1,12 @@
+invek,175,174,4	shop	Vendendo de paes	1_M_02,585:10
+invek,180,184,4	shop	Vendendo de doces	1_M_03,596:100,597:500,529:10
+invek,194,184,4	shop	Vendendo de carnes	1_M_04,517:100
+invek,194,188,4	shop	Vendendora de frutas	1_M_INNKEEPER,576:500,512:100,513:100,515:50,516:50
+invek,184,201,4	shop	Vendendo de peixes	1_M_JOBGUIDER,579:500,567:500
+invek,190,195,4	shop	Vendendora de varios	1_F_01,578:1000,564:500,567:500,568:200
+invek,130,158,4	shop	Padaria	1_F_ORIENT_01,592:500,593:500,594:600,595:600
+invek,134,178,4	shop	Vendendo de sucos	1_F_ORIENT_02,531:100,532:100,534:100
+invek,169,212,4	shop	Vendendo de potion	2_M_MOLGENSTEIN,545:250
+invek,165,211,4	shop	Vendendo de flores	4_M_BARBER,748:100000,749:100000
+invek,121,56,4	shop	Asougueiro	4_M_01,579:500,567:500,517:100
+invek,114,56,4	shop	Utilidades	4_F_JPN,501:-1,502:-1,503:-1,504:-1

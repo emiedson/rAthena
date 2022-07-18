@@ -1,0 +1,55 @@
+// https://rathena.org/board/topic/114468-world-boss-script-modification/
+
+-	script	world_boss_main	-1,{
+	
+	OnInit:
+		.duration_minute = 60;
+		
+		// random map list
+		setarray .map$, "pay_dun02", "orcsdun01";
+		.map_size = getarraysize(.map$);
+		
+		// random reward list
+		setarray .item_id, 501, 502, 503;
+		setarray .amount, 1, 2, 3;
+		.item_id_size = getarraysize(.item_id);
+		
+		.npc_name$ = strnpcinfo(3);
+		end;
+
+	OnMon2223:	// Segunda-feira 8:21PM
+	OnThu2021:	// quinta-feira 8:21PM
+		.@map$ = .map$[rand(.map_size)];
+		
+		for (.@i = 1; .@i > 0; .@i-- {
+			announce "[Evento W.B] Um World Boss aparecerá em " + .@i + " minutos", bc_all, 0xFF0000;
+			sleep 60000;
+		}
+		monster .@map$, 0, 0, "﻿WORLD BOSS 1", 20760, 1, .npc_name$+"::OnKill";
+		monster .@map$, 0, 0, "WORLD BOSS 2", 20760, 1, .npc_name$+"::OnKill";
+		monster .@map$, 0, 0, "WORLD BOSS 3", -3, 1, .npc_name$+"::OnKill"; // Random
+		announce "[Evento W.B] World Bosses apareceu em " + .@map$ + " para causar destruição!!", bc_all, 0xFF0000;
+		
+		sleep (.duration_minute * 60000);
+		killmonster .@map$, .npc_name$+"::OnKill";
+		end;
+		
+	OnKill:
+		announce "[Evento W.B] " + strcharinfo(0) + " matou um dos World Boss! Parabéns!", bc_all, 0xFF0000;
+		
+		// Rewards:
+		getitem 512, 100;
+		getitem 512, 200;
+		getitem 512, 300;
+		
+		// treasure box
+		getmapxy(.@map$, .@x, .@y, 0);
+		monster .@map$, .@x + rand(-2,2), .@y + rand(-2,2), "﻿--ja--", 20760, 1, .npc_name$+"::OnTreasureBox";
+		end;
+	
+	OnTreasureBox:
+		addrid(1);
+		.@i = rand(.item_id_size);
+		getitem .item_id[.@i], .amount[.@i];
+		end;
+}

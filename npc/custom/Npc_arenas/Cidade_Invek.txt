@@ -1,0 +1,47 @@
+// ========================================================
+// By JokerSama!!! ****************************************
+// ========================================================
+// Configurações ******************************************
+// ========================================================
+// Agente Sword City 
+prontera,161,193,4	script	Agente Sword City	10126,{
+// ========================================================
+// Nome do NPC (Padrão Arnold Procurador)
+   set .nome$, "^880055[ Agente Arion ]^000000";
+   cutin "16isa",2;
+// ========================================================
+
+	mes .nome$;
+	mes "Olá ^FF8000"+strcharinfo(0)+"^000000.";
+	mes "Eu sou oh guia da Sword City";
+	next;
+	mes .nome$;
+	mes "A Sword City é conhecida";
+	mes "como a cidade dos aventureiros";
+	mes "Gostaria de ir para Sword City?";
+	next;
+switch(select("- Sim:- Não, obrigado."))
+{
+	case 1:
+		if (countitem(512)<=0){    // item de pemição (Padrão ID - Quantidade)
+		mes .nome$;
+		mes "Você não tem o Cartão de entrada";
+		mes "Tem 2 meios de se conseguir!";
+		mes	"1° No shop cash";
+		mes	"2° No Npc loja de Missões";
+		cutin "",255;
+		}
+		else{
+		warp "firstcity",215,84;  // Mapa Sword City
+}
+close;
+	
+	case 2:	
+		mes .nome$;
+		mes "Tudo bem volte quando quiser.";
+		mes	"Link do nosso Site a baixo.";
+		mes	"<URL>Click-PhenomenonRO<INFO>http://serv.ignitionservers.tk/</INFO></URL>";  //Link do Site
+		cutin "",255;
+	end;
+	}
+}

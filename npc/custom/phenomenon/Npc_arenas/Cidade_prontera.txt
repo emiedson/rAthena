@@ -1,0 +1,10 @@
+// Agente de prontera
+prontera,161,193,4	script	Agente de Vendas	4_EP16_MARK,{
+	mes "[ ^0065DFAgente Org^000000 ]";
+	mes strcharinfo(0)+", Bom dia!! Eu sou oh agente da Cidade de Prontera, responsavel pela organização de vendas";
+	mes "Bom eu posso leva você para cidade dos Mercadores";
+	mes "Parti para cidade dos Mercadores?";
+	if (select("Certo!","Não Obrigado.") == 2) close;
+	warp "izlude",127,132;
+	close;
+}

@@ -1,0 +1,110 @@
+//===== rAthena Script ==========================================
+//= Monster Hunter Mission
+//===== By: =====================================================
+//= GodKnows Jhomz
+//===== Current Version: ========================================
+//= 1.0
+//===== Compatible With: ========================================
+//= rAthena Project
+//===== Description: ============================================
+//= A custom made copy of Monster Hunting Mission of
+//= Ragnarok Online Philippines Event for the month of September.
+//== https://www.ragnarokonline.com.ph/news/monster-hunt-sep2017
+//===== Additional Comments: ====================================
+//= Be sure to add the quest data in your quest_db and grf.
+//== db\import\quest_db.txt
+//== data\questid2display.txt
+//===============================================================
+
+prontera,162,149,3	script	Master Hunter#pro	747,{
+	.npcname$ = "[Master Hunter]";
+	mes .npcname$;
+	mes "Olá corajosos aventureiros!";
+	mes "Finalmente chegou a hora de caçar monstros!";
+	mes "É o que todo mundo estava esperando";
+next;
+	switch(select("Iniciar missão [Monster Hunt]:relatório de busca [Monster Hunt]")){
+		case 1:
+			if(!mhmstarted){
+				mes .npcname$;
+				mes "Você escolheu corretamente, mas não será divertido se eu lhe disser o nome dos monstros agora, não é?";
+				next;
+				mes .npcname$;
+				mes "Entregue 50.000 Zeny e 50 itens aleatórios de monstros";
+				next;
+				mes .npcname$;
+				mes "ESTÁ BEM! Escolha uma missão ~";
+				next;
+				menu "Escolha a missão",-; //I don't know why pRO Put a Choose quest menu but they randomize the quest lol.
+				.@mob = rand(1,7);
+				if(.@mob == 1){.@mob$ = "Orc Warrior"; mhmid = 931; setquest 100001;}	//Orcish Voucher
+				else if(.@mob == 2){.@mob$ = "Hode"; mhmid = 1055; setquest 100002;}	//Earthworm Peeling
+				else if(.@mob == 3){.@mob$ = "Sohee"; mhmid = 1020; setquest 100003;}	//Black Hair
+				else if(.@mob == 4){.@mob$ = "Bigfoot"; mhmid = 948; setquest 100004;}	//Bear's Footskin
+				else if(.@mob == 5){.@mob$ = "Raydric"; mhmid = 7054; setquest 100005;}	//Brigan
+				else if(.@mob == 6){.@mob$ = "Pasana"; mhmid = 7110; setquest 100006;}	//Broken Sword
+				else {.@mob$ = "Anolian"; mhmid = 7003; setquest 100007;}				//Anolian Skin
+				mhmstarted = 1;
+				mes .npcname$;
+				mes "Você escolheu ^0000FF"+.@mob$+"^000000!";
+				next;
+				mes .npcname$;
+				mes "Escrevi todos os detalhes do relatório de missão depois que você terminar o relatório para mim";
+				end;
+				} else {
+				mes .npcname$;
+				mes "Se você completou a missão, envie suas missões antigas antes de aceitar uma nova.";
+				end;
+				}
+				break;
+		case 2:
+			if(countitem(mhmid) < 50 || Zeny < 50000){
+				mes .npcname$;
+				mes "Se você deseja ver seus resultados";
+				mes "termine a missão primeiro";
+				end;
+			} else {
+				delitem mhmid,50;
+				set Zeny,Zeny-50000;
+				set mhmstarted,0;
+				mes .npcname$;
+				mes "Uau ~ missão completa!";
+				mes "Mas eu tenho tantas missões para você experimentar !! Tudo bem, para a próxima missão!";
+				.@r = rand(1,11);
+				if(.@r == 1){.@reward = 12215; .@rewardamt = 10;} 	//Level 10 Increase Agility Scroll
+				if(.@r == 2){.@reward = 12216; .@rewardamt = 10;} 	//Level 10 Blessing Scroll
+				if(.@r == 3){.@reward = 12411; .@rewardamt = 1;}	//HE Battle Manual
+				if(.@r == 4){.@reward = 12531; .@rewardamt = 1;}	//White Potion Box(100)
+				if(.@r == 5){.@reward = 12073; .@rewardamt = 2;}	//Bear Paw Special
+				if(.@r == 6){.@reward = 12078; .@rewardamt = 2;}	//Large Leaf Combo
+				if(.@r == 7){.@reward = 12083; .@rewardamt = 2;}	//Royal Tea
+				if(.@r == 8){.@reward = 12098; .@rewardamt = 2;}	//Strawberry Rice Ball
+				if(.@r == 9){.@reward = 12093; .@rewardamt = 2;}	//Special Toast
+				if(.@r == 10){.@reward = 12088; .@rewardamt = 2;}	//Spicy Curry
+				if(.@r == 11){.@reward = 5579; .@rewardamt = 1;}	//Wanderer's Sakkat
+				if(checkquest(100001) == 1){
+					erasequest 100001;
+				}
+				if(checkquest(100002) == 1){
+					erasequest 100002;
+				}
+				if(checkquest(100003) == 1){
+					erasequest 100003;
+				}
+				if(checkquest(100004) == 1){
+					erasequest 100004;
+				}
+				if(checkquest(100005) == 1){
+					erasequest 100005;
+				}
+				if(checkquest(100006) == 1){
+					erasequest 100006;
+				}
+				if(checkquest(100007) == 1){
+					erasequest 100007;
+				}
+				getitem .@reward,.@rewardamt;
+				end;
+			}
+	}
+}

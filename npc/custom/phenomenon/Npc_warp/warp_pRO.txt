@@ -1,0 +1,3 @@
+// -- Warps pRO
+tavern,37,39,0	warp	Taberna	2,2,prontera,198,164
+z_agit,23,109,0	warp	Quest	2,2,prontera,156,191

@@ -1,0 +1,63 @@
+/*{
+	"brAthenaScript" : {
+		"Nome" : "Mestra das Classes",
+		"Versão" : 1.0,
+		"Créditos" : {
+			"scriptPor" : "Twoac",
+			"algunsDialogosPor" : "Jupi"
+		}
+	}
+}*/
+prontera,152,193,5	script	Mestra das Classes	4_F_NYDHOG,{
+	mes "[ ^ff0000Mestra das Classes^000000 ]";
+	set .@bjr[0],((Class>=7 && Class<=20) || (Class>=4008 && Class<=4021) || Class==23?99:0);
+	set .@bjr[1],(Class==0 || Class==4001?10:((Class>=1 && Class <=6) || Class==4046?40:((Class>=7 && Class<=20) || (Class>=4002 && Class<=4007)?50:(Class>=4008 && Class<=4021?70:(Class==23?99:0)))));
+	if(!.@bjr[1]){
+		mes "Sinto muito, não posso fazer nada por você...";
+		close;
+	}else if(SkillPoint){
+		mes strcharinfo(0)+", use todos os pontos na distribuição de suas Habilidades.";
+		close;
+	}else if(JobLevel < .@bjr[1] || (.@bjr[0] && BaseLevel < .@bjr[0])){
+		mes "Você precisa dominar as artes de sua Profissão e estar pronto Fisicamente e Mentalmente para Evoluir.";
+		close;
+	}
+	if(!Class){
+		setarray .@c,1,2,3,4,5,6,23,24,25,4046;
+	}else{
+		if((Class >=1 && Class <= 6) || Class==4046){
+			set .@c[0],(Class==1?7:(Class==2?9:(Class==3?11:(Class==4?8:(Class==5?10:(Class==6?12:(Class==4046?4047:0)))))));
+			set .@c[1],(Class==1?14:(Class==2?16:(Class==3?(Sex?19:20):(Class==4?15:(Class==5?18:(Class==6?17:(Class==4046?4049:0)))))));
+		}else if(Class >= 7 && Class <= 20){
+			set .@cc,(Class==7 || Class==14?(Class==7?4054:4066):(Class==9||Class==16?(Class==9?4055:4067):(Class==11 || Class==(Sex?19:20)?(Class==11?4056:(Sex?4068:4069)):(Class==8 || Class==15?(Class==8?4057:4070):(Class==10 || Class==18?(Class==10?4058:4071):(Class==12 || Class==17?(Class==12?4059:4072):0))))));
+			mes strcharinfo(0)+", se você optar por não ^ff0000Transceder^000000, Você não terá as Habilidades Transcedentais !";
+			next;
+			set .@c[0],(select("Transceder","Virar "+jobname(.@cc))==1?4001:.@cc);
+			set lastJob,Class;
+		}
+		else if(Class == 4001) set .@c[0],(lastJob==7 || lastJob==14?4002:(lastJob==9 || lastJob==16?4003:(lastJob==11 || lastJob==19 || lastJob==20?4004:(lastJob==8 || lastJob==15?4005:(lastJob==10 || lastJob == 18?4006:(lastJob==12 || lastJob==17?4007:0))))));
+		else if(Class >= 4002 && Class <= 4007) set .@c[0],lastJob+4001;
+		else if(Class >=4008 && Class <=4021){
+			set .@c[0],(Class==4008 || Class==4015?(Class==4008?4060:4073):(Class==4010 || Class==4017?(Class==4010?4061:4074):(Class==4012 || Class==(Sex?4020:4021)?(Class==4011?4062:(Sex?4075:4076)):(Class==4009 || Class==4016?(Class==4009?4063:4077):(Class==4011 || Class==4016?(Class==4011?4064:4078):(Class==4013 || Class==4018?(Class==4013?4065:4079):0))))));
+		}
+	}
+	if(getarraysize(.@c) > 1){
+		mes "Você pode virar as seguintes Classes";
+		set .@menu$, jobname(.@c[0]);
+		for(set @i,1; @i < getarraysize(.@c); set @i,@i+1){
+			set .@menu$,.@menu$+":"+jobname(.@c[@i]);
+		}
+		next;
+		set .@m,select(.@menu$)-1;
+	}
+	if(.@cc || getarraysize(.@c) > 1)
+		mes "[ ^ff0000Mestra das Classes^000000 ]";
+	mes "Você tem certeza que quer "+(.@c[0]==4001?"Transceder":"ser "+jobname(.@c[.@m]))+"?";
+	if(select("Sim !:não...")==2)
+		close;
+	if(.@c == 4001){
+		jobchange 4001;
+		resetlvl(1);
+	}else jobchange .@c[.@m];
+	close;
+}

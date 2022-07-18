@@ -1,0 +1,84 @@
+//(=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+//(                     DarkDragon                          )
+//(                     -Apresenta-                         )
+//(                                                         )
+//(            -- [S] [c] [r] [i] [p] [t] [s] --            )
+//(     _   _   _   _   _      _   _   _   _   _   _   _    )
+//(    /  /  /  /  /     /  /  /  /  /  /  /    )
+//(   ( V | e | n | u | s |  ( s | c | r | i | p | t | s )  )
+//(    _/ _/ _/ _/ _/    _/ _/ _/ _/ _/ _/ _/   )
+//(                                                         )
+//(           Advanced Scripts (c) 2008 Crédits             )
+//(		http://www.venus-emulator.net               )
+//(=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+//----------------------------------------------------------
+// Proibido a distribuição sem permissão do autor.
+//----------------------------------------------------------
+//= Por: DarkDragon	Compátivel: Venus	Versão: 1.0
+//----------------------------------------------------------
+// Descrição:
+// Atendente vip
+//----------------------------------------------------------
+// Comentários Adicionais:
+//= 1.0 Iniciado o Npc [DarkDragon]
+//----------------------------------------------------------
+//
+//tavern,66,40,3	shop	Utilidades Especiais	564,501:50,502:200,503:550,504:1200,506:40,522:8500,514:200,525:500,601:60,602:300,1065:100,611:40,678:100000,608:85000,7472:15000,7473:25000,7474:30000,7475:35000,7476:50000,7477:55000,7478:60000,7479:75000,7480:80000,7481:100000,12125:10000,12126:20000,12127:45000,12128:80000,12129:80000,7452:2000,7453:3000,7455:3000,7456:2000,7457:2500,7031:2000,567:2000,568:2000,582:1500,7139:50000,7135:50000,7136:50000,7127:100000,7128:100000,7129:100000,7130:100000,7131:100000,1750:1,1770:2,1756:3,1751:3,1755:3,1767:3,1754:3,1762:3,1752:3,1757:3,1753:4,1761:10,1760:10,1768:10,1759:10,1769:10,1763:10,1758:10,1764:20,1765:30,1766:40
+//
+
+
+//sec_in01,173,166,4	script	Guarda Da Sala Vip	767,{
+
+//mes "Olá"+strcharinfo(0)+" !";
+//mes "Gostaria De Voltar Para Prontera ?";
+//next;
+//menu "Sim",sin,"Não",nem;
+
+//sin:
+//mes "Até Mais!";
+//next;
+//warp "prontera.gat",155,181;
+//close;
+
+//nem:
+//mes "Quando Quiser me Avise !";
+//next;
+//close;
+
+//}
+//
+
+//
+//-	script	gr_core	-1,{
+//
+//OnInit:
+//	monster	"guild_vs1",0,0,"--ja--",1288,10,"gr_core::OnKill";
+//	end;
+
+//OnKill:
+//dispbottom "Empérium foi derrotado!!";
+//	monster	"guild_vs1",0,0,"--ja--",1288,1,"gr_core::OnKill";
+//	end;
+//}
+
+//
+
+-	script	hide		-1,{
+OnPcLoginEvent:
+	if (getgmlevel() >=20) {
+		atcommand strcharinfo(0) + "@hide";
+		mes "[^FF0000Aviso Staff^000000]";
+		mes "Não Abuse da Sua Autoridade";
+		mes "CM/GM";
+		mes "Qualquer Duvida ou Bug, ";
+		mes "Informe para o [ADM]JokerSama";
+		mes "ignitionservers@gmail.com";
+		close;
+		end;
+	} else {
+		sleep2 5000;
+		end;
+	}
+}
+
+//

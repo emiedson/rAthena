@@ -1,0 +1,9 @@
+// Sala de Quest
+prontera,165,170,3	script	Sala de Quest	4_F_LGTGRAND,{
+	mes "[ ^0065DFSala de Quest^000000 ]";
+	mes "Bem-Vindo ao Runa-Medigard eu sou senhora das quest gostaria de entra na sala";
+	mes "Entre na Sala";
+	if (select("Certo!","Não Obrigado.") == 2) close;
+	warp "sec_in02",130,161;
+	close;
+}

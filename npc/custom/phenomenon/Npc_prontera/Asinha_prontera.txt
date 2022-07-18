@@ -1,0 +1,152 @@
+//=============================================================//
+//--------------------------CABEÇA-----------------------------//
+//=============================================================//
+
+-	shop	event_asinha	139,501:-1 
+-	script	shop_conf#10	-1,{
+end;
+ 
+OnInit:
+setarray $qitens3[0],5634,5635,5653,5658,5692,5796;
+setarray $qquant[0],0,0,0,0,0,0;
+ 
+        npcshopdelitem "event_asinha",501;
+        if(getarraysize($qitens3) >= 1) {
+        npcshopitem "event_asinha",$qitens3[0],$qquant[0];
+        for (set .@i,1; .@i < getarraysize($qitens3); set .@i,.@i+1) {
+        npcshopadditem "event_asinha",$qitens3[.@i],$qquant[.@i];
+                }
+        }
+        end;
+}
+
+prontera,150,58,5	script	Costureiro event	410,{
+ 
+//configuração dos itens:
+
+/* Aqui abaixo são os ids dos itens que estarão disponíveis no npc de quest.*/
+setarray $qitens3[0],5634,5635,5653,5658,5692,5796;
+setarray $qquant[0],0,0,0,0,0,0;
+
+/* Aqui configure os itens necessarios para a quest em @itens e a quantidade em @quant.*/
+setarray @itens[0],4004,909,713,720,529,4004,909,713,720,529,4001,909,713,720,529,4001,909,713,720,529,4010,909,713,720,529,4010,909,713,720,529;
+setarray @quant[0],10,300,200,5,50,10,300,200,5,50,10,300,200,5,50,10,300,200,5,50,10,300,200,5,50,10,300,200,5,50;
+
+mes "[ ^0000ffCostureiro^000000 ]";
+mes "Olá...";
+mes "Eu sou o responsável pelas Quest dos equipamentos para Orelhas.";
+next;
+mes "[ ^0000ffCostureiro^000000 ]";
+mes "Basta você selecionar o item que deseja e clicar na opção comprar.";
+mes "O numero em verde proximo ao nome dos itens, indica a quantidade daquele item disponível em seu armazém...";
+close2;
+callshop "event_asinha",1;
+end;
+
+OnInit:
+npcshopattach "event_asinha",1;
+end;
+ 
+ 
+OnBuyItem:
+        for (set .@i,0; .@i < getarraysize(@bought_nameid); set .@i,.@i+1) {
+        set @cost,callfunc("Q_bonuscusto10",@bought_nameid[.@i]);
+		/* Abaixo estão configurados 5 itens de quest, para adicionar outros basta seguir o exemplo, não esquecendo de alterar o $qitens.*/
+		if (@bought_nameid[.@i] == $qitens3[0]) {
+		/* O nummin e nummax são as variáveis que controlam o número de itens da quest. se sua quest tiver 5 itens coloque nummin =0 e nummax = 4
+		se o próximo item tiver 3 itens, coloque nummin = 5 e nummax = 8 na segunda parte, e assim por diante, não esqueã de alterar o numerodoitem
+		
+		A configuração que está aplicada é de 6 itens para cada quest.*/
+		set @nummin1,0;
+		set @nummax1,4;
+		set @numerodoitem,0;
+		callsub Terminando;
+}
+		if (@bought_nameid[.@i] == $qitens3[1]) {
+		set @nummin1,5;
+		set @nummax1,9;
+		set @numerodoitem,1;
+		callsub Terminando;
+}		
+		if (@bought_nameid[.@i] == $qitens3[2]) {
+		set @nummin1,10;
+		set @nummax1,14;
+		set @numerodoitem,2;
+		callsub Terminando;
+}
+		if (@bought_nameid[.@i] == $qitens3[3]) {
+		set @nummin1,15;
+		set @nummax1,19;
+		set @numerodoitem,3;
+		callsub Terminando;
+}
+		if (@bought_nameid[.@i] == $qitens3[4]) {
+		set @nummin1,20;
+		set @nummax1,24;
+		set @numerodoitem,4;
+		callsub Terminando;
+}
+		if (@bought_nameid[.@i] == $qitens3[5]) {
+		set @nummin1,25;
+		set @nummax1,29;
+		set @numerodoitem,5;
+		callsub Terminando;
+}
+		if (@bought_nameid[.@i] == $qitens3[6]) {
+		set @nummin1,30;
+		set @nummax1,34;
+		set @numerodoitem,6;
+		callsub Terminando;
+}
+
+Terminando:
+		mes "[ ^0000ffCostureiro^000000 ]";
+		mes "Para fazer este item serão necessários:";
+		for (set .@m,@nummin1; .@m <= @nummax1; set .@m,.@m+1){
+		mes getitemname(@itens[.@m])+" - (^00ff00"+countitem(@itens[.@m])+"^000000/"+@quant[.@m]+")";
+}
+		next;	
+		mes "[ ^0000ffCostureiro^000000 ]";
+		mes "Você possui todos os itens?";
+		if(select("Sim, prossiga com a quest.:Não, vou consegui-los.")==2){
+		next;
+		mes "[ ^0000ffCostureiro^000000 ]"; 
+		mes "Vá em busca dos itens e volte assim que consegui-los."; 
+		close;
+}
+		for (set .@c,@nummin1; .@c < @nummax1; set .@c,.@c+1){
+		if(countitem(@itens[.@c]) <= @quant[.@c]){
+		callsub Sem_item;
+	}
+}
+			next;
+			mes "Meus Parabéns, você conseguiu, aqui está seu item.";
+			for (set .@d,1; .@d < 6; set .@d,.@d+1) {
+			delitem @itens[.@d],@quant[.@d];
+}
+			getitem $qitens3[@numerodoitem],1;
+			announce "[Mestre das Quests]: O jogador "+strcharinfo(0)+" acaba de concluir uma de minhas quests e obter o item: "+getitemname($qitens3[@numerodoitem]),bc_all;
+			close;
+			end;
+}
+
+deletearray @bought_nameid[0],getarraysize(@bought_nameid);
+deletearray @bought_quantity[0],getarraysize(@bought_quantity);
+
+end;
+
+Sem_item:
+			next;
+			mes "[ ^0000ffCostureiro^000000 ]";
+			mes "Me desculpe, mas você não possui todos os itens"; close;   
+}
+
+function	script	Q_bonuscusto10	{
+        for(set .@i,0; .@i < getarraysize($qitens3); set .@i,.@i+1) {
+        if($qitens3[.@i] == getarg(0)) {
+        return $qquant[.@i];
+                }
+        }
+return;
+}
+ 

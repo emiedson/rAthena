@@ -1,0 +1,23 @@
+//===== Cronus Script ========================================
+//= Segurança VIP
+//===== Por: =================================================
+//= FaLCoN
+//===== Versão Atual: ========================================
+//= 1.0
+//===== Compatível Com: ======================================
+//= Cronus TxT & SQL
+//===== Changelog: =========================================== 
+//= 1.0 NPC Criado  			-> FaLCoN
+//============================================================
+tavern,62,50,3	script	Segurança VIP	899,30,30,{
+//============================================================
+//=== Configuração =======
+//set @lvip, 1; // - Coloque aqui o level de vip do seu servidor. (Padrão: 1)
+//set @lvpl, 0; // - Coloque aqui o level de jogadores normal de seu servidor. (Padrão: 0)
+
+//=== Inicio do Script ===
+if (vip_status(1)) { mes "[^FF0000 Segurança VIP ^000000]"; mes "Você tem autorização para entrar!"; Close; }
+OnTouch:
+if (!vip_status(1)) { mes "[^FF0000 Segurança VIP ^000000]"; mes "Você entrou em uma área proibida, saia imediatamente!"; close2; warp "prontera",156,191; }
+end;
+}

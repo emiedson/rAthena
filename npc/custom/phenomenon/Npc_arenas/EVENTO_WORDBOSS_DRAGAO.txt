@@ -1,0 +1,45 @@
+pay_dun00,138,138,4	script	Assistente Zumbi	2011,{
+.@kill_count = (.monster_kill_requirement - $world_boss_counter);
+mes "[ World Boss LvL75 ]";
+mes "Status :" +($world_boss_active == 1?"^00FF00Em Fúria^000000":"^FF0000Inativo^000000");
+mes "PERIGO - [ ^0000FF"+.@kill_count+"^000000 ]";
+mes "=============================";
+mes "Recompensa:";
+mes "<ITEM>World Boss Recompensa<INFO>35002</INFO></ITEM>";
+end;
+
+OnNPCKillEvent:
+	if($world_boss_active == 1) end;
+	if(killedrid != 1015) end; // Linha adicionada para que ele conte apenas o monstro específico
+		$world_boss_counter += 1;
+		if($world_boss_counter == .monster_kill_requirement){ 
+			donpcevent "World Boss::OnSummon";
+			}
+		end;
+
+OnSummon:
+	$world_boss_active = 1;
+	announce " [WordBoss] Karan o Maldito foi Despertado. ",0;
+	sleep 1000; //= 1 Second Refresh
+	monster "prt_fild08",168,356,"World Boss",20760,1,"World Boss::OnBossKill";
+	end;
+	
+OnBossKill:
+	$world_boss_active = 0;
+	$world_boss_counter = 0;
+	announce " [WordBoss] Karan o Maldito foi Derrotado por " + strcharinfo(0) + ".",0;
+	getitem 35002,1;
+	end;
+		
+OnInit:
+	.monster_kill_requirement = 2000;
+	freeloop(1);
+	while(1){
+		.@kill_count = (.monster_kill_requirement - $world_boss_counter);
+		waitingroom "PERIGO! : ["+.@kill_count+"]",0;
+		sleep 1000; //= 1 Second Refresh
+		delwaitingroom;
+	}
+	freeloop(0);
+	end;
+}

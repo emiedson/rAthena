@@ -1,0 +1,71 @@
+// firstcity
+//============================================================
+firstcity,223,77,5	script	Kafra Employee::kaf_firstcity	112,{
+	cutin "kafra_06",2;
+	callfunc "F_KafSet";
+	mes "[Kafra Employee]";
+	mes "Bem vindo(a) à";
+	mes "Corporação Kafra~";
+	mes "Os Serviços Kafra são";
+	mes "sempre aqui para apoiar você.";
+	mes "Então, gostraria de qual";
+	mes "serviço hoje?";
+	callfunc "F_Kafra",5,0,0,40,800;
+	savepoint "firstcity",216,84,1,1;
+	callfunc "F_KafEnd",0,1,"na cidade de Sword City";
+}
+
+firstcity,45,231,5	script	Kafra Employee::kaf_firstcity2	115,{
+	cutin "kafra_03",2;
+	callfunc "F_KafSet";
+	mes "[Kafra Employee]";
+	mes "Bem-vindo(a)~!";
+	mes "Os Serviços Kafra";
+	mes "estão sempre do seu lado.";
+	mes "Então, como posso ajudá-lo?";
+	callfunc "F_Kafra",5,0,0,40,800;
+	savepoint "firstcity",48,226,1,1;
+	callfunc "F_KafEnd",0,1,"na cidade de Sword City";
+}
+
+firstcity,363,232,3	script	Kafra Employee::kaf_firstcity3	113,{
+	cutin "kafra_05",2;
+	callfunc "F_KafSet";
+	mes "[Kafra Employee]";
+	mes "A Corporação Kafra";
+	mes "está sempre trabalhando para fornecer";
+	mes "Serviços convenientes.";
+	mes "Como posso ser útil?";
+	callfunc "F_Kafra",5,0,0,40,800;
+	savepoint "firstcity",365,225,1,1;
+	callfunc "F_KafEnd",0,1,"na cidade de Sword City";
+}
+
+firstcity,227,266,3	script	Kafra Employee::kaf_firstcity4	114,{
+	cutin "kafra_04",2;
+	callfunc "F_KafSet";
+	mes "[Kafra Employee]";
+	mes "Bem-vindo(a)!";
+	mes "A Corporação Kafra";
+	mes "sempre apoiará os";
+	mes "aventureiros de Rune-Midgarts";
+	mes "com seu excelente serviço. assim";
+	mes "o que eu posso fazer para você hoje?";
+	callfunc "F_Kafra",5,0,0,40,800;
+	savepoint "firstcity",216,259,1,1;
+	callfunc "F_KafEnd",0,1,"na cidade de Sword City";
+}
+
+firstcity,97,353,5	script	Kafra Employee::kaf_firstcity5	117,{
+	cutin "kafra_01",2;
+	callfunc "F_KafSet";
+	mes "[Kafra Employee]";
+	mes "Bem-vindo(a) à";
+	mes "Corporação Kafra.";
+	mes "Os Serviços Kafra";
+	mes "estão sempre do seu lado.";
+	mes "como posso te ajudar?";
+	callfunc "F_Kafra",5,0,0,40,800;
+	savepoint "firstcity",95,346,1,1;
+	callfunc "F_KafEnd",0,1,"na cidade de Sword City";
+}

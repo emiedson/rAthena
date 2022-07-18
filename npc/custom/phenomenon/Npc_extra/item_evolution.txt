@@ -1,0 +1,168 @@
+-	script	Items_Conf	-1,{
+
+OnInit:
+
+	callsub Ids, 35100, 1, 111, 1, 35101, 1, 111, 0 ;
+
+/*
+	ID[...], evolution mode[...], mob id[...], neccessary to get 1%[...].
+	If  you want any monster, use 111.
+
+Evolution modes:
+
+	1 = Every X numer of mobs (1%).
+	2 = Experience (1%).
+*/
+
+/*
+	0 = Won't be evolved automatically.
+	1 = Will be evolved automatically
+*/
+	.auto = 1;
+
+/*
+	Color of the announces.
+*/
+	setarray .c$[0],	"4db557",	// % of evolution.
+				"d43438",	// Wings evolving.
+				"4da5b5";	// Wings evolved.
+
+/* slots to check.
+	EQI_ACC_L (0)             - Accessory 1
+	EQI_ACC_R (1)             - Accessory 2
+	EQI_SHOES (2)             - Footgear (shoes, boots)
+	EQI_GARMENT (3)           - Garment (mufflers, hoods, manteaux)
+	EQI_HEAD_LOW (4)          - Lower Headgear (beards, some masks)
+	EQI_HEAD_MID (5)          - Middle Headgear (masks, glasses)
+	EQI_HEAD_TOP (6)          - Upper Headgear
+	EQI_ARMOR (7)             - Armor (jackets, robes)
+	EQI_HAND_L (8)            - Left hand (weapons, shields)
+	EQI_HAND_R (9)            - Right hand (weapons)
+	EQI_COSTUME_HEAD_TOP (10) - Upper Costume Headgear
+	EQI_COSTUME_HEAD_MID (11) - Middle Costume Headgear
+	EQI_COSTUME_HEAD_LOW (12) - Lower Costume Headgear
+	EQI_COSTUME_GARMENT (13)  - Costume Garment
+	EQI_AMMO (14)    		  - Arrow/Ammunition
+	EQI_SHADOW_ARMOR (15)     - Shadow Armor
+	EQI_SHADOW_WEAPON (16)    - Shadow Weapon
+	EQI_SHADOW_SHIELD (17)    - Shadow Shield
+	EQI_SHADOW_SHOES (18)     - Shadow Shoes
+	EQI_SHADOW_ACC_R (19)     - Shadow Accessory 2
+	EQI_SHADOW_ACC_L (20)     - Shadow Accessory 1
+*/
+
+	setarray .slots[0], 	EQI_HEAD_LOW, 
+				EQI_HEAD_MID,
+				EQI_HEAD_TOP;
+
+	//=============================================
+
+	.w1 = 0;
+
+	end ;
+
+Ids:
+
+	.@index = .w1;
+	.w1++;
+	for ( .@args = getargcount ( ); .@a < .@args ; .@a+=4 )
+	{
+		.@i = ++.w2[.@index];
+		setd ".a1"+ .w1 +"_"+ .@i, getarg ( .@a );	// id.
+		setd ".a2"+ .w1 +"_"+ .@i, getarg ( .@a + 1 );	// mode.
+		setd ".a3"+ .w1 +"_"+ .@i, getarg ( .@a + 2 );	// mob id.
+		setd ".a4"+ .w1 +"_"+ .@i, getarg ( .@a + 3 );	// amount.
+	}
+	return ;
+
+OnNPCKillEvent:
+
+	// Cache. That old loop on every mob killed...
+	if ( @wing[0] && isequipped ( @wing[0] ) )
+	{
+		.@c  = 1;
+		.@e  = @wing[0];
+		.@w  = @wing[1];
+		.@id = @wing[2];
+	}
+	else
+	{
+		for ( .@size = getarraysize ( .slots ); .@a < .@size && !.@c ; .@a++ )
+		{
+			.@e = getequipid ( .slots[.@a] );
+			if ( .@e < 0 )
+				continue ;
+			.@id = 0;
+			.@w = 1;
+			while ( .@id++ <= .w2[.@w - 1] && !.@c )
+			{
+				if ( .@id > .w2[.@w - 1] )
+				{
+					.@id = 1;
+					.@w++;
+				}
+				if ( .@e == getd ( ".a1"+ .@w +"_"+ .@id ) )
+					if ( getd ( ".a4"+ .@w +"_"+ .@id ) > 0 && ( killedrid == getd ( ".a3"+ .@w +"_"+ .@id ) || getd ( ".a3"+ .@w +"_"+ .@id ) < 4 ) )
+					{
+						.@c = 1;
+						setarray @wing[0], .@e, .@w, .@id;
+					}
+			}
+		}
+	}
+
+	if ( .@c )
+	{
+		if ( getd ( ".a2"+ .@w +"_"+ .@id ) == 1 )
+		{
+			.@amount = getd ( "mobs_"+ .@e );
+			setd "mobs_"+ .@e, .@amount + 1;
+			if ( getd ( "mobs_"+ .@e ) < getd ( ".a4"+ .@w +"_"+ .@id ) ) end ;
+			setd "evo"+ .@e, getd ( "evo"+ .@e ) + 1;
+			setd "mobs_"+ .@e, 0;
+		}
+		else if ( getd ( ".a2"+ .@w +"_"+ .@id ) == 2 )
+		{
+			.@amount = getd ( "exp_"+ .@e );
+			setd "exp_"+ .@e, .@amount + strmobinfo ( 6, killedrid );
+			if ( getd ( "exp_"+ .@e ) < getd ( ".a4"+ .@w +"_"+ .@id ) ) end ;
+			setd "evo"+ .@e, getd ( "evo"+ .@e ) + 1;
+			setd "exp_"+ .@e, 0;
+		}
+		else
+			debugmes "Script Items_Evo, error: modo errado.";
+		announce getitemname ( .@e ) +" é agora "+ getd ( "evo"+ .@e ) +"% está evoluindo ...", bc_self, "0x"+ .c$[0] ;
+		specialeffect2 58 ;
+		sleep2 200 ;
+		specialeffect2 383 ;
+		if ( getd ( "evo"+ .@e ) == 100 && .auto )
+		{
+			specialeffect2 263 ;
+			sleep2 500 ;
+			specialeffect2 377 ;
+			sleep2 300 ;
+			specialeffect2 542 ;
+			sleep2 300 ;
+			announce getitemname ( .@e ) +" está evoluindo ..." , bc_self, "0x"+ .c$[1] ;
+			.@i = 3;
+			while ( .@i-- )
+			{
+				specialeffect2 521 ;
+				sleep2 900 ;
+			}
+			specialeffect2 463 ;
+			sleep2 200;
+			specialeffect2 665 ;
+			sleep2 500 ;
+			setarray .@card[1], getequipcardid ( .slots[.@a], 0 ), getequipcardid ( .slots[.@a], 1 ), getequipcardid ( .slots[.@a], 2 ), getequipcardid ( .slots[.@a], 3 );
+			.@refine = getequiprefinerycnt ( .slots[.@a] );
+			delitem .@e, 1 ;
+			getitem2 getd ( ".a1"+ .@w +"_"+ ( .@id + 1 ) ) , 1, 1, .@refine, 0, .@card[1], .@card[2], .@card[3], .@card[4] ;
+			equip getd ( ".a1"+  .@w +"_"+ ( .@id + 1 ) ) ;
+			setd "evo"+ .@e, 0;
+			deletearray @wing ;
+			announce "Parabéns, suas asas evoluíram para "+ getitemname ( getd ( ".a1"+ .@w +"_"+ ( .@id + 1 ) ) ) +"." , bc_self , "0x"+ .c$[2] ;
+		}
+	}
+	end ;
+}

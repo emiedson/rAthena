@@ -1,0 +1,1187 @@
+//===== rAthena Script =======================================
+//= PvP Sobrevivente
+//===== By ===================================================
+//= llchrisll
+//===== Version ==============================================
+//= 1.0 - Initial Version
+//      - Fixed an fatal error after someone wins the match
+//      - Added Queue Usage
+//      - Some minor adjustments
+//===== Tested With ==========================================
+//= rAthena 10/10/2018 Revision
+//= GIT Hash: 55acdb9863382d8935d9df25e1462d5d1ebd7d54
+//===== Description ==========================================
+//= PvP Sobrevivente is an PvP Event, where the last one to
+//	survive wins.
+//= Configureable:
+//  - Initiate Type (Automatic or Manually)
+//  - Event Duration
+//  - Delay 
+//  - Reward Type (Item or Custom Variable)
+//  - Reward Amount
+//  - Trade Settings: (Only available for the Custom Variable)
+//	  - Tradeable against Items and Zeny
+//    - Items:
+//	    - Items to be exchanged for
+//      - Item Amount
+//      - Costs per Item
+//    - Zeny:
+//	    - Zeny to gain
+//      - Costs for Zeny
+//  - Intravision (Anti-Cheat Method)
+//  - GM Access Level
+//    - Only required when initiate type is on manual
+//    - On other hand it's for a small overview
+//  - Player Settings:
+//    - Level
+//    - Job (By Upper)
+//  - Event Map
+//= These can be configured InGame too.
+//  But there is a extra variable for that: .conf to allow it or not
+//===========================================================
+prontera,164,139,3	script	Evento PvP Sobrevivente	483,{
+
+mes .n$;
+mes "Olá, "+strcharinfo(0)+"!";
+mes "Como posso ajudá-lo?";
+next;
+if(getgroupid() >= .gm) {
+	menu "GM Menu",GM_Menu,"Player Menu",-;
+	mes .n$;
+	mes "E agora?";
+	next;
+}
+switch(select("- Junte-se EPS:- Informação:- Receber Recompensa:- "+ ( (.rew_type == 2)?"Comércio "+.rew_n$+":- ":"")+"Nada")) {
+
+	case 1:
+	mes .n$;
+	if(!.LMS_Reg) {
+		mes "Sinto muito, mas o registro ainda não está aberto.";
+		close;
+	}
+	if(getarraysize(.LMS_Queue) >= .limit) {
+		mes "Sinto muito, mas não posso mais registrá-lo, pois a quantidade máxima de jogadores foi atingida.";
+		close;
+	} else
+		for ( set .@c,0; .@c < getarraysize(.LMS_Queue); set .@c,.@c + 1)
+			if(getcharid(0) == .LMS_Queue[.@c]) {
+				mes "Você já está registrado. Por favor, aguarde até que o PvP Sobrevivente comece.";
+				close;
+			}
+	if(.job || .lvl) {
+		mes "Estas são as restrições para o evento:";
+		mes ( (!.job)?"":( (.rand)?.upper_n$[.j]:.job_l$)+" são proibidos de participar.");
+		mes ( (!.lvl)?"":"Restrição de nível: - Normal/Classe estendida: "+.norm+", Rebirth Jobs: "+.adv+", Baby Jobs: "+.baby+", 3rd Jobs: "+.third+".");
+		next;
+		mes .n$;
+	}
+	set @fail,0;
+	// Job Restriction enabled?
+	if(.job) {
+		if(.rand) // Random?
+			if(Upper == (.upper[.j]-1))
+				set @fail,1;
+		else if(!.rand) // Not Random
+			for ( set .@l,0; .@l < getarraysize(.upper); set .@l,.@l + 1) 
+				if(Upper == (.upper[.@l]-1)) // -1 = Como uma matriz não aceita um "0" como valor
+					set @fail,1;
+	// Level Restriction
+	} else if(.lvl) { 
+		if(Upper == 0 && BaseLevel < .norm) set @fail,1;
+		else if(Upper == 1 && BaseLevel < .adv) set @fail,1;
+		else if(Upper == 2 && BaseLevel < .baby) set @fail,1;
+		else if(Upper == 4 || Upper == 5 || Upper == 6 && (BaseLevel < .third)) set @fail,1;
+	}
+	if(@fail) {
+		mes "Sinto muito, mas você não pode participar da dupla do EPS.";
+		mes ( (!.job)?"":"Restrição de classe: "+( (.rand)?.upper_n$[.j]:.job_l$)+" são proibidos de participar.");
+		mes ( (!.lvl)?"":"Restrição de Level: "+ ( (Upper == 0)?"Normal/extendid: "+.norm:( (Upper == 1)?"Rebirth Jobs: "+.adv:( (Upper == 2)?"Baby Jobs: "+.baby:"3rd Jobs: "+.third) ) )+".");
+		close;
+	}
+	mes "Então você quer se juntar ao EPS, não é?";
+	mes "Você ainda pode voltar!";
+	next;
+	if(select("- Eu quero participar do EPS !!!:- Uhh .. deixa pra lá então") - 1) {
+		mes .n$;
+		mes "Vejo você novamente, quando estiver pronto.";
+		close;
+	}
+	mes .n$;
+	mes "Esse é o espírito!!!";
+	mes "Vou te deformar agora para o mapa do evento.";
+	close2;
+	set @lms,1;
+	setarray .LMS_Queue[getarraysize(.LMS_Queue)],getcharid(0);
+	announce .n$+": ["+strcharinfo(0)+"] registered "+ (!Sex)?"participante masculino inscrito":"participante feminina escrita" +"auto para o evento!",bc_all;
+	end;
+
+	case 2:
+	mes .n$;
+	mes "PvP Sobrevivente, EPS em suma, é um evento em que você tem que lutar contra outros jogadores.";
+	mes "Este evento será iniciado "+ ( (.init)?"cada automático "+.time+" "+ ( (.del_type == 1)?"horas":"dias"):"manualmente por um GM")+".";
+	mes "O último que sobreviver será recompensado com "+.rew_am +( (.rew_type == 2)?" "+.rew_n$:"x "+getitemname(.rew_id))+".";
+	mes "Também na entrada, você terá a capacidade de ver inimigos ocultos, para impedir que os jogadores trapaceiem neste evento por não serem capazes de vê-los.";
+	mes "O máximo de jogadores que podem participar são "+.limit+".";
+	mes "Quando você morrer, você será imediatamente levado ao seu ponto de salvamento.";
+	mes "Em suma, a sobrevivência dos mais fortes !!";
+	close;
+	
+	case 3:
+	mes .n$;
+	if(!@lms) {
+		mes "Sinto muito, mas você não está qualificado para receber um prêmio.";
+		close;
+	}
+	mes "Parabéns por sobreviver ao PvP Sobrevivente, aqui está sua recompensa.";
+	close2;
+	set @lms,0;
+	if(.rew_type == 1) getitem .rew_id,.rew_am;
+	else if(.rew_type == 2) {
+		setd(.rew_var$),getd(.rew_var$) + .rew_am;
+		dispbottom "Você recebeu "+.rew_am+" "+.rew_n$+".";
+	}
+	end;
+	
+	case 4:
+	if(.rew_type != 2) close;
+	mes .n$;
+	mes "Saldo "+.rew_n$+": "+getd(.rew_var$);
+	mes "Com o que você deseja trocá-los?";
+	mes " ";
+	mes "Aqui estão as taxas e valores de câmbio atuais:";
+	mes .z_cost+" = "+.zeny+" Zeny";
+	for ( set .@l,0; .@l < getarraysize($item); set .@l,.@l + 1) 
+		mes $cost[.@l] +" = "+$gain[.@l]+"x "+getitemname($item[.@l]);
+		
+	next;
+	if(select("- Items:- Zeny") - 1) {
+		mes .n$;
+		mes "Quantos pontos você deseja trocar?";
+		mes "Lembre-se, por "+.zeny +" voce requere "+.z_cost+" "+.rew_n$;
+		next;
+		if(input(@t_zeny,.z_cost,getd(.rew_var$)) != 0) {
+			mes .n$;
+			mes "Você colocou uma quantia inválida.";
+			mes "Mínimo, "+.z_cost+", Máximo, "+getd(.rew_var$);
+			close;
+		}
+		mes .n$;
+		if(@t_zeny*.z_cost > getd(.rew_var$)) {
+			mes "Você não tem a quantidade necessária de "+.rew_n$;
+			close;
+		}
+		set Zeny,Zeny + @t_zeny*.z_cost;
+		setd(.rew_var$),getd(.rew_var$) - @t_zeny*.z_cost;
+	} else {
+		mes .n$;
+		mes "Por favor, escolha o item que você deseja negociar.";
+		mes "Formato: Nome (custos)";
+		next;
+		for ( set .@i,0; .@i < getarraysize($item); set .@i,@i + 1) 
+			set .@trade$,.@trade + "- "+getitemname($item[.@i]) + "("+$cost[.@i]+")" + ( ($item[.@i+1])?":":"");
+		
+		set @t,select(.@trade$) - 1;
+		mes .n$;
+		mes "Quantos pontos você deseja trocar?";
+		mes "Lembre-se, por "+$gain[@t] +"x "+getitemname($item[@t]) +" voce requere "+$cost[@t]+" "+.rew_n$;
+		next;
+		if(input(@t_item,$cost[@t],getd(.rew_var$)) != 0) {
+			mes .n$;
+			mes "Você colocou uma quantia inválida.";
+			mes "Mínimo, "+$cost[@t]+", Máximo, "+getd(.rew_var$);
+			close;
+		}
+		mes .n$;
+		if(@t_item*$cost[@t] > getd(.rew_var$)) {
+			mes "Você não tem a quantidade necessária de "+.rew_n$;
+			close;
+		}
+		getitem $item[@t],$gain[@l];
+		setd(.rew_var$),getd(.rew_var$) - @t_item*$cost[@t];
+	}		
+	mes "O comércio foi bem sucedido.";
+	close;
+	
+	case 5:
+	close;
+}
+
+GM_Menu:
+mes .n$;
+mes "Configurações atuais de início:";
+mes ( (.init)?"Cada automático "+.time+" "+ ( (.del_type == 1)?"horas":"dias"):"Manualmente");
+mes "O evento está atualmente "+( (.LMS_Eve)?"^00FF00Active":"^FF0000Offline")+"^000000.";
+mes "O registro está atualmente "+( (.LMS_Reg)?"^00FF00opened":"^FF0000closed")+"^000000.";
+mes "Os preparativos são "+( (.LMS_Pre)?"^FF0000atualmente em processo":( (.LMS_Reg)?"^00FF00acabado":"^FF0000ainda não começou") )+"^000000.";
+if(.init) mes "Como o evento é automático, você não pode start/stop o evento.";
+if(!.conf) mes "As configurações do evento não podem ser alteradas.";
+mes " ";
+mes "O que você quer fazer?";
+switch(select(( (!.init)?"- Start/Stop Evento":"")+":"+( (.conf)?"- Configurações do evento":"")+":- deixa pra lá")) {
+	
+	case 1:
+	next;
+	mes .n$;
+	if(.init) {
+		mes "Você não pode iniciar/parar o evento.";
+		close;
+	}
+	mes "Você realmente quer "+( (!.LMS_Eve || !.LMS_Reg || !.LMS_Pre)?"^00FF00start":"^FF0000stop")+"^000000 o evento?";
+	if(select("- Yes:- No") - 1)  close;
+	next;
+	if(.LMS_Eve || .LMS_Reg || .LMS_Pre) donpcevent strnpcinfo(0)+"::OnDisable"; else donpcevent strnpcinfo(0)+"::OnStart";
+	mes .n$;
+	mes "O evento foi "+( (!.LMS_Eve)?"^00FF00started":"^FF0000stopped")+"^000000.";
+	mes "Até mais.";
+	close;
+	
+	case 2:
+	if(!.conf) {
+		next;
+		mes .n$;
+		mes "As configurações do evento não podem ser alteradas.";
+		close;
+	}
+	while(1) {
+		next;
+		mes .n$;
+		mes "Escolha as configurações que deseja alterar:";
+		next;
+		switch(select("- Iniciar configurações:- Duração do Evento:- Efeito Intravision:- Configurações de recompensa:- Configurações de negociação:- Configurações de acesso do player:- deixa pra lá")) {
+			case 1:
+			mes .n$;
+			mes "Como o evento deve ser iniciado?";
+			mes "^FF0000Values: 1 = So GM / 0 = Automatico^000000";
+			next;
+			input .@ini;
+			mes .n$;
+			if(.@ini > 1) {
+				mes "Valor inválido.";
+				mes "1 = So GM / 0 = Automatico";
+				continue;
+			} else if(!.@ini) {
+				mes "Now should the event start in hours or in days?";
+				next;
+				set .@inter,select("- Hours:- Days");
+				mes .n$;
+				mes "Now type the interval itself.";
+				mes "^FF0000Minimum 1";
+				if(.@inter == 1) 
+					mes "Maximum 24 hours.";
+				else if(.@inter == 2) 
+					mes "Maximum 30 days.";
+				mes "^000000";
+				input .@time;
+				if(!.@time || .@inter == 1 && .@time > 24 || .@inter == 2 && .@time > 30) {
+					next;
+					mes .n$;
+					mes "Invalid Value.";
+					mes "^FF0000Minimum 1";
+					if(.@inter == 1) 
+						mes "Maximum 24 hours.";
+					else if(.@inter == 2) 
+						mes "Maximum 30 days.";
+					mes "^000000";
+					continue;
+				}
+				set .del_type,.@inter;
+				set .time,.@time;
+			}
+			set .init,.@ini;
+			continue;
+			
+			case 2:
+			mes .n$;
+			mes "Please choose the Event Duration in minutes:";
+			mes "^FF0000Minimum 5, Maximum 60^000000";
+			if(input(.@dur,5,60) != 0) {
+				next;
+				mes .n$;
+				mes "Invalid Value.";
+				mes "^FF0000Minimum 5, Maximum 60^000000";
+				continue;
+			}
+			set .dur,.@dur;
+			continue;
+			
+			case 3:
+			mes .n$;
+			mes "Enable Intravision Effect or not?";
+			next;
+			if(select("- Yes:- No") - 1) 
+				set .intra,0; 
+			else 
+				set .intra,1;
+			continue;
+			
+			case 4:
+			mes .n$;
+			mes "Is the reward an Item or should it be saved as an Variable?";
+			next;
+			if(select("- Item:- Variable") == 1) {
+				mes .n$;
+				mes "Please type the Item ID:";
+				input .@item;
+				if(.@item < 501 || getitemname(.@item) == "" || getitemname(.@item) == "null") {
+					next;
+					mes .n$;
+					mes "Invalid Item ID.";
+					continue;
+				}
+				set .@rew_type,1;
+			} else {
+				mes .n$;
+				mes "Now type the variable name and the Display Name.";
+				mes "Variable Name Maximum: 10 letters.";
+				mes "Display Name Maximum: 20 Letters.";
+				if(input(.@var1$,1,10) != 0) {
+					next;
+					mes .n$;
+					mes "Invalid Name or too long.";
+					mes "^FF0000Maximum 10 letters.^000000";
+					continue;
+				}					
+				if(input(.@var2$,1,20) != 0) {
+					next;
+					mes .n$;
+					mes "Invalid Name or too long.";
+					mes "^FF0000Maximum 20 letters.^000000";
+					continue;
+				}
+				set .@rew_type,2;
+			}
+			next;
+			mes .n$;
+			mes "And at last please choose the reward amount.";
+			mes "^FF0000Minimum 1, Maximum 10000.^000000";
+			input .@amo;
+			if(!.@amo || .@amo > 10000) {
+				next;
+				mes .n$;
+				mes "Invalid Amount.";
+				mes "^FF0000Minimum 1, Maximum 10000.^000000";
+				continue;
+			}
+			set .rew_am,.@amo;
+			if(.@rew_type == 1) 
+				set .rew_id,.@item;
+			else if(.@rew_type == 2) {
+				set .rew_var$,.@var1$;
+				set .rew_n$,.@var2$;
+			}
+			set .rew_type,.@rew_type;
+			continue;
+
+			case 5:
+			mes .n$;
+			mes "Which settings do you want to change?";
+			next;
+			if(select("- Item:- Zeny") - 1) {
+				mes .n$;
+				mes "Please type the amount to recieve from trade.";
+				mes "^FF0000Minimum 1, Maximum 10,000,000.^000000";
+				next;
+				input .@z_am;
+				if(!.@z_am || .@z_am > 10000000) {
+					mes .n$;
+					mes "Invalid Amount.";
+					mes "^FF0000Minimum 1, Maximum 10,000,000.^000000";
+					continue;
+				}				
+				mes .n$;
+				mes "Now please the "+.rew_n$+" to be exchange with.";
+				mes "^FF0000Minimum 1, Maximum 500.^000000";
+				input .@ex_am;
+				if(!.@ex_am || .@ex_am > 500) {
+					next;
+					mes .n$;
+					mes "Invalid Amount.";
+					mes "^FF0000Minimum 1, Maximum 500.^000000";
+					continue;
+				}
+				set .z_cost,.@ex_am;
+
+			} else {
+				mes .n$;
+				mes "There are currently "+getarraysize($item)+",";
+				mes "maximum are 128 items.";
+				mes "what do you like to do?";
+				next;
+				switch(select("- Add Item:- Edit Items:- Delete Items")) {
+					case 1:
+					mes .n$;
+					if(getarraysize($item) >= 128) {
+						mes "You can't add any more items, please delete some or edit if it's just an minor change.";
+						continue;
+					}
+					mes "The input will be done in 3 steps:";
+					mes " > Item ID";
+					mes " > Amount to gain, Max: 500";
+					mes " > "+.rew_n$+" to exchange for, Max: 1000";
+					mes "Now if you would input the Item ID please:";
+					input .@id;
+					if(.@id < 501 || getitemname(.@id) == "" || getitemname(.@id) == "null") {
+						next;
+						mes .n$;
+						mes "Invalid ID or Item not found.";
+						continue;
+					}
+					input .@am;
+					if(!.@am || .@am > 500) {
+						next;
+						mes .n$;
+						mes "Invalid Amount.";
+						mes "^FF0000Minimum 1, Maximum 500.^000000";
+						continue;
+					}
+					input .@cost;
+					if(!.@cost || .@cost > 1000) {
+						next;
+						mes .n$;
+						mes "Invalid Amount.";
+						mes "^FF0000Minimum 1, Maximum 1000.^000000";
+						continue;
+					}
+					setarray $item[getarraysize($item)],.@id;
+					setarray $gain[getarraysize($gain)],.@am;
+					setarray $cost[getarraysize($cost)],.@cost;
+					break;
+					
+					case 2:
+					set .@it_m$,"";
+					mes .n$;
+					mes "Please choose from the list below, which item you want to edit:";
+					for ( set .@i,0; .@i < getarraysize($item); set .@i,.@i + 1) 
+						set .@it_m$,.@it_m$ + "- "+$gain[.@i]+"x "+getitemname($item[.@i])+" ("+$cost[.@i]+")"+ ( ($item[.@i+1])?":":"");
+					
+					set .@ed,select(.@it_m$) - 1;
+					next;
+					mes .n$;
+					mes "You have chosen \""+getitemname($item[.@ed])+"\".";
+					mes "Is that correct?";
+					if(select("- Yes:- No") - 1) continue;
+					next;
+					mes .n$;
+					mes "What do you want to change?";
+					next;
+					switch(prompt("- Item ID:- Amount to gain:- "+.rew_n$+" to exchange for:- All")) {
+					
+						case 1:
+						mes .n$;
+						mes "Please type the new Item ID.";
+						next;
+						input .@id;
+						mes .n$;
+						if(.@id < 501 || getitemname(.@id) == "" || getitemname(.@id) == "null") {
+							mes "Invalid ID or Item not found.";
+							continue;
+						}
+						mes "Result:";
+						mes "New ID: "+.@id+" ["+getitemname(.@id)+"]";
+						mes "Is that correct?";
+						if(select("- Yes:- No") - 1) continue;
+						setarray $item[.@ed],.@id;
+						break;
+						
+						case 2:
+						mes .n$;
+						mes "Please type the new Amount.";
+						mes "^FF0000Minimum 1, Maximum 500.^000000";
+						next;
+						input .@am;
+						mes .n$;
+						if(!.@am || .@am > 500) {
+							mes "Invalid Amount.";
+							mes "^FF0000Minimum 1, Maximum 500.^000000";
+							continue;
+						}
+						mes "Result:";
+						mes "New Amount to gain: "+.@am;
+						setarray $gain[.@ed],.@am;
+						break;
+						
+						case 3:
+						mes .n$;
+						mes "Please type the new Costs.";
+						mes "^FF0000Minimum 1, Maximum 1000.^000000";
+						next;
+						input .@cost;
+						mes .n$;
+						if(!.@cost || .@cost > 1000) {
+							mes .n$;
+							mes "Invalid Amount.";
+							mes "^FF0000Minimum 1, Maximum 1000.^000000";
+							continue;
+						}
+						mes "Result:";
+						mes "New Costs:"+ .@cost;
+						setarray $cost[.@ed],.@cost;
+						break;						
+						
+						case 4:
+						mes .n$;
+						mes "The edit will be done in 3 steps:";
+						mes " > Item ID";
+						mes " > Amount to gain, Max: 500";
+						mes " > "+.rew_n$+" to exchange for, Max: 1000";
+						mes "Now if you would input the new Item ID please:";
+						next;
+						input .@id;
+						if(.@id < 501 || getitemname(.@id) == "" || getitemname(.@id) == "null") {
+							mes .n$;
+							mes "Invalid ID or Item not found.";
+							continue;
+						}
+						dispbottom .n$+": New ID: "+.@id+" ["+getitemname(.@id)+"]";
+						input .@am;
+						if(!.@am || .@am > 500) {
+							mes .n$;
+							mes "Invalid Amount.";
+							mes "^FF0000Minimum 1, Maximum 500.^000000";
+							continue;
+						}
+						dispbottom .n$+": New Amount to gain: "+.@am;
+						input .@cost;
+						if(!.@cost || .@cost > 1000) {
+							mes .n$;
+							mes "Invalid Amount.";
+							mes "^FF0000Minimum 1, Maximum 1000.^000000";
+							continue;
+						}
+						dispbottom .n$+": New Costs: "+ .@cost;
+						mes .n$;
+						mes "Result:";
+						mes "New ID: "+.@id+" ["+getitemname(.@id)+"]";
+						mes "New Amount to gain: "+.@am;
+						mes "New Costs: "+ .@cost;
+						mes "Is that correct?";
+						if(select("- Yes:- No") - 1) continue;
+						setarray $item[.@ed],.@id;
+						setarray $gain[.@ed],.@am;
+						setarray $cost[.@ed],.@cost;
+					
+						case 255:
+						break;
+					}
+					break;
+					
+					case 3:
+					set .@it_m$,"";
+					mes .n$;
+					if(getarraysize($item) < 2) {
+						mes "I'm sorry, but you can't delete items as long there are less than 2 items.";
+						mes "Please add one first or edit an existing one.";
+						continue;
+					}
+					mes "Please choose from the list below, which item you want to delete:";
+					for ( set .@i,0; .@i < getarraysize($item); set .@i,.@i + 1) 
+						set .@it_m$,.@it_m$ + "- "+$gain[.@i]+"x "+getitemname($item[.@i])+" ("+$cost[.@i]+")"+ ( ($item[.@i+1])?":":"");
+					
+					set .@del,select(.@it_m$) - 1;
+					next;
+					mes .n$;
+					mes "You have chosen \""+getitemname($item[.@del])+"\".";
+					mes "Is that correct?";
+					if(select("- Yes:- No") - 1) continue;
+					next;
+					deletearray $item[.@del],1;
+					deletearray $gain[.@del],1;
+					deletearray $cost[.@del],1;
+					mes .n$;
+					mes "The item "+getitemname($item[.@del])+" has been deleted.";
+					break;
+				}
+				continue;
+			}
+			continue;
+
+			case 6:
+			mes .n$;
+			mes "O que você quer mudar?";
+			next;
+			switch(select("- Player Limit:- Level Settings:- Job Settings")) {
+				case 1:
+				mes .n$;
+				mes "Limite atual: "+.limit;
+				mes "Você quer mudar isso?";
+				if(select("- Yes:- No") - 1) continue;
+				mes "Minimum 5, Max 100.";
+				input .@lim;
+				if(.@lim < 5 || .@lim > 100) {
+					next;
+					mes .n$;
+					mes "Valor inválido.";
+					mes "^FF0000Minimum 5, Maximum 100.";
+					continue;
+				}
+				set .limit,.@lim;
+				break;
+				
+				case 2:
+				mes .n$;
+				mes "Deseja ativar as restrições de nível?";
+				mes "Configurações atuais: "+ ( (.lvl)?"Active":"Deactive");
+				if(select("- Yes:- No") == 2) {
+					set .lvl,0; 
+					continue;
+				}
+				next;
+				mes .n$;
+				mes "Agora pedirei que você insira as restrições de nível na seguinte ordem:";
+				mes " > Normal/Extended Classes";
+				mes " > Baby Classes";
+				mes " > Rebirth Classes";
+				mes " > 3rd Classes";
+				mes "Por favor, comece com o \"Normal/Extended\":";
+				next;
+				input .@norm;
+				input .@baby;
+				input .@adv;
+				input .@3rd;
+				mes .n$;
+				mes "Resultado:";
+				mes "Normal/Extended: "+.@norm;
+				mes "Baby: "+.@baby;
+				mes "Rebirth: "+.@adv;
+				mes "3rd: "+ .@3rd;
+				mes "Isso está correto?";
+				if(select("- Yes:- No") - 1) continue;
+				if(!.@norm && !.@baby && !.@adv && !.@3rd) {
+					next;
+					mes .n$;
+					mes "Como todo valor está em 0, desabilito a restrição de nível.";
+					set .lvl,0; 
+					continue;
+				}
+				set .norm,.@norm;
+				set .baby,.@baby;
+				set .adv,.@adv;
+				set .third,.@3rd;
+				set .lvl,1;
+				break;
+				
+				case 3:
+				mes .n$;
+				mes "Deseja ativar as restrições de classes?";
+				mes "Configurações atuais: "+ ( (.job)?"Active":"Deactive");
+				if(select("- Yes:- No") == 2) {
+					set .job,0; 
+					continue;
+				}
+				next;
+				mes .n$;
+				mes "Deseja deixar a classe ser escolhido aleatoriamente?";
+				set .@rand,select("- Yes:- No") - 2;
+				next;
+				mes .n$;
+				mes "Deseja alterar os nomes superiores?";
+				mes "Estes são os atuais:";
+				mes " ";
+				for ( set .@j,0; .@j < getarraysize(.upper_n$); set .@j,.@j + 1) 
+					mes .upper_n$[.@j];
+					
+				if(select("- Yes:- No") - 2) {
+					next;
+					mes .n$;
+					mes "Digite os novos horários para as partes superiores nesta ordem:";
+					mes " > Upper 1";
+					mes " > Upper 2";
+					mes " > Upper 3";
+					mes " > Upper 5";
+					mes " > Upper 6";
+					mes " > Upper 7";
+					mes "Mínimo de 3 letras, máximo de 15 letras.";
+					set .@c,0;
+					deletearray .upper_n$[0],128;
+					while( set(.@c,.@c+1) != 6	) {
+						if(input(.@up$,3,15) == 0) 
+							setarray .upper_n$[getarraysize(.upper_n$)],.@up$;
+						else {
+							next;
+							mes .n$;
+							mes "Comprimento inválido.";
+							mes "Mínimo de 5 letras, máximo de 15 letras.";
+							mes "Redefina para os padrões.";
+							deletearray .upper_n$[0],128;
+							setarray .upper_n$[0],"Normal/Extended","Rebirth","Baby","3rd Normal","3rd Rebirth","3rd Baby";
+							set .@c,6;
+							break;
+						}
+					}
+				}							
+				next;
+				mes .n$;
+				mes "Estas são as bandeiras superiores atuais:";
+				mes " ";
+				for ( set .@j,0; .@j < getarraysize(.upper); set .@j,.@j + 1) {
+					mes "------ "+.upper[.@j]+" ------";
+					if(.upper[.@j] == 1) mes .upper_n$[0];
+					else if(.upper[.@j] == 2) mes .upper_n$[1];
+					else if(.upper[.@j] == 3) mes .upper_n$[2];
+					else if(.upper[.@j] == 5) mes .upper_n$[3];
+					else if(.upper[.@j] == 6) mes .upper_n$[4];
+					else if(.upper[.@j] == 7) mes .upper_n$[5];
+					if(.upper[.@j+1] == 0) mes "=================="; else mes " ";
+				}
+				next;
+				mes .n$;
+				mes "Deseja alterar essas configurações?";
+				if(select("- Yes:- No") - 1) {
+					set .job,1;
+					continue;
+				}
+				next;
+				mes .n$;
+				mes "Agora, solicitarei que você insira os sinalizadores Upper se as classes que você deseja rejeitar,";
+				mes "as partes superiores são as seguintes:";
+				mes " > 1 = "+ .upper_n$[0];
+				mes " > 2 = "+ .upper_n$[1];
+				mes " > 3 = "+ .upper_n$[2];
+				mes " > 5 = "+ .upper_n$[3];
+				mes " > 6 = "+ .upper_n$[4];
+				mes " > 7 = "+ .upper_n$[5];
+				mes "Ao colocar um '0' ou um '8' e superior, você finalizará a entrada.";
+				mes "Além disso, você só pode colocar até 5 Uppers, mais nada faria.";
+				deletearray .upper[0],128;
+				while( input(.@int,1,7) == 0) {
+					if(.@int == 4) { // 4 = Not a valid Upper, so repeating...
+						next;
+						mes .n$;
+						mes "O Upper 4 não existe, repita.";
+						continue; 
+					}
+					if(getarraysize(.upper) >= 5) {
+						next;
+						mes .n$;
+						mes "Você já colocou 5 upper.";
+						break;
+					}
+					dispbottom .n$+": "+(getarraysize(.upper)+1)+" Input: "+.@int;
+					setarray .upper[getarraysize(.upper)],.@int;
+				}
+				if(!.@int || .@int > 7) {
+					dispbottom .n$+": Input canceled. Reseted to '8' > None, also disabled the job restriction.";
+					set .job,0;
+					deletearray .upper[0],128;
+					setarray .upper[0],8;
+					continue;
+				}
+				set .job,1;
+				if(.@rand < 0) set .rand,1; else set .rand,.@rand;
+			}
+			continue;
+			
+			case 7:
+			break;
+		}
+		break;
+	}
+	case 3:
+	close;
+}
+
+OnMinute00:
+if(!.init) end; // Checking if the exection is automatic or manually, if manually end the script
+set .time_hr,.time_hr + 1; // Counter Increase every hour
+// If the delay type is in hours and the counter is below the required delay time, end the script
+if(.del_type == 1 && .time_hr < .time) end;
+else if(.del_type == 2) { // If the delay type is in days
+	if(.time_hr == 24) { // and the counter has reached a full hour
+		set .time_day,.time_day + 1; // increase the day counter by 1
+		set .time_hr,0; // Reset the hour counter
+	}
+	if(.time_day < .time) end; // Check if the day counter has reached enough days or not
+}
+set .time_hr,0;
+set .time_day,0;
+
+OnStart:
+// Job Definer
+if(.job) // Job Restriction enabled?
+	if(.rand) // Random?
+		set .j,rand(getarraysize(.upper)); 
+	else { // Not Random
+		set .job_l$,"";
+		for ( set .@l,0; .@l < getarraysize(.upper); set .@l,.@l + 1) {
+			if(.upper[.@l] == 1)
+				set .@job_l$,.@job_l$+ .upper_n$[0];
+			if(.upper[.@l] == 2)
+				set .@job_l$,.@job_l$+ .upper_n$[1];
+			if(.upper[.@l] == 3)
+				set .@job_l$,.@job_l$+ .upper_n$[2];
+			if(.upper[.@l] == 5)
+				set .@job_l$,.@job_l$+ .upper_n$[3];
+			if(.upper[.@l] == 6)
+				set .@job_l$,.@job_l$+ .upper_n$[4];
+			if(.upper[.@l] == 7)
+				set .@job_l$,.@job_l$+ .upper_n$[5];
+		
+			if( (.@l + 1) != getarraysize(.upper)) set .@job_l$,.@job_l$+", ";
+		}
+	}
+set .LMS_Pre,1;
+announce .n$+": O evento, PvP Sobrevivente, será iniciado em breve.",bc_all;
+sleep 5000;
+announce .n$+": O máximo de jogadores que podem participar são "+.limit+".",bc_all;
+sleep 5000;
+announce .n$+": O registro será aberto por 2 minutos.",bc_all;
+sleep 5000;
+announce .n$+": "+ ( (!.job)?"Todos as classes são permitidos":( (.rand)?.upper_n$[.j]:.job_l$)+" são proibidos") +" para juntar"+ ( (!.lvl)?"":", também há uma restrição de nível - Normal/Extended Jobs: "+.norm+", Rebirth Jobs: "+.adv+", Baby Jobs: "+.baby+", 3rd Jobs: "+.third)+".",bc_all;
+sleep 5000;
+announce .n$+": Eu só preciso terminar os preparativos!",bc_all;
+if(getmapusers(.map$) > 0) {
+	mapannounce .map$,.n$+": Todos vocês serão transportados em 5 segundos de volta ao prontera, pois esse mapa será usado para um evento, PvP Sobrevivente.",bc_all;
+	sleep 5000;
+	mapwarp .map$,"prontera",150,180;
+}
+sleep 5000;
+set .LMS_Reg,1; // Registration enabled
+set .time_ch,0; // Reset Time Counter
+set .LMS_Pre,0; // Preparetion done
+announce .n$+": O Registro foi aberto, por favor, apresse-se !!!",bc_all;
+initnpctimer;
+end;
+
+OnTimer60000: // Every minute
+stopnpctimer;
+set .time_ch,.time_ch + 1;
+switch(.time_ch) {
+
+	case 1:
+	announce .n$+": O registro durará 1 minuto, por favor, apresse-se !!!",bc_all;
+	break;
+	
+	case 2:
+	set .LMS_Reg,0;
+	announce .n$+": O registro foi encerrado !!!",bc_all;
+	sleep 10000;
+	if(getarraysize(.LMS_Queue) < 2) {
+		announce .n$+": Mas parece que muito menos se registrou, então eu tenho que cancelá-lo !!!",bc_all;
+		goto OnDisable;
+	}
+	announce .n$+": "+getarraysize(.LMS_Queue)+" jogadores se registraram !!! Vou começar o evento em breve!",bc_all;
+	sleep 5000;
+	setmapflag .map$,mf_nowarpto;
+	setmapflag .map$,mf_nowarp;
+	setmapflag .map$,mf_noteleport;
+	setmapflag .map$,mf_nosave;
+	setmapflag .map$,mf_nomemo;
+	setmapflag .map$,mf_partylock;
+	setmapflag .map$,mf_pvp_noparty;
+	setmapflag .map$,mf_pvp_noguild;
+	setmapflag .map$,mf_loadevent;
+	set .LMS_Eve,1; // Event started
+	donpcevent strnpcinfo(1)+"::OnEnable";
+	break;
+	
+	default:
+	// +2 = Previous 2 minutes for registering time
+	if(.time_ch < ((.dur/2)+2) || .time_ch < (.dur+2)) break;
+	if(.time_ch == ((.dur/2)+2) ) {
+		mapannounce .map$,.n$+": "+.dur/2+" Minutos se passaram !!!",bc_all;
+		if(getmapusers(.map$) == 0 && .LMS_Eve) 
+			announce .n$+": Parece que todos os usuários deixaram o mapa do evento, portanto não poderei declarar o vencedor !!!",bc_all;
+			goto OnDisable;
+	} else if(.time_ch == (.dur+2) ) {
+		mapannounce .map$,.n$+": "+.dur+" Minutos se passaram, agora vou terminar o evento !!!",bc_all;
+		goto OnDisable;
+	}
+	break;
+}
+initnpctimer;
+end;
+
+OnDisable:
+// No need to continue if the event hasn't even started and the preparations are still unfinished
+if(.LMS_Reg && .LMS_Pre) end; 
+removemapflag .map$,mf_nowarpto;
+removemapflag .map$,mf_nowarp;
+removemapflag .map$,mf_nomemo;
+removemapflag .map$,mf_noteleport;
+removemapflag .map$,mf_partylock;
+removemapflag .map$,mf_pvp_noparty;
+removemapflag .map$,mf_pvp_noguild;
+removemapflag .map$,mf_loadevent;
+pvpoff .map$;
+set .LMS_Eve,0;
+announce .n$+": O evento, PvP Sobrevivente, terminou!!!",bc_all;
+mapannounce .map$,.n$+": Vocês todos serão transportados em 5 segundos de volta ao prontera.",bc_all;
+sleep 5000;
+mapwarp .map$,"prontera",150,180;
+end;
+
+OnPCKillEvent:
+if(strcharinfo(3) != .map$ || (.LMS_Reg && !.LMS_Eve) ) end;
+mapannounce .map$,.n$+": "+strcharinfo(0)+" matou "+rid2name(killedrid)+"!!",bc_all;
+sleep2 1000; // Slow down the script
+if(getmapusers(.map$) == 2) 
+	mapannounce .map$,.n$+": Wuhu !! Restam apenas 2 jogadores, vamos ver quem é o melhor jogador !!",bc_all;
+else if(getmapusers(.map$) == 1) {
+	warp "SavePoint",0,0;
+	sleep2 1500; // Slowing down the script
+	percentheal 100,100;
+	announce .n$+": The winner of the PvP Sobrevivente event is ["+strcharinfo(0)+"]!",bc_all;
+	dispbottom .n$+": Você ganhou o evento, PvP Sobrevivente, visite-me para receber sua recompensa.";
+	goto OnDisable;
+} else if(getmapusers(.map$) == 0) goto OnDisable; // Shouldn't happen
+end;
+
+OnPCDieEvent:
+if(strcharinfo(3) != .map$ || (.LMS_Reg && !.LMS_Eve) ) end;
+if(killerrid != getcharid(3)) dispbottom .n$+": Você foi morto por "+rid2name(killerrid)+"!!";
+set @lms,0;
+warp "SavePoint",0,0;
+sleep2 1500; // Slowing down the script
+percentheal 100,100;
+end;
+
+OnPCLoadMapEvent:
+if(strcharinfo(3) != .map$ || (.LMS_Reg && !.LMS_Eve) ) end;
+if(!@lms) {
+	mes .n$;
+	mes "Sinto muito, mas você não se registrou no EPS. Voltarei ao seu Save Point.";
+	sleep2 3000;
+	warp "SavePoint",0,0;
+	close;	
+}
+if(.intra) sc_start SC_Intravision,(.dur*60*1000),1; // Enabling Intravision
+end;
+
+OnEnable:
+for ( set .@e,0; .@e < getarraysize(.LMS_Queue); set .@e,.@e + 1) 
+	warp .map$,0,0,.LMS_Queue[.@e];
+while(getmapusers(.map$) < getarraysize(.LMS_Queue)) // Let's wait a bit until every player has been warped :)
+	sleep 1000;
+deletearray .LMS_Queue[0],getarraysize(.LMS_Queue);
+mapannounce .map$,.n$+": O evento durará "+.dur+" minutos.",bc_all;
+sleep 5000;
+mapannounce .map$,.n$+": O evento começará em 30 segundos.",bc_all;
+sleep 5000;
+mapannounce .map$,.n$+": Faltam 25 segundos ...",bc_all;
+sleep 15000;
+mapannounce .map$,.n$+": 10 segundos restantes ...",bc_all;
+sleep 6000;
+mapannounce .map$,.n$+": Que a batalha comece em ...",bc_all;
+sleep 1000;
+mapannounce .map$,.n$+": 3!!",bc_all;
+sleep 1000;
+mapannounce .map$,.n$+": 2!!",bc_all;
+sleep 1000;
+mapannounce .map$,.n$+": 1!!",bc_all;
+sleep 1000;
+mapannounce .map$,.n$+": GO for a square and fair BATTLE!!",bc_all;
+pvpon .map$;
+end;
+
+OnInit:
+// InGame Configable? (1 = Enable/ 0 = Disable)
+set .conf,1;
+// NPC Name, automatically taken from the NPC Header
+set .n$,"["+strnpcinfo(1)+"]"; 
+// GM Group ID
+set .gm,3; 
+// Map on which LMS will be executed
+set .map$,"force_3-1";
+// Initiate Type:
+// 0 = By GM
+// 1 = Automatic
+set .init,0;
+if(.init) {
+	// Delay Types:
+	// 1 = Hours
+	// 2 = Days
+	set .del_type,1;
+	// Delay in Hours (Max: 24, Default: 3)
+	if(.del_type == 1) set .time,3; 
+	// Delay in Days (Max: 30, Default: 2)
+	else set .time,2;
+}
+// Automatic Event Duration in Minutes (in case GM logs off/dc when manually) (Max: 60, Default: 30)
+// Note: Do not go to below 5 mins
+set .dur,10; 
+// Intravision (Maya Purple Card Effect - Able to see hidden player)
+// This effect is to prevent players to cheat by using "Cloaking" and similiar skills
+// 0 = Off
+// 1 = On
+set .intra,1;
+// =============== Reward Settings ============
+// Type:
+// 1 = Variable
+// 2 = Item
+set .rew_type,1;
+// Reward itself:
+if(.rew_type == 1) 
+	set .rew_id,35039; // Item ID (Padrão: 35039)
+else if(.rew_type == 2) {
+	set .rew_var$,"lms_points"; // Custom Variable (Padrão: "lms_points")
+	set .rew_n$,"PvP Sobrevivente Points"; // (Padrão: "PvP Sobrevivente Points"
+}
+set .rew_am,1; // Reward Amount (Max: 10000, Padrão: 10ß)
+// =============== Trade Settings ===================
+if(getarraysize($item) < 2) { // Caso os itens já tenham sido, o script não os substituirá
+	setarray $item[0],35039; // Itens contra os quais negociar .rew_var$ (Padrão: 35039)
+	setarray $gain[0],1; // Valor do item ganho (Max: 500, Padrão: 100)
+	setarray $cost[0],5; // Custos em .rew_var$ (Max: 1000, Padrão: 10)
+}
+set .zeny,200000; // Zeny to gain per .z_cost .rew_var$ (Max: 10,000,000, Padrão: 200,000)
+set .z_cost,20; // .rew_var$ required to gain .zeny Zeny (Max: 500, Padrão: 20)
+// ============== Player Access Settings =============
+// Here you can change the classes which can join the event.
+// Player Limit (Min: 5, Max 100, Padrão: 30)
+set .limit,30;
+// Base Level Requirement:
+set .lvl,0; // 0 = Off/1 = On
+// Normal + Extended (Gunslinger/Ninja/...) Classes:
+set .norm,55;
+// Baby Classes:
+set .baby,70;
+// Advanced (Rebirth) Classes
+set .adv,85;
+// 3rd Classes:
+set .third,120;
+// Use Job Restriction?
+set .job,0;
+// Random chosen?
+set .rand,0;
+// Rejected Upper = Job Category:
+// On Eventstart an random value, if .rand is 1, will be chosen from this
+// and will be checked on registering
+// 1 = Normal/Extended
+// 2 = Rebirth
+// 3 = Baby
+// 5 = 3rd Normal
+// 6 = 3rd Rebirth
+// 7 = 3rd Baby
+// 8 = None
+// By adding an "Upper" you disable them
+// If you add an Upper, a 8 isn't allowed to be present
+// If that is the case, job restriction will be put on off
+
+// Note: Small explanation for those, why I'm using incorrect upper flags:
+// That's because of the array...., arrays doesn't accept "0" as an value
+// which would be Normal/Extended Classes, so I added "+1" each and "-1" on 
+// the "if()" checks where it compared my class with the restricted ones, 
+// look around at line 79
+setarray .upper[0],1,2;
+
+// Upper Flag Names
+setarray .upper_n$[0],"Normal/Extended","Rebirth","Baby","3rd Normal","3rd Rebirth","3rd Baby";
+// =================== Debug =====================================
+// = DON'T EDIT HERE ANYTHING, well nothing bad will happen but still...
+// ===============================================================
+// If .del_type is 1 (hours) and .time is over 24, Padrão to 3
+if(.del_type == 1 && .time > 24) {
+	set .time,3;
+	debugmes .n$+": .time set to 3, because the delay is in hours and it was over 24.";
+	
+// If .del_type is 2 (days) and .time is over 30, Padrão to 2
+} else if(.del_type == 2 && .time > 30) {
+	set .time,2;
+	debugmes .n$+": .time set to 2, because the delay is in days and it was over 30.";
+}
+// If random but .upper has only 1 value, put random on off.
+if(.rand && getarraysize(.upper) < 2) {
+	set .rand,0;
+	debugmes .n$+": .rand set to off, because the arraysize of .upper being less than 2.";
+}
+// If job restriction is on,
+if(.job)
+	for ( set .@l,0; .@l < getarraysize(.upper); set .@l,.@l + 1) {
+		// and an index in .upper is below 1 or higher than 7, set .job on off
+		if(!.upper[.@l] || .upper[.@l] > 7) { 
+			set .job,0;
+			debugmes .n$+": .job set to off, because an index in .upper is below 1 or higher than 7.";
+			break;
+		}
+		// If the .upper array does not have more than one upper saved in, stop this part and continue
+		if(getarraysize(.upper) < 2) continue;
+		
+		for( set .@i,1; .@i < getarraysize(.upper)-1; set .@i,.@i + 1) {
+			// If .upper has an double inserted entry,
+			if(.upper[.@i] == .upper[.@l]) {
+				// delete that entry, also send an debug message
+				debugmes .n$+": .upper["+.@i+"] has an double entry of Upper "+.upper[.@l]+", deleted it.";
+				deletearray .upper[.@i],1;
+			}
+		}
+	} 
+// If Automatic Event Duration is below 5 minutes, Padrão it to 30 mins.
+if(.dur < 5) {
+	set .dur,30;
+	debugmes .n$+": .dur set to default (30), because it was below 5 minutes.";
+} else if(.dur > 60) {
+	set .dur,30;
+	debugmes .n$+": .dur set to default (30), because it was over 60 minutes.";
+}
+// If none was set, default it to "force_3-1"
+if(.map$ == "") {
+	set .map$,"force_3-1";
+	debugmes .n$+": .map$ set to default (force_3-1), because it was empty.";
+}
+// If player limit is below 5, default to 30
+if(.limit < 2) {
+	set .limit,30;
+	debugmes .n$+": .limit set to default (30), because it was below 2.";
+}
+// If reward is not 1 or 2, put 1
+if(!.rew_type || .rew_type > 2) {
+	set .rew_type,1;
+	debugmes .n$+": .rew_type set to 1, because it was out of range";
+}
+// If reward is item and item doesn't exists, set on 35039 (Apple)
+if(.rew_type == 1 && (getitemname(.rew_id) == "" || getitemname(.rew_id) == "null") ) {
+	set .rew_id,35039;
+	debugmes .n$+": .rew_id set to 35039 (Apple), because the ID wasn't found.";
+}
+// If reward is variable and .rew_n$ and .rew_var$ are empty, set it to their default:
+if(.rew_type == 2) {
+	if(.rew_n$ == "") {
+		set .rew_n$,"PvP Sobrevivente Points";
+		debugmes .n$+": .rew_n$ set to default (PvP Sobrevivente Points), because it was empty.";
+	}
+	if(.rew_var$ == "") {
+		set .rew_var$,"lms_points";
+		debugmes .n$+": .rew_var$ set to default (lms_points), because it was empty.";
+	}
+}
+// Se o valor da recompensa for superior a 10000, defina como padrão (100)
+if(.rew_am > 10000) {
+	set .rew_am,100;
+	debugmes .n$+": .rew_am set to default (100), because it was over 10000.";
+}
+// Se os itens comerciais estiverem vazios ou não forem encontrados, use o primeiro como 35039 (Apple) e o restante como 0
+for ( set .i,0; .i < getarraysize($item); set .i,.i + 1) 
+	if(getitemname($item[.i]) == "" || getitemname($item[.i]) == "null" && $item[.i] != 0) 
+		if(.i == 0) {
+			set $item[0],35039;
+			set $gain[0],1;
+			set $cost[0],5;
+			debugmes .n$+": $item[0], $gain[0] and $cost[0] Definido como padrão (35039,1,5), porque o item não foi encontrado.";
+		} else {
+			set $item[.i],0;
+			set $gain[.i],0;
+			set $cost[.i],0;
+			debugmes .n$+": $item["+.i+"], $gain["+.i+"] and $cost["+.i+"] set to 0, porque o item não foi encontrado.";
+		}
+	if($gain[.i] > 500) {
+		set $gain[.i],100;
+		debugmes .n$+": $gain["+.i+"] set to default (100), porque era mais de 500.";
+	} 
+	if($cost[.i] > 1000) {
+		set $cost[.i],10;
+		debugmes .n$+": $cost["+.i+"] set to default (10), porque era mais de 1000.";
+	}
+// Trade Settings:
+// If the zeny to gain is higher than 10,000,000 (Default Max Server Settings, well *input based), default to 200,000
+if(.zeny > 10000000) {
+	set .zeny,200000;
+	debugmes .n$+": .zeny set to default (200000), porque era mais de 10.000.000.";
+}
+// If .rew_var$ requirment for zeny is higher than 500, default to 20
+if(.z_cost > 500) {
+	set .z_cost,20;
+	debugmes .n$+": .z_cost set to default (20), porque era mais de 500.";
+}
+// ============ Debug End ===================
+end;
+}

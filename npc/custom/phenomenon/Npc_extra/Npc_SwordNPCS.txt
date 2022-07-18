@@ -1,0 +1,12 @@
+firstcity,93,140,5	shop	Vendendo de paes	1_M_02,585:10
+firstcity,90,142,5	shop	Vendendo de doces	1_M_03,596:100,597:500,529:10
+firstcity,89,151,5	shop	Vendendo de carnes	1_M_04,517:100
+firstcity,185,88,3	shop	Vendendora de frutas	1_M_INNKEEPER,576:500,512:100,513:100,515:50,516:50
+firstcity,91,148,5	shop	Vendendo de peixes	1_M_JOBGUIDER,579:500,567:500
+firstcity,251,82,3	shop	Vendendora de varios	1_F_01,578:1000,564:500,567:500,568:200
+firstcity,179,93,5	shop	Padaria	1_F_ORIENT_01,592:500,593:500,594:600,595:600
+firstcity,233,87,3	shop	Vendendo de sucos	1_F_ORIENT_02,531:100,532:100,534:100
+firstcity,169,212,4	shop	Vendendo de potion	2_M_MOLGENSTEIN,545:250
+firstcity,191,87,5	shop	Vendendo de flores	4_M_BARBER,748:100000,749:100000
+firstcity,333,71,3	shop	Asougueiro	4_M_01,579:500,567:500,517:100
+firstcity,114,56,4	shop	Utilidades	4_F_JPN,501:-1,502:-1,503:-1,504:-1

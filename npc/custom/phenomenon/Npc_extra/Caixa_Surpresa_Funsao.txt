@@ -1,0 +1,15 @@
+//function	script	CustomBox	{
+//	setarray .BoxItems[0],701,679,678,668,667,666,665,664,663,663,657,656,645,645,643;
+//
+//set .Random, getarraysize( .BoxItems );
+//getitem .BoxItems[ rand( .Random ) ], 1;
+//announce "["+strcharinfo(0)+"] acaba de obter um ["+getitemname(.BoxItems[ .Random ])+"] de uma Caixa Surpresa pRO.",0;
+//end;
+//}
+//
+function	script	CustomBox	{
+	.@item = F_Rand( 701,679,678,668,667,666,665,664,663,663,657,656,645,645,643,6320,12221,35002,35039 );
+	getitem .@item, 1;
+	announce "["+strcharinfo(0)+"] acaba de obter um ["+getitemname( .@item )+"] de uma Caixa Surpresa pRO.",0;
+	return;
+}

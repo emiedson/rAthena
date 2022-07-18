@@ -1,0 +1,37 @@
+//===== Phenomenon Script ====================================
+//= Resetadora por Item
+//===== By: ==================================================
+//= JokerSama
+//===== Current Version: =====================================
+//= 1.3
+//===== Compatible With: =====================================
+//= *Athena/rAthena
+//============================================================
+
+prontera,172,199,3	script	Rino	626,{
+	mes "[Rino]";
+	soundeffect "Resetadora.wav",1; // Mudar o Audio
+	cutin "bu_oliver4",2; //Mudar Imagem do Npc
+	mes "Olá, eu posso resetar seus Status Points por uma Pedra das Valquírias";
+	mes "Estaria interessado?";
+		switch(select("^FF3355Sim, vamos lá!^000000:Estou bem assim.")) {
+		case 1:
+				if (countitem(6320) < 1) { //Item Requerido - Quantidade
+					next;
+					mes "[Rino]";
+					mes "Não tente me enganar, você não tem o item necessário.";
+			cutin "", 255;
+					close;
+					}
+				delitem 6320,1;    //Item Requerido deletado depois de usado - Quantidade
+				resetstatus;
+				next;
+				mes "[Rino]";
+				mes "Pronto! distribua bem seus pontos resetados";
+			cutin "", 255;
+				close;
+		case 2:
+			cutin "", 255;
+		close;
+	}
+}

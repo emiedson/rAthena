@@ -1,0 +1,34 @@
+//===== eAthena Script =======================================
+//= Montaria
+//===== By: ==================================================
+//= [ADM] Kataro
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: =====================================
+//= Cronus
+//===== Description: =========================================
+//= Dá montaria
+//===== Additional Comments: =================================
+//= <>
+//============================================================
+prontera,123,198,5	script	Montaria	4_M_JOB_BLACKSMITH,{
+	mes "["+strnpcinfo(0)+"]";
+	mes "Ola "+strcharinfo(0)+", o que voce gostaria de fazer?";
+	next;
+	switch(select("Eu quero uma montaria.:Eu quero me desfazer da montaria.:Cliquei errado, quero sair.")){
+		case 1:
+		mes "["+strnpcinfo(0)+"]";
+		mes "Ok, aproveite a montaria!";
+		atcommand "@mount";
+		close;
+		case 2:
+		mes "["+strnpcinfo(0)+"]";
+		mes "Ok, vou retirar sua montaria. Mas quando a quiser denovo, pode voltar !";
+		atcommand "@mount";
+		close;
+		case 3:
+		mes "["+strnpcinfo(0)+"]";
+		mes "Ok, Volte quando quiser uma montaria!";
+		close;
+	}
+}

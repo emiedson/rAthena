@@ -1,0 +1,18 @@
+//criado por Frost para o Canal do youtube.
+-	script	vip_status	-1,{
+   
+OnPcloginEvent:
+ 
+if(vip_status(1))	{
+ 
+set .@timer, vip_status(2);
+dispbottom "PhenomenonRO VIP!.";
+dispbottom "==========================";
+dispbottom "Status da conta: VIP-ON";
+dispbottom "Bônus Status: Exp & Job acrescentado +15%";
+dispbottom "Bônus Status: DROP acrescentado +5%";
+dispbottom "Tempo Restante:"+callfunc("Time2Str",.@timer);
+dispbottom "==========================";
+    end;
+    }  
+}

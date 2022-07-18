@@ -1,0 +1,141 @@
+//  ________________________________________________________
+// /                                                        \
+// |--------------------------------------------------------|
+// | Nome do Script: Quest Creator	                        |
+// |--------------------------------------------------------|
+// | Versão rA/brA: 1.0                                     |
+// |--------------------------------------------------------|
+// | Descrição: NPC Administrativo                          |
+// | - Comando @createquest <recompensa><req1><qtd1><req2>  |
+// | <qtd2> <req3> <qtd3> <req4> <qtd4> <req5> <qtd5> 	    |
+// | - Criacao automatica de quest. Os argumentos passados  |
+// | no comando @createquest serao inseridos na tabela      |
+// | `custom_quest_db` e serao disponibilizados automatica- |
+// | mente no NPC 'Custom Quests'.			                |
+// |--------------------------------------------------------|
+// | - Anotações:                                           |
+// | *Proxima versao contara com opcao de deletar/editar    |
+// | itens da tabela `custom_quest_db`.			            |
+// |--------------------------------------------------------|
+// | - Qualquer problema com este NPC favor reportar a mim. |
+// | Alterem à gosto, MANTENDO OS CRÉDITOS. ^^              |
+// \________________________________________________________/
+
+//comando createquest
+-	script	customquestcommands	-1,{
+OnInit:
+	bindatcmd "createquest",strnpcinfo(3)+"::OnCreate",99,99;
+	end;
+
+OnCreate:
+
+	for(set .@i, 0; .@i < 11; set .@i, .@i + 1){
+		if( .@atcmd_parameters$[.@i] == "" ){
+			dispbottom "Por favor insira todos os valores.";
+			dispbottom "Uso: @createquest <recompensa> <requerimento1> <quantidade 1> <requerimento2> <quantidade 2> <requerimento3> <quantidade 3> <requerimento4> <quantidade 4> <requerimento5> <quantidade 5>";
+			dispbottom "Para requerimentos e quantidades inexistentes digite 0.";
+			end;
+		}
+	}
+	if( getitemname(atoi(.@atcmd_parameters$[0])) == "null"){
+		dispbottom "Nome/ID da recompensa inválido.";
+		end;
+	}
+	for(set .@i, 1; .@k < 5; set .@i, .@i + 2){
+		set .@k, .@k + 1;
+		if( atoi(.@atcmd_parameters$[.@i+1]) != 0 && getitemname(atoi(.@atcmd_parameters$[.@i])) == "null"){
+			dispbottom "Requerimento "+( (.@i == 1)?""+.@i+"":""+(.@i-(.@i-.@k))+"")+" possui Nome/ID inválido.";
+			end;
+		}
+	}
+	mes .nome$;
+	mes "Recompensa: "+getitemname(atoi(.@atcmd_parameters$[0]))+"";
+	mes "Itens Necessários:";
+	for(set .@i, 1; .@a < 5; set .@i, .@i + 2){
+		set .@a, .@a + 1;
+		if(getitemname(atoi(.@atcmd_parameters$[.@i])) == "null"){
+			break;
+		}
+		else{
+			mes ""+atoi(.@atcmd_parameters$[.@i+1])+"x "+getitemname(atoi(.@atcmd_parameters$[.@i]))+".";
+		}
+	}
+	if(select("Não criar quest.:Criar Quest!") == 1) close;
+	next;
+	mes .nome$;
+	mes "Quest criada com sucesso!";
+	query_sql "INSERT INTO `custom_quest_db` ( `reward`, `req1`, `qtd1`, `req2`, `qtd2`, `req3`, `qtd3`, `req4`, `qtd4`, `req5`, `qtd5` ) VALUES ('"+atoi(.@atcmd_parameters$[0])+"', '"+atoi(.@atcmd_parameters$[1])+"', '"+atoi(.@atcmd_parameters$[2])+"', '"+atoi(.@atcmd_parameters$[3])+"', '"+atoi(.@atcmd_parameters$[4])+"', '"+atoi(.@atcmd_parameters$[5])+"', '"+atoi(.@atcmd_parameters$[6])+"', '"+atoi(.@atcmd_parameters$[7])+"', '"+atoi(.@atcmd_parameters$[8])+"', '"+atoi(.@atcmd_parameters$[9])+"', '"+atoi(.@atcmd_parameters$[10])+"')";
+	close;
+
+}
+// ========================================================
+// Agente Sword City 
+	tavern,57,46,0	script	Registro de Missões#Vip	HIDDEN_NPC,{
+// ========================================================
+// Nome do NPC (Padrão Missão Custon)
+   set .nome$, "^880055[ Missão Custon ]^000000";
+   cutin "16isa",2;
+// ========================================================
+// NPC para troca dos itens
+
+query_sql "SELECT * FROM `custom_quest_db` ORDER BY `reward` ASC",.@reward, .@req_1, .@qtd_1, .@req_2, .@qtd_2, .@req_3, .@qtd_3, .@req_4, .@qtd_4, .@req_5, .@qtd_5;
+
+// Gera o Menu expansivel
+set .@menu$, ""+getitemname(.@reward[0])+".";
+if(.@menu$ == "null."){
+	mes .nome$;
+	mes "Não existe nenhuma";
+	mes "quest disponível no";
+	mes "momento.";
+	cutin "",255;
+	close;
+}
+for (set .@a, 1; .@a < getarraysize(.@reward); set .@a, .@a + 1)
+  set .@menu$, .@menu$ + ":" + getitemname(.@reward[.@a])+".";
+
+
+mes .nome$;
+mes "Selecione o item";
+mes "que deseja fazer.";
+
+
+// Cria no NPC o Menu
+set .@menu$, .@menu$ + ":Cancelar.";
+set .@a, select(.@menu$) - 1;
+if (getitemname(.@reward[.@a]) == "null") close;
+
+next;
+mes .nome$;
+mes "Recompensa: "+getitemname(.@reward[.@a])+" ";
+mes "Itens Necessários:";
+for(set .@i, 1; .@i < 6; set .@i, .@i + 1){
+	if(!getd(".@req_"+.@i+"["+.@a+"]")) break;
+	mes ""+getd(".@qtd_"+.@i+"["+.@a+"]")+"x "+getitemname(getd(".@req_"+.@i+"["+.@a+"]"))+".";
+}
+if(select("Fazer o item!:Não tenho interesse...") == 2) close;
+next;
+	for(set .@k, 1; .@k < .@i; set .@k, .@k + 1){
+		if(countitem (getd(".@req_"+.@k+"["+.@a+"]")) < getd(".@qtd_"+.@k+"["+.@a+"]")){
+			mes .nome$;
+			mes "Você não possui itens";
+			mes "suficientes.";
+			cutin "",255;
+			close;
+		}
+	}
+	mes .nome$;
+	mes "Aqui está.";
+	for(set .@k, 1; .@k < .@i; set .@k, .@k + 1)
+		delitem getd(".@req_"+.@k+"["+.@a+"]"), getd(".@qtd_"+.@k+"["+.@a+"]");
+	getitem .@reward[.@a],1;
+	cutin "",255;
+	close;
+}
+// Cria a Tabela customquesttable
+-	script	customquesttable	-1,{
+
+OnInit:
+query_sql "CREATE TABLE IF NOT EXISTS `custom_quest_db` (`reward` INT( 11 ) UNSIGNED NOT NULL, `req1` INT( 11 ) UNSIGNED NOT NULL, `qtd1` INT( 11 ) UNSIGNED NOT NULL, `req2` INT( 11 ) UNSIGNED NOT NULL, `qtd2` INT( 11 ) UNSIGNED NOT NULL, `req3` INT( 11 ) UNSIGNED NOT NULL, `qtd3` INT( 11 ) UNSIGNED NOT NULL, `req4` INT( 11 ) UNSIGNED NOT NULL, `qtd4` INT( 11 ) UNSIGNED NOT NULL, `req5` INT( 11 ) UNSIGNED NOT NULL, `qtd5` INT( 11 ) UNSIGNED NOT NULL) ENGINE = MYISAM";
+end;
+
+}

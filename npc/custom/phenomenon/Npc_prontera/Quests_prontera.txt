@@ -1,0 +1,1660 @@
+prontera,161,124,3	script	Quests Phenomenon#bandit	4_F_FRUIT,{
+	mes "^FF0000[  ^0065DFAgente Lisa^000000  ]^000000";
+	mes "Olá ^0000FF" +strcharinfo(0)+ "^000000, Bom dia!! Eu sou a agente da Cidade de Prontera, responsavel pela organização de questes";
+	mes "Deseja ir para sala de quest's?";
+	next;
+	switch(select("sim","não")){
+		case 1:
+			mes "Até mais!";
+			close2;
+			warp "z_agit",23,94;
+			end;
+		case 2:
+		mes .nome$;
+		mes "Tchau";
+		next;
+		close;
+	}
+}
+//----------------------------------------------------
+//que_sign01,49,192,3	script	SAIDA	4W_F_KAFRA2,{
+//	mes "^FF0000[  ^0065DFKafra Aliza^000000  ]^000000";
+//	mes strcharinfo(0)+", Bom dia!! Eu sou a responsavel pela limpeza e retorno seguro a prontera";
+//	mes "Deseja sair da sala de quest's?";
+//	next;
+//	switch(select("sim","não")){
+//		case 1:
+//			mes "Até mais!";
+//			close2;
+//			warp "prontera",156,191;
+//			end;
+//		case 2:
+//		mes .nome$;
+//		mes "Tchau";
+//		next;
+//		close;
+//	}
+//}
+//
+//
+// --- Quest Fugitivo ---
+z_agit,30,107,4	script	Máscara Do Fugitivo	4_STEELBOX,{
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+
+mes "Eu sou a Senhora da Quest, prazer em conhecê-lo!";
+mes "O que eu posso fazer por você?";
+next;
+switch(select("O que é uma ^0099FFMáscara do Fugitivo^000000?","Eu quero fazer uma ^0099FFMáscara do Fugitivo^000000.","Por que você tem esse nome?")){
+case 1:
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "A Máscara do Fugitivo é um item que";
+mes "instantaneamente te deixa Bonito!";
+mes "E se todos usarem Máscaras do Fugitivo,";
+mes "o mundo de Ragnarök será um mundo";
+mes "Cheio de Estilo!";
+mes "A Máscara do Fugitivo ajuda a lembrar a";
+mes "todos que sempre devemos estar de";
+mes "Bonito, Charmoso, Lindo e Gostoso.";
+mes "Afinal, ninguém quer jogar um jogo";
+mes "para ficar Feio, não é?";
+mes "Então vamos todos nos esforçar";
+mes "para ajudar o próximo!";
+mes "Claro, sempre respeitando as";
+mes "regras para não chatear ninguém!";
+next;
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "Fazer uma Máscara do Fugitivo é algo";
+mes "muito simples.";
+mes "Usamos materiais básicos que";
+mes "qualquer Sniper pode conseguir.";
+mes "Eu vou lhe dizer quais são...";
+mes "Preste atenção e anote!";
+next;
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "^5555FF220 Pedra do Sábio^000000";
+mes "^5555FF400 Felpas^000000";
+mes "^5555FF200 Runa Sangrenta^000000";
+mes "^5555FF1000000 Zenys^000000";
+next;
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "É só me trazer esses items que";
+mes "eu faço uma Máscara do Fugitivo para";
+mes "você!";
+mes "Viu como é simples fazer do mundo";
+mes "um lugar melhor?";
+mes "Agora se apresse...";
+mes "Aposto que você está ansioso para ter uma!";
+close;
+case 2:
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+if(countitem(7563) < 220 || countitem(12040) < 400 || countitem(914) < 200 && Zeny >= 1000000){
+mes "Ah, mas que pena!";
+mes "Você ainda não tem todos os itens";
+mes "para fazer uma Máscara do Fugitivo!";
+mes "Vou lembrá-lo de novo de quais são";
+mes "os itens:";
+mes "^5555FF220 Pedra do Sábio^000000,";
+mes "^5555FF400 Felpas^000000,";
+mes "^5555FF200 Runa Sangrenta^000000.";
+mes "E ^5555FF1000000 Zenys^000000.";
+mes "Volte quando tiver todos os itens!";
+close;
+}
+delitem 7563,220;
+delitem 12040,400;
+delitem 914,200;
+set Zeny,Zeny-1000000;
+mes "Ah, que ótimo! Você trouxe todos os itens necessários!";
+mes "Espere apenas um segundo, enquanto farei sua Mascará do Fugitivo.";
+next;
+mes "~!shook!~!shook!~";
+next;
+mes "~!shook!~!shook!~";
+mes "~!clack!~!clack!~";
+next;
+mes "~!shook!~!shook!~";
+mes "~!clack!~!clack!~";
+mes "~!took!~!took!~";
+next;
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "Aqui está sua Máscara do Fugitivo!";
+mes "Tomara que isso sempre te";
+mes "lembre de estar num Estilo!";
+getitem 5361,1;
+close;
+case 3:
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "Hihihihihihi";
+mes "Por que tenho esse nome?";
+mes "É porque adoro fica no Estilo!";
+mes "E eu adoro Máscaras de Fugitivo deixam nos com Estilos.";
+mes "vou te da uma dica:";
+next;
+mes "^FF0000[ Máscara do Fugitivo ]^000000";
+mes "Agora Para Fica mais lindo";
+mes "compre bionicos, Chifres de ATK!";
+mes "ai se ira fica mais lindo!";
+mes "Huauauauauuauauau!";
+close;
+	}
+}
+
+
+
+//--- Quests ---
+z_agit,36,107,4	script	Boina Alada	4_STEELBOX,{
+	mes "^FF0000[ Boina Alada ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Boina Alada ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina Alada ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Boina Alada:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Boina Alada ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5170);
+		mes " ";
+		mes "Requerimento:";
+		mes "100x "+getitemname(7441);
+		mes "30x "+getitemname(7063);
+		mes "1x "+getitemname(5172);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Boina Alada ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Boina Alada ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7441) >= 100 && countitem(7063) >= 30 && countitem(5172) >= 1 && countitem(7037) >= 5)
+		{
+			delitem 7441,100;
+			delitem 7063,30;
+			delitem 5172,1;
+			delitem 7037,5;
+			getitem 5170,1;
+			mes "^FF0000[ Boina Alada ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Boina Alada ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina Alada ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,99,4	script	Boina Charmosa	4_STEELBOX,{
+	mes "^FF0000[ Boina Charmosa ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Boina Charmosa ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina Charmosa ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Boina Charmosa:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Boina Charmosa ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5468);
+		mes " ";
+		mes "Requerimento:";
+		mes "5x "+getitemname(5085);
+		mes "20x "+getitemname(982);
+		mes "1x "+getitemname(5172);
+		mes "5x "+getitemname(7037);
+		mes "100x "+getitemname(7166);
+		next;
+		mes "^FF0000[ Boina Charmosa ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Boina Charmosa ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(5085) >= 5 && countitem(982) >= 20 && countitem(5172) >= 1 && countitem(7037) >= 5 && countitem(7166) >= 100)
+		{
+			delitem 5085,5;
+			delitem 982,20;
+			delitem 5172,1;
+			delitem 7037,5;
+			delitem 7166,100;
+			getitem 5468,1;
+			mes "^FF0000[ Boina Charmosa ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Boina Charmosa ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina Charmosa ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,93,4	script	Boina de Coelho	4_STEELBOX,{
+	mes "^FF0000[ Boina de Coelho ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Boina de Coelho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina de Coelho ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Boina de Coelho:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Boina de Coelho ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5568);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(5172);
+		mes "20x "+getitemname(10019);
+		mes "100x "+getitemname(7167);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Boina de Coelho ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Boina de Coelho ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(5172) >= 1 && countitem(10019) >= 20 && countitem(7167) >= 100 && countitem(7037) >= 5)
+		{
+			delitem 5172,1;
+			delitem 10019,20;
+			delitem 7167,100;
+			delitem 7037,5;
+			getitem 5568,1;
+			mes "^FF0000[ Boina de Coelho ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Boina de Coelho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Boina de Coelho ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,87,4	script	Bone de Gatinho	4_STEELBOX,{
+	mes "^FF0000[ Bone de Gatinho ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Bone de Gatinho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Bone de Gatinho ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Boné de Gatinho:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Boné de Gatinho ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(18600);
+		mes " ";
+		mes "Requerimento:";
+		mes "35x "+getitemname(1058);
+		mes "50x "+getitemname(1026);
+		mes "45x "+getitemname(99);
+		mes "100000 Zenys";
+		next;
+		mes "^FF0000[ Bone de Gatinho ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Bone de Gatinho ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(1058) >= 35 && countitem(1026) >= 50 && countitem(99) >= 45 && Zeny >= 100000)
+		{
+			delitem 1058,35;
+			delitem 1026,50;
+			delitem 99,45;
+			set Zeny,Zeny-100000;
+			getitem 18600,1;
+			mes "^FF0000[ Bone de Gatinho ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Bone de Gatinho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Bone de Gatinho ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,81,4	script	Cartola Mágica	4_STEELBOX,{
+	mes "^FF0000[ Cartola Mágica ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Cartola Mágica ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Cartola Mágica ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Cartola Mágica:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Cartola Mágica ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5503);
+		mes " ";
+		mes "Requerimento:";
+		mes "150x "+getitemname(999);
+		mes "1x "+getitemname(5045);
+		mes "5x "+getitemname(7578);
+		mes "35x "+getitemname(923);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Cartola Mágica ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Cartola Mágica ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(999) >= 150 && countitem(5045) >= 1 && countitem(7578) >= 5 && countitem(923) >= 35 && countitem(7037) >= 5)
+		{
+			delitem 999,150;
+			delitem 5045,1;
+			delitem 7578,5;
+			delitem 923,35;
+			delitem 7037,5;
+			getitem 5503,1;
+			mes "^FF0000[ Cartola Mágica ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Cartola Mágica ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Cartola Mágica ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,75,4	script	Chapéu Pesar de Thanatos	4_STEELBOX,{
+	mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu Pesar de Thanatos:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5563);
+		mes " ";
+		mes "Requerimento:";
+		mes "100x "+getitemname(7167);
+		mes "5x "+getitemname(983);
+		mes "75x "+getitemname(7315);
+		mes "5x "+getitemname(7037);
+		mes "10x "+getitemname(7205);
+		next;
+		mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7167) >= 100 && countitem(983) >= 5 && countitem(7315) >= 75 && countitem(7037) >= 5 && countitem(7205) >= 10)
+		{
+			delitem 7167,100;
+			delitem 983,5;
+			delitem 7315,75;
+			delitem 7037,5;
+			delitem 7205,10;
+			getitem 5563,1;
+			mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu Pesar de Thanatos ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,103,4	script	Chapéu F. Dorminhoco 	4_STEELBOX,{
+	mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu Fumacento Dorminhoco :Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu Fumacento Dorminhoco  ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5084);
+		mes " ";
+		mes "Requerimento:";
+		mes "30x "+getitemname(754);
+		mes "125x "+getitemname(945);
+		mes "3x "+getitemname(2220);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(754) >= 30 && countitem(945) >= 125 && countitem(2220) >= 3 && countitem(7037) >= 5)
+		{
+			delitem 754,30;
+			delitem 945,125;
+			delitem 2220,3;
+			delitem 7037,5;
+			getitem 5084,1;
+			mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu F. Dorminhoco  ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,97,4	script	Chapéu de Lamen	4_STEELBOX,{
+	mes "^FF0000[ Chapéu de Lamen ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu de Lamen ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Lamen ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu de Lamen:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu de Lamen ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5293);
+		mes " ";
+		mes "Requerimento:";
+		mes "90x "+getitemname(523);
+		mes "30x "+getitemname(7742);
+		mes "100x "+getitemname(517);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Chapéu de Lamen ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu de Lamen ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(523) >= 90 && countitem(7742) >= 30 && countitem(517) >= 100 && countitem(7037) >= 5)
+		{
+			delitem 523,90;
+			delitem 7742,30;
+			delitem 517,100;
+			delitem 7037,5;
+			getitem 5293,1;
+			mes "^FF0000[ Chapéu de Lamen ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu de Lamen ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Lamen ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,91,4	script	Chapéu de Olho Mágico	4_STEELBOX,{
+	mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu de Olho Mágico:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5138);
+		mes " ";
+		mes "Requerimento:";
+		mes "150x "+getitemname(2614);
+		mes "1x "+getitemname(2252);
+		mes "5x "+getitemname(983);
+		mes "50x "+getitemname(7064);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(2614) >= 150 && countitem(2252) >= 1 && countitem(983) >= 5 && countitem(7064) >= 50 && countitem(7037) >= 5)
+		{
+			delitem 2614,150;
+			delitem 2252,1;
+			delitem 983,5;
+			delitem 7064,50;
+			delitem 7037,5;
+			getitem 5138,1;
+			mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Olho Mágico ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,85,4	script	Chapéu de Sundae	4_STEELBOX,{
+	mes "^FF0000[ Chapéu de Sundae ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu de Sundae ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Sundae ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu de Sundae:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu de Sundae ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5500);
+		mes " ";
+		mes "Requerimento:";
+		mes "150x "+getitemname(7066);
+		mes "150x "+getitemname(536);
+		mes "75x "+getitemname(6039);
+		mes "255x "+getitemname(913);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Chapéu de Sundae ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu de Sundae ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7066) >= 150 && countitem(536) >= 150 && countitem(6039) >= 75 && countitem(913) >= 255 && countitem(7037) >= 5)
+		{
+			delitem 7066,150;
+			delitem 536,150;
+			delitem 6039,75;
+			delitem 913,255;
+			delitem 7037,5;
+			getitem 5500,1;
+			mes "^FF0000[ Chapéu de Sundae ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu de Sundae ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Sundae ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,79,4	script	Chapéu de Tubarão	4_STEELBOX,{
+	mes "^FF0000[ Chapéu de Tubarão ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Chapéu de Tubarão ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Tubarão ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Chapéu de Tubarão:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Chapéu de Tubarão ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5548);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(5014);
+		mes "100x "+getitemname(1023);
+		mes "90x "+getitemname(913);
+		mes "50x "+getitemname(1053);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Chapéu de Tubarão ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Chapéu de Tubarão ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(5014) >= 1 && countitem(1023) >= 100 && countitem(913) >= 90 && countitem(1053) >= 50 && countitem(7037) >= 5)
+		{
+			delitem 5014,1;
+			delitem 1023,100;
+			delitem 913,90;
+			delitem 1053,50;
+			delitem 7037,5;
+			getitem 5548,1;
+			mes "^FF0000[ Chapéu de Tubarão ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Chapéu de Tubarão ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Chapéu de Tubarão ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,101,4	script	Gorro de Modonna	4_STEELBOX,{
+	mes "^FF0000[ Gorro de Modonna ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Gorro de Modonna ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Gorro de Modonna ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Gorro de Modonna:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Gorro de Modonna ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5505);
+		mes " ";
+		mes "Requerimento:";
+		mes "150x "+getitemname(7166);
+		mes "20x "+getitemname(7024);
+		mes "50x "+getitemname(7213);
+		mes "35x "+getitemname(626);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Gorro de Modonna ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Gorro de Modonna ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7166) >= 150 && countitem(7024) >= 20 && countitem(7213) >= 50 && countitem(626) >= 35 && countitem(7037) >= 5)
+		{
+			delitem 7166,150;
+			delitem 7024,20;
+			delitem 7213,50;
+			delitem 626,35;
+			delitem 7037,5;
+			getitem 5505,1;
+			mes "^FF0000[ Gorro de Modonna ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Gorro de Modonna ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Gorro de Modonna ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,95,4	script	Máscara de Mergulho	4_STEELBOX,{
+	mes "^FF0000[ Máscara de Mergulho ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Máscara de Mergulho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Máscara de Mergulho ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Máscara de Mergulho:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Máscara de Mergulho ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5397);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(2291);
+		mes "1x "+getitemname(7325);
+		mes "30x "+getitemname(983);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Máscara de Mergulho ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Máscara de Mergulho ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(2291) >= 1 && countitem(7325) >= 1 && countitem(983) >= 30 && countitem(7037) >= 5)
+		{
+			delitem 2291,1;
+			delitem 7325,1;
+			delitem 983,30;
+			delitem 7037,5;
+			getitem 5397,1;
+			mes "^FF0000[ Máscara de Mergulho ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Máscara de Mergulho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Máscara de Mergulho ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,89,4	script	Olho de Mimir	4_STEELBOX,{
+	mes "^FF0000[ Olho de Mimir ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Olho de Mimir ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Olho de Mimir ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Olho de Mimir:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Olho de Mimir ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5470);
+		mes " ";
+		mes "Requerimento:";
+		mes "70x "+getitemname(7213);
+		mes "10x "+getitemname(719);
+		mes "50x "+getitemname(7163);
+		mes "30x "+getitemname(2614);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Olho de Mimir ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Olho de Mimir ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7213) >= 70 && countitem(719) >= 10 && countitem(7163) >= 50 && countitem(2614) >= 30 && countitem(7037) >= 5)
+		{
+			delitem 7213,70;
+			delitem 719,10;
+			delitem 7163,50;
+			delitem 2614,30;
+			delitem 7037,5;
+			getitem 5470,1;
+			mes "^FF0000[ Olho de Mimir ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Olho de Mimir ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Olho de Mimir ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,83,4	script	Orelhas de Coelho 	4_STEELBOX,{
+	mes "^FF0000[ Orelhas de Coelho  ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Orelhas de Coelho  ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Orelhas de Coelho  ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Orelhas de Coelho Amarelas:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Orelhas de Coelho Amarelas ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5783);
+		mes " ";
+		mes "Requerimento:";
+		mes "35x "+getitemname(1058);
+		mes "50x "+getitemname(930);
+		mes "45x "+getitemname(1040);
+		mes "100000 Zenys";
+		next;
+		mes "^FF0000[ Orelhas de Coelho  ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Orelhas de Coelho  ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(1058) >= 35 && countitem(930) >= 50 && countitem(1040) >= 45 && Zeny >= 100000)
+		{
+			delitem 1058,35;
+			delitem 930,50;
+			delitem 1040,45;
+			set Zeny,Zeny-100000;
+			getitem 5783,1;
+			mes "^FF0000[ Orelhas de Coelho  ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Orelhas de Coelho  ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Orelhas de Coelho  ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,77,4	script	Rosa Escarlate	4_STEELBOX,{
+	mes "^FF0000[ Rosa Escarlate ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Rosa Escarlate ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Rosa Escarlate ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Rosa Escarlate:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Rosa Escarlate ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5548);
+		mes " ";
+		mes "Requerimento:";
+		mes "50x "+getitemname(748);
+		mes "5x "+getitemname(2612);
+		mes "40x "+getitemname(629);
+		mes "5x "+getitemname(7037);
+		mes "150x "+getitemname(1032);
+		next;
+		mes "^FF0000[ Rosa Escarlate ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Rosa Escarlate ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(748) >= 50 && countitem(2612) >= 5 && countitem(629) >= 40 && countitem(7037) >= 5 && countitem(1032) >= 150)
+		{
+			delitem 748,50;
+			delitem 2612,5;
+			delitem 629,40;
+			delitem 7037,5;
+			delitem 1032,150;
+			getitem 5548,1;
+			mes "^FF0000[ Rosa Escarlate ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Rosa Escarlate ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Rosa Escarlate ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,33,73,4	script	Touca de Pijama	4_STEELBOX,{
+	mes "^FF0000[ Touca de Pijama ]^000000";
+	
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Touca de Pijama ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Touca de Pijama Azul ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Touca de Pijama:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Touca de Pijama ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5506);
+		mes " ";
+		mes "Requerimento:";
+		mes "150x "+getitemname(7166);
+		mes "20x "+getitemname(7024);
+		mes "18x "+getitemname(7289);
+		mes "150x "+getitemname(1013);
+		mes "75x "+getitemname(1054);
+		mes "7x "+getitemname(7326);
+		mes "90x "+getitemname(7263);
+		mes "20x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Touca de Pijama ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Touca de Pijama ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7166) >= 150 && countitem(7024) >= 20 && countitem(7289) >= 18 && countitem(1013) >= 150 && countitem(1054) >= 75 && countitem(7326) >= 7 && countitem(7263) >= 90 && countitem(7037) >= 20)
+		{
+			delitem 7166,150;
+			delitem 7024,20;
+			delitem 7289,18;
+			delitem 1013,150;
+			delitem 1054,75;
+			delitem 7326,7;
+			delitem 7263,90;
+			delitem 7037,20;
+			getitem 5506,1;
+			mes "^FF0000[ Touca de Pijama ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Touca de Pijama ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Touca de Pijama ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,36,69,4	script	Touca de Banho	4_STEELBOX,{
+	mes "^FF0000[ Touca de Banho ]^000000";
+	mes "Eu tenho alguns itens interessantes aqui, deseja dar uma olhada?";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Touca de Banho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Touca de Banho ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Touca de Banho:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Touca de Banho ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(5510);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(5046);
+		mes "5x "+getitemname(980);
+		mes "10x "+getitemname(10019);
+		mes "150x "+getitemname(7166);
+		mes "5x "+getitemname(7037);
+		next;
+		mes "^FF0000[ Touca de Banho ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Touca de Banho ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(5046) >= 1 && countitem(980) >= 5 && countitem(10019) >= 10 && countitem(7166) >= 150 && countitem(7037) >= 5)
+		{
+			delitem 5046,1;
+			delitem 980,5;
+			delitem 10019,10;
+			delitem 7166,150;
+			delitem 7037,5;
+			getitem 5510,1;
+			mes "^FF0000[ Touca de Banho ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Touca de Banho ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Touca de Banho ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+//=============================================
+//== Cronus Tools :: Gerador de Quest's =======
+//== Versão: ==================================
+//== 1.0
+//== Autor: ===================================
+//== RoM
+//=============================================
+z_agit,30,71,4	script	Tintureira	4_STEELBOX,{
+	mes "^FF0000[ Tintureira ]^000000";
+	
+	mes "Eu tenho alguns tipos de tintas bem interessantes.";
+	mes "E bem provavel que voce precisa-ra mais tarde.";
+	mes "De uma olha nos tipos de tintas agora.";
+	next;
+	if( select("Claro!:Talvez mais tarde...") == 2 )
+	{
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Tintureiro ]^000000";
+	mes "Bem, estes são os itens que eu tenho...";
+	mes "Sobre qual deles vai querer saber mais?";
+	next;
+	switch(select("Tintura Vermelha:Tintura Amarela:Tintura Azul:Tintura Branca:Tintura Laraja:Tintura Preta:Tintura Verde:Tintura Violeta:Nenhum"))
+	{
+	case 1:
+		mes "^FF0000[ Tintura Vermelha ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(975);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 975,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 2:
+		mes "^FF0000[ Tintura Amarela ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(976);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 976,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 3:
+		mes "^FF0000[ Tintura Azul ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(978);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 978,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 4:
+		mes "^FF0000[ Tintura Branca ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(982);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 982,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 5:
+		mes "^FF0000[ Tintura Laraja ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(980);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 980,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 6:
+		mes "^FF0000[ Tintura Preta ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(983);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 983,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 7:
+		mes "^FF0000[ Tintura Verde ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(979);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 979,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 8:
+		mes "^FF0000[ Tintura Violeta ]^000000";
+		mes "Recompensa:";
+		mes "1x "+getitemname(981);
+		mes " ";
+		mes "Requerimento:";
+		mes "1x "+getitemname(7134);
+		mes "1x "+getitemname(12020);
+		mes "1x "+getitemname(7037);
+		mes "20000 Zenys";
+		next;
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Deseja fazer esta quest?";
+		next;
+		if( select("Sim!:Agora não...") == 2 )
+		{
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Tudo bem... Até mais!";
+			close;
+		}
+		if(countitem(7134) >= 1 && countitem(12020) >= 1 && countitem(7037) >= 1 && Zeny >= 20000)
+		{
+			delitem 7134,1;
+			delitem 12020,1;
+			delitem 7037,1;
+			set Zeny,Zeny-20000;
+			getitem 981,1;
+			mes "^FF0000[ Tintureiro ]^000000";
+			mes "Parabéns! Aqui está!";
+			close;
+		}
+		break;
+	case 9:
+		mes "^FF0000[ Tintureiro ]^000000";
+		mes "Tudo bem, estarei aqui se você mudar de idéia.";
+		close;
+	}
+	mes "^FF0000[ Tintureiro ]^000000";
+	mes "Me desculpe, mas você não tem todos os itens necessários para esta quest.";
+	mes "Volte quando você tiver todos os itens!";
+	close;
+}
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

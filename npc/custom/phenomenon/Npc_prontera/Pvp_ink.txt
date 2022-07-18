@@ -1,0 +1,32 @@
+//NPC: PVP ARENA
+//Feita por: Gs Lost RO
+
+prontera,100,180,5	script	PvP da Morte	4_M_KY_SOLD,{
+mes "[PvP Arena]";
+mes "Olá, deseja entrar na Arena PvP ??";
+next;
+menu "Sim",-,"Não",cancel;{
+
+mes "[ArenaPvP]";
+mes "Vamos nessa";
+next;
+warp "guild_vs2",92,49;
+close;
+
+cancel:
+mes "[ArenaPvP]";
+mes "Então saia já daqui!";
+close;
+}
+
+}
+
+guild_vs2	mapflag	nomemo
+guild_vs2	mapflag	nowarp
+guild_vs2	mapflag	nowarpto
+guild_vs2	mapflag	noreturn
+guild_vs2	mapflag	nosave
+guild_vs2	mapflag	noteleport
+guild_vs2	mapflag	nobranch
+
+

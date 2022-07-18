@@ -1,0 +1,53 @@
+//===== rAthena Script =======================================
+//= Guild Storage with Guild Logs
+//===== By: ==================================================
+//= Sader1992
+//= Free!!
+// https://rathena.org/board/profile/30766-sader1992/
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena Project
+// https://github.com/sader1992/sader_scripts
+// https://github.com/rathena/rathena/commit/55acdb9863382d8935d9df25e1462d5d1ebd7d54#diff-ae5800534bb25effa37150c6874eb4ad
+// AND ABOVE! ONLY.
+//===== Description: =========================================
+// Isso permite que os jogadores verifiquem o Registro de Armazenamento da Guild.
+// O jogador deve ter permissão de armazenamento da guild para verificar o registro.
+//============================================================
+//============================================================
+prontera,158,178,8	script	Guild Storage	10129,{
+	switch(select("abrir armazém da guild:log de armazenamento da guilda")){
+		case 1:
+			switch(guildopenstorage()){
+				case GSTORAGE_OPEN: break;
+				case GSTORAGE_STORAGE_ALREADY_OPEN: mes "você precisa fechar o armazenamento do player primeiro"; break;
+				case GSTORAGE_ALREADY_OPEN: mes "o armazenamento da guilda já está aberto"; break;
+				case GSTORAGE_NO_GUILD: mes "você não está na guild"; break;
+				case GSTORAGE_NO_STORAGE: mes "a guild não abriu a habilidade de armazenamento"; break;
+				case GSTORAGE_NO_PERMISSION: mes "seu mestre da guild não lhe deu permissão de armazenamento da guild"; break;
+			}
+			break;
+		case 2:
+			if(!getcharid(2)){
+				mes "você não tem guild";
+				close;
+			}
+			if(!guild_has_permission(GUILD_PERM_STORAGE)){
+				mes "você não tem permissão para o armazém da guilda";
+				close;
+			}
+			query_sql("SELECT `time`,`name`,`nameid`,`amount` FROM `guild_storage_log` WHERE `guild_id` = '" + getcharid(2) + "' order by `id` DESC", .@time$ ,.@name$,.@item_id,.@amount);
+			if(!.@item_id){
+				mes "ainda não há registro";
+				close;
+			}
+			dispbottom "===================================================",0xFFD64F;
+			dispbottom "=================== Guild Storage Log ====================",0xFFD64F;
+			dispbottom "===================================================",0xFFD64F;
+			for(.@i=0;.@i<getarraysize(.@item_id);.@i++)
+				dispbottom .@time$[.@i] + " Player[" + .@name$[.@i] + "] Nome do Item[" + getitemname(.@item_id[.@i]) + "] Item Add/Removido[" + .@amount[.@i] + "]",((.@amount[.@i] > 0)?0x00d8ff:0xFF0000);
+			dispbottom "===================================================",0xFFD64F;
+	}
+end;
+}

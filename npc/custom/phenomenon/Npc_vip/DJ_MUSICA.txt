@@ -1,0 +1,20 @@
+tavern,42,32,5	script	DJ Sword	723,{
+	mes	"Que música você gostaria de tocar?";
+	switch(select("Medo de GATO:Dias de CHEFFÊNIA:Musa Falsa:Beastars Abertura:Não")) {
+	case 1:
+		playBGMall "Medo_De_Gato","tavern";
+		close;
+	case 2:
+		playBGMall "Dias_de_Cheffenia","tavern";
+		close;
+	case 3:
+		playBGMall "Musa_Falsa","tavern";
+		close;
+	case 4:
+		playBGMall "Beastars_Abertura","tavern";
+		close;
+	case 5:
+		mes "Tudo bem tchau Té mais";
+		close;
+	}
+}
